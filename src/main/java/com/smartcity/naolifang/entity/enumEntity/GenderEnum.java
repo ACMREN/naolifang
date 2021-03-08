@@ -1,8 +1,8 @@
 package com.smartcity.naolifang.entity.enumEntity;
 
 public enum GenderEnum {
-    MALE(0, "male"),
-    FEMALE(1, "female");
+    MALE(0, "男"),
+    FEMALE(1, "女");
 
     private int code;
     private String name;
