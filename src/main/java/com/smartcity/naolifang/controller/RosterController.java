@@ -67,10 +67,12 @@ public class RosterController {
         String phone = rosterCondition.getPhone();
         String idCard = rosterCondition.getIdCard();
         String superior = rosterCondition.getSuperior();
+        String gender = rosterCondition.getGender();
         Integer offset = (pageNo - 1) * pageSize;
 
         List<InsiderInfo> dataList = insiderInfoService.list(new QueryWrapper<InsiderInfo>()
                 .eq("is_account", 0)
+                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
@@ -79,6 +81,7 @@ public class RosterController {
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
                 .eq("is_account", 0)
+                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)

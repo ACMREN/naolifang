@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.vo.InsiderInfoVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,6 +35,11 @@ public class InsiderInfo implements Serializable {
      * 姓名
      */
     private String name;
+
+    /**
+     * 性别
+     */
+    private Integer gender;
 
     /**
      * 身份证号码
@@ -91,6 +97,7 @@ public class InsiderInfo implements Serializable {
     public InsiderInfo(InsiderInfoVo insiderInfoVo) {
         this.id = insiderInfoVo.getId();
         this.name = insiderInfoVo.getName();
+        this.gender = GenderEnum.getDataByName(insiderInfoVo.getGender()).getCode();
         this.idCard = insiderInfoVo.getIdCard();
         this.phone = insiderInfoVo.getPhone();
         this.groupName = insiderInfoVo.getGroupName();

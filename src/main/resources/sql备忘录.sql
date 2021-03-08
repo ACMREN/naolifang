@@ -50,6 +50,7 @@ CREATE TABLE `permission` (
 CREATE TABLE `insider_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
     name VARCHAR(10) NOT NULL COMMENT '姓名',
+    gender TINYINT(2) DEFAULT 0 COMMENT '性别',
     id_card VARCHAR(20) NOT NULL COMMENT '身份证号码',
     phone VARCHAR(20) NOT NULL COMMENT '手机号码',
     group_name VARCHAR(20) NOT NULL COMMENT '所属连队',
@@ -75,3 +76,14 @@ CREATE TABLE `dependant_info` (
     update_time DATETIME NOT NULL COMMENT '更新时间',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='营区家属人员表';
+
+CREATE TABLE `duty_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    name VARCHAR(20) NOT NULL COMMENT '姓名',
+    gender TINYINT(2) DEFAULT 0 COMMENT '性别',
+    group_name VARCHAR(20) NOT NULL COMMENT '所属连队',
+    position VARCHAR(20) NOT NULL COMMENT '职位',
+    start_time DATETIME NOT NULL COMMENT '值班开始时间',
+    end_time DATETIME NOT NULL COMMENT '值班结束时间',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='值班信息表';
