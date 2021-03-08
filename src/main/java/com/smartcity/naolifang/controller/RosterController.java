@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.entity.DependantInfo;
 import com.smartcity.naolifang.entity.InsiderInfo;
+import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.searchCondition.RosterCondition;
 import com.smartcity.naolifang.entity.searchCondition.UserCondition;
 import com.smartcity.naolifang.entity.vo.DependantInfoVo;
@@ -36,7 +37,7 @@ public class RosterController {
      * @param insiderInfoVo
      * @return
      */
-    @RequestMapping("/saveInsider")
+    @RequestMapping("/insider/save")
     public Result saveInsider(@RequestBody InsiderInfoVo insiderInfoVo) {
         InsiderInfo insiderInfo = new InsiderInfo(insiderInfoVo);
         if (null == insiderInfo.getCreateTime()) {
@@ -54,25 +55,35 @@ public class RosterController {
      * @param rosterCondition
      * @return
      */
-    @RequestMapping("/getInsiderList")
+    @RequestMapping("/insider/list")
     public Result getInsiderList(@RequestBody RosterCondition rosterCondition) {
         Integer pageNo = rosterCondition.getPageNo();
         Integer pageSize = rosterCondition.getPageSize();
-        String keyword = rosterCondition.getKeyword();
         if (null == pageNo || null == pageSize) {
             return Result.fail(500, "获取营内人员信息失败，信息：传入的页数和页码为空");
         }
+        String name = rosterCondition.getName();
+        String groupName = rosterCondition.getGroupName();
+        String phone = rosterCondition.getPhone();
+        String idCard = rosterCondition.getIdCard();
+        String superior = rosterCondition.getSuperior();
         Integer offset = (pageNo - 1) * pageSize;
 
         List<InsiderInfo> dataList = insiderInfoService.list(new QueryWrapper<InsiderInfo>()
-                .like(StringUtils.isNotBlank(keyword), "name", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "group_name", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "superior", keyword)
+                .eq("is_account", 0)
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
+                .like(StringUtils.isNotBlank(phone), "phone", phone)
+                .like(StringUtils.isNotBlank(groupName), "group_name", groupName)
+                .like(StringUtils.isNotBlank(superior), "superior", superior)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
-                .like(StringUtils.isNotBlank(keyword), "name", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "group_name", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "superior", keyword));
+                .eq("is_account", 0)
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
+                .like(StringUtils.isNotBlank(phone), "phone", phone)
+                .like(StringUtils.isNotBlank(groupName), "group_name", groupName)
+                .like(StringUtils.isNotBlank(superior), "superior", superior));
 
         List<InsiderInfoVo> resultList = new ArrayList<>();
         for (InsiderInfo item : dataList) {
@@ -84,7 +95,7 @@ public class RosterController {
         return Result.ok(pageListVo);
     }
 
-    @RequestMapping("/deleteInsider")
+    @RequestMapping("/insider/remove")
     public Result deleteInsider(@RequestBody RosterCondition rosterCondition) {
         List<Integer> ids = rosterCondition.getIds();
         insiderInfoService.removeByIds(ids);
@@ -92,7 +103,7 @@ public class RosterController {
         return Result.ok();
     }
 
-    @RequestMapping("/saveDependant")
+    @RequestMapping("/dependant/save")
     public Result saveDependant(@RequestBody DependantInfoVo dependantInfoVo) {
         DependantInfo dependantInfo = new DependantInfo(dependantInfoVo);
         if (null == dependantInfo.getCreateTime()) {
@@ -104,7 +115,7 @@ public class RosterController {
         return Result.ok();
     }
 
-    @RequestMapping("/getDependantList")
+    @RequestMapping("/dependant/list")
     public Result getDependantList(@RequestBody RosterCondition rosterCondition) {
         Integer pageNo = rosterCondition.getPageNo();
         Integer pageSize = rosterCondition.getPageSize();
@@ -112,17 +123,22 @@ public class RosterController {
             return Result.fail(500, "获取家属列表信息失败，信息：传入的页数或页码为空");
         }
         Integer offset = (pageNo - 1) * pageSize;
-        String keyword = rosterCondition.getKeyword();
+        String name = rosterCondition.getName();
+        String gender = rosterCondition.getGender();
+        String coupleName = rosterCondition.getCoupleName();
+        String institution = rosterCondition.getInstitution();
 
         List<DependantInfo> dataList = dependantInfoService.list(new QueryWrapper<DependantInfo>()
-                .like(StringUtils.isNotBlank(keyword), "name", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "coupleName", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "institution", keyword)
+                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(coupleName), "coupleName", coupleName)
+                .like(StringUtils.isNotBlank(institution), "institution", institution)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = dependantInfoService.count(new QueryWrapper<DependantInfo>()
-                .like(StringUtils.isNotBlank(keyword), "name", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "coupleName", keyword)
-                .or().like(StringUtils.isNotBlank(keyword), "institution", keyword));
+                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(coupleName), "coupleName", coupleName)
+                .like(StringUtils.isNotBlank(institution), "institution", institution));
 
         List<DependantInfoVo> resultList = new ArrayList<>();
         for (DependantInfo item : dataList) {
@@ -134,7 +150,7 @@ public class RosterController {
         return Result.ok(pageListVo);
     }
 
-    @RequestMapping("/deleteDependant")
+    @RequestMapping("/dependant/remove")
     public Result deleteDependant(@RequestBody RosterCondition rosterCondition) {
         List<Integer> ids = rosterCondition.getIds();
         dependantInfoService.removeByIds(ids);

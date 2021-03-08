@@ -11,6 +11,7 @@ public class InsiderInfoVo {
     private String idCard;
     private String phone;
     private String groupName;
+    private String position;
     private String superior;
     private String imageUri;
     private Integer isDelete;
@@ -26,6 +27,7 @@ public class InsiderInfoVo {
         this.idCard = insiderInfo.getIdCard();
         this.phone = insiderInfo.getPhone();
         this.groupName = insiderInfo.getGroupName();
+        this.position = insiderInfo.getPosition();
         this.superior = insiderInfo.getSuperior();
         this.imageUri = insiderInfo.getImageUri();
         this.isDelete = insiderInfo.getIsDelete();

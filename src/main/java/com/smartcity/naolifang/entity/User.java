@@ -58,6 +58,11 @@ public class User implements Serializable {
     private String remark;
 
     /**
+     * 是否开启：0-否，1-是
+     */
+    private Integer isEnable;
+
+    /**
      * 是否 已经删除：0-否，1-是
      */
     private Integer isDelete;

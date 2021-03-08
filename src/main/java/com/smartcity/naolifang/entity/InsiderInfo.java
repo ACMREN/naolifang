@@ -51,6 +51,11 @@ public class InsiderInfo implements Serializable {
     private String groupName;
 
     /**
+     * 职位
+     */
+    private String position;
+
+    /**
      * 直属上级
      */
     private String superior;
@@ -59,6 +64,11 @@ public class InsiderInfo implements Serializable {
      * 个人照片
      */
     private String imageUri;
+
+    /**
+     * 是否拥有后台账号：0-否，1-是
+     */
+    private Integer isAccount;
 
     /**
      * 是否已经删除：0-否，1-是
@@ -84,6 +94,7 @@ public class InsiderInfo implements Serializable {
         this.idCard = insiderInfoVo.getIdCard();
         this.phone = insiderInfoVo.getPhone();
         this.groupName = insiderInfoVo.getGroupName();
+        this.position = insiderInfoVo.getPosition();
         this.superior = insiderInfoVo.getSuperior();
         this.imageUri = insiderInfoVo.getImageUri();
         this.isDelete = insiderInfoVo.getIsDelete();

@@ -9,6 +9,8 @@ public class UserCondition {
     private Integer id;
     private List<Integer> ids;
     private String keyword;
+    private String groupName;
+    private String phone;
     private String username;
     private String password;
     private String validateCode;

@@ -1,7 +1,7 @@
 package com.smartcity.naolifang.service;
 
-import com.smartcity.naolifang.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.smartcity.naolifang.entity.User;
 
 /**
  * <p>
