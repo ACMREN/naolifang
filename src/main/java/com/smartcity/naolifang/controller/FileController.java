@@ -21,12 +21,15 @@ public class FileController {
         }
 
         String uuid = UUID.randomUUID().toString();
-        String fileName = image.getName();
-        String newFileName = fileName + "-"+ uuid;
-        String basePath = "/data/upload/image/avatar";
-        File imagePath = new File(basePath + newFileName);
+        String fileName = image.getOriginalFilename();
+        String baseName = fileName.split("\\.")[0];
+        String suffix = fileName.split("\\.")[1];
+        String newFileName = baseName + "-"+ uuid;
+        String basePath = "/tmp/avatar/";
+        String imagePath = basePath + newFileName + "." + suffix;
+        File imageFile = new File(imagePath);
         try {
-            image.transferTo(imagePath);
+            image.transferTo(imageFile);
             return Result.ok(newFileName);
         } catch (IOException e) {
             e.printStackTrace();
