@@ -8,7 +8,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://172.0.0.185:3306/naolifang?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.1.157:3306/naolifang?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
     password: 357241689
 mybatis-plus:
