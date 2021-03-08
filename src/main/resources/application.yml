@@ -1,0 +1,15 @@
+server:
+  port: 2020
+  context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://172.0.0.185:3306/naolifang?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    username: root
+    password: 357241689
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
