@@ -68,11 +68,15 @@ public class RosterController {
         String idCard = rosterCondition.getIdCard();
         String superior = rosterCondition.getSuperior();
         String gender = rosterCondition.getGender();
+        Integer genderInt = 0;
+        if (StringUtils.isNotBlank(gender)) {
+            genderInt = GenderEnum.getDataByName(gender).getCode();
+        }
         Integer offset = (pageNo - 1) * pageSize;
 
         List<InsiderInfo> dataList = insiderInfoService.list(new QueryWrapper<InsiderInfo>()
                 .eq("is_account", 0)
-                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
+                .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
@@ -81,7 +85,7 @@ public class RosterController {
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
                 .eq("is_account", 0)
-                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
+                .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
@@ -130,9 +134,13 @@ public class RosterController {
         String gender = rosterCondition.getGender();
         String coupleName = rosterCondition.getCoupleName();
         String institution = rosterCondition.getInstitution();
+        Integer genderInt = 0;
+        if (StringUtils.isNotBlank(gender)) {
+            genderInt = GenderEnum.getDataByName(gender).getCode();
+        }
 
         List<DependantInfo> dataList = dependantInfoService.list(new QueryWrapper<DependantInfo>()
-                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
+                .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(coupleName), "coupleName", coupleName)
                 .like(StringUtils.isNotBlank(institution), "institution", institution)
