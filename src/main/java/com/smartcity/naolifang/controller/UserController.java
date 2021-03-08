@@ -96,20 +96,22 @@ public class UserController {
         List<UserRole> userRoleList = userRoleService.list(new QueryWrapper<UserRole>()
                 .select("role_id")
                 .eq("user_id", user.getId()));
-        List<Integer> roleIds = userRoleList.stream().map(UserRole::getRoleId).collect(Collectors.toList());
-        List<Role> roles = roleService.getRoleListByUserId(user.getId());
-        userVo.setRoles(roles);
-        if (!CollectionUtils.isEmpty(roleIds)) {
-            List<RolePermission> rolePermissionList = rolePermissionService.list(new QueryWrapper<RolePermission>()
-                    .select("permission_id")
-                    .in("role_id", roleIds));
-            List<Integer> permissionIds = rolePermissionList.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(permissionIds)) {
-                List<Permission> permissions = permissionService.list(new QueryWrapper<Permission>()
-                        .select("id", "permission_name", "permission_name_en")
-                        .in("id", permissionIds)
-                        .eq("is_delete", 0));
-                userVo.setPermissions(permissions);
+        if (!CollectionUtils.isEmpty(userRoleList)) {
+            List<Integer> roleIds = userRoleList.stream().map(UserRole::getRoleId).collect(Collectors.toList());
+            List<Role> roles = roleService.getRoleListByUserId(user.getId());
+            userVo.setRoles(roles);
+            if (!CollectionUtils.isEmpty(roleIds)) {
+                List<RolePermission> rolePermissionList = rolePermissionService.list(new QueryWrapper<RolePermission>()
+                        .select("permission_id")
+                        .in("role_id", roleIds));
+                List<Integer> permissionIds = rolePermissionList.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
+                if (!CollectionUtils.isEmpty(permissionIds)) {
+                    List<Permission> permissions = permissionService.list(new QueryWrapper<Permission>()
+                            .select("id", "permission_name", "permission_name_en")
+                            .in("id", permissionIds)
+                            .eq("is_delete", 0));
+                    userVo.setPermissions(permissions);
+                }
             }
         }
 
