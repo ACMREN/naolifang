@@ -4,12 +4,9 @@ server:
   tomcat:
     uri-encoding: UTF-8
 
-# DataSource Config
 spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.1.157:3306/naolifang?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
-    username: root
-    password: 357241689
+  profiles:
+    active: test
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
