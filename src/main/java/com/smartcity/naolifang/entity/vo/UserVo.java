@@ -4,6 +4,7 @@ import com.smartcity.naolifang.entity.InsiderInfo;
 import com.smartcity.naolifang.entity.Permission;
 import com.smartcity.naolifang.entity.Role;
 import com.smartcity.naolifang.entity.User;
+import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import lombok.Data;
 
 import java.time.format.DateTimeFormatter;
@@ -14,6 +15,7 @@ import java.util.List;
 public class UserVo {
     private Integer id;
     private String name;
+    private String gender;
     private String username;
     private String idCard;
     private String groupName;
@@ -47,6 +49,7 @@ public class UserVo {
 
     public UserVo packageDetailInfo(InsiderInfo insiderInfo) {
         this.name = insiderInfo.getName();
+        this.gender = GenderEnum.getDataByCode(insiderInfo.getGender()).getName();
         this.idCard = insiderInfo.getIdCard();
         this.groupName = insiderInfo.getGroupName();
         this.position = insiderInfo.getPosition();
