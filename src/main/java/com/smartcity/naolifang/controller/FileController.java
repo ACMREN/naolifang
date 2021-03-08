@@ -25,7 +25,7 @@ public class FileController {
         String baseName = fileName.split("\\.")[0];
         String suffix = fileName.split("\\.")[1];
         String newFileName = baseName + "-"+ uuid;
-        String basePath = "/tmp/avatar/";
+        String basePath = "/data/upload/image/avatar/";
         String imagePath = basePath + newFileName + "." + suffix;
         File imageFile = new File(imagePath);
         try {
