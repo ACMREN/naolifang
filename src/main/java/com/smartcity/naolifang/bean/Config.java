@@ -14,10 +14,30 @@ public class Config {
     @Value("${avatarMappingPath}")
     private String avatarMappingPath;
 
-    @Value("${fileDocPath}")
-    private String fileDocPath;
-    @Value("${fileMappingPath}")
-    private String fileMappingPath;
+    @Value("${videoDocPath}")
+    private String videoDocPath;
+    @Value("${videoMappingPath}")
+    private String videoMappingPath;
+
+    @Value("${wordDocPath}")
+    private String wordDocPath;
+    @Value("${wordMappingPath}")
+    private String wordMappingPath;
+
+    @Value("${excelDocPath}")
+    private String excelDocPath;
+    @Value("${excelMappingPath}")
+    private String excelMappingPath;
+
+    @Value("${pptDocPath}")
+    private String pptDocPath;
+    @Value("${pptMappingPath}")
+    private String pptMappingPath;
+
+    @Value("${pdfDocPath}")
+    private String pdfDocPath;
+    @Value("${pdfMappingPath}")
+    private String pdfMappingPath;
 
     @Value("${pollingInterval}")
     private String pollingInterval;

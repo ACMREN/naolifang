@@ -1,7 +1,9 @@
 package com.smartcity.naolifang.controller;
 
 import com.smartcity.naolifang.bean.Config;
+import com.smartcity.naolifang.entity.AttachmentInfo;
 import com.smartcity.naolifang.entity.vo.Result;
+import com.smartcity.naolifang.service.AttachmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +20,9 @@ public class FileController {
 
     @Autowired
     private Config config;
+
+    @Autowired
+    private AttachmentInfoService attachmentInfoService;
 
     @RequestMapping("/test")
     public Result test() {
@@ -74,19 +79,39 @@ public class FileController {
         String docPath = "";
         String mappingPath = "";
 
+        String fileName = file.getOriginalFilename();
+        String baseName = fileName.split("\\.")[0];
+        String suffix = fileName.split("\\.")[1];
+        String newFileName = baseName + "-"+ uuid + "." + suffix;
         if (type.equals("video")) {
-            String fileName = file.getOriginalFilename();
-            String baseName = fileName.split("\\.")[0];
-            String suffix = fileName.split("\\.")[1];
-            String newFileName = baseName + "-"+ uuid + "." + suffix;
-            docPath = config.getFileDocPath() + newFileName;
-            mappingPath = config.getFileMappingPath() + newFileName;
+            docPath = config.getVideoDocPath() + newFileName;
+            mappingPath = config.getVideoMappingPath() + newFileName;
+        } else if (type.equals("word")) {
+            docPath = config.getWordDocPath() + newFileName;
+            mappingPath = config.getWordMappingPath() + newFileName;
+        } else if (type.equals("excel")) {
+            docPath = config.getExcelDocPath() + newFileName;
+            mappingPath = config.getExcelMappingPath() + newFileName;
+        } else if (type.equals("ppt")) {
+            docPath = config.getPptDocPath() + newFileName;
+            mappingPath = config.getPptMappingPath() + newFileName;
+        } else if (type.equals("pdf")) {
+            docPath = config.getPdfDocPath() + newFileName;
+            mappingPath = config.getPdfMappingPath() + newFileName;
+        } else {
+            return Result.fail(500, "上传附件失败，信息：不支持的附件类型");
         }
+
+        AttachmentInfo attachmentInfo = new AttachmentInfo();
+        attachmentInfo.setOriginalName(fileName);
+        attachmentInfo.setEncodeName(newFileName);
+        attachmentInfo.setMappingPath(mappingPath);
+        attachmentInfoService.saveOrUpdate(attachmentInfo);
 
         File dest = new File(docPath);
         try {
             file.transferTo(dest);
-            return Result.ok(mappingPath);
+            return Result.ok(attachmentInfo);
         } catch (IOException e) {
             e.printStackTrace();
         }
