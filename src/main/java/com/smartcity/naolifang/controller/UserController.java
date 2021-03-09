@@ -118,7 +118,6 @@ public class UserController {
             }
         }
 
-
         request.getSession().setAttribute("user", userVo);
 
         return Result.ok(userVo);
@@ -152,13 +151,18 @@ public class UserController {
     @RequestMapping("/changePassword")
     public Result changePassword(@RequestBody UserCondition userCondition) {
         Integer id = userCondition.getId();
-        String password = userCondition.getPassword();
+        String oldPassword = userCondition.getOldPassword();
+        String newPassword = userCondition.getNewPassword();
 
         User user = userService.getById(id);
         String salt = user.getSalt();
+        String temp = MD5Util.passwordMd5Encode(oldPassword, salt);
+        if (!temp.equals(user.getPassword())) {
+            return Result.fail(500, "修改密码错误，信息：旧密码输入不正确");
+        }
 
-        String newPassword = MD5Util.passwordMd5Encode(password, salt);
-        user.setPassword(newPassword);
+        String newDbPassword = MD5Util.passwordMd5Encode(newPassword, salt);
+        user.setPassword(newDbPassword);
         userService.saveOrUpdate(user);
 
         return Result.ok();

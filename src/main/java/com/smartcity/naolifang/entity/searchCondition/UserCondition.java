@@ -15,6 +15,9 @@ public class UserCondition {
     private String password;
     private String text;
 
+    private String oldPassword;
+    private String newPassword;
+
     private Integer pageNo;
     private Integer pageSize;
 }
