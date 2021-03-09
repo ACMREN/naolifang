@@ -85,10 +85,10 @@ public class UserController {
         }
         String salt = user.getSalt();
         String temp = MD5Util.passwordMd5Encode(password, salt);
-//        String validateCode = request.getSession().getAttribute("validateCode").toString();
-//        if (!validateCode.toLowerCase().equals(text.toLowerCase())) {
-//            return Result.fail(500, "登录失败，信息：验证码错误");
-//        }
+        String validateCode = request.getSession().getAttribute("validateCode").toString();
+        if (!validateCode.toLowerCase().equals(text.toLowerCase())) {
+            return Result.fail(500, "登录失败，信息：验证码错误");
+        }
         if (!temp.equals(user.getPassword())) {
             return Result.fail(500, "登录失败，信息：输入的账号或密码错误");
         }
