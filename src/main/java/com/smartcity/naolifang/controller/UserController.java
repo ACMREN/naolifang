@@ -80,6 +80,9 @@ public class UserController {
 
         // 1. 判断用户是否合法
         User user = userService.getOne(new QueryWrapper<User>().eq("username", username));
+        if (null == user) {
+            return Result.fail(500, "登录失败，信息：输入的账号或密码错误");
+        }
         String salt = user.getSalt();
         String temp = MD5Util.passwordMd5Encode(password, salt);
 //        String validateCode = request.getSession().getAttribute("validateCode").toString();
