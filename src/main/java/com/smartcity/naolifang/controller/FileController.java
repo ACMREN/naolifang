@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -106,6 +107,7 @@ public class FileController {
         attachmentInfo.setOriginalName(fileName);
         attachmentInfo.setEncodeName(newFileName);
         attachmentInfo.setMappingPath(mappingPath);
+        attachmentInfo.setCreateTime(LocalDateTime.now());
         attachmentInfoService.saveOrUpdate(attachmentInfo);
 
         File dest = new File(docPath);
