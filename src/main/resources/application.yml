@@ -5,8 +5,12 @@ server:
     uri-encoding: UTF-8
 
 spring:
+  http:
+    multipart:
+      maxFileSize: 10Mb
   profiles:
     active: test
+
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**Mapper.xml
