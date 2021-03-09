@@ -21,7 +21,7 @@ public class FileController {
 
     @RequestMapping("/test")
     public Result test() {
-        return Result.ok(config.getAvatarDocPath());
+        return Result.ok(config.getPollingInterval());
     }
 
     /**

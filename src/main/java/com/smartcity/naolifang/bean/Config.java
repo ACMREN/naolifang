@@ -18,4 +18,7 @@ public class Config {
     private String fileDocPath;
     @Value("${fileMappingPath}")
     private String fileMappingPath;
+
+    @Value("${pollingInterval}")
+    private String pollingInterval;
 }

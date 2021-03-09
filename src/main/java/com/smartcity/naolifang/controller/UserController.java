@@ -130,7 +130,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/verifyPassword")
-    public Result changePassword(@RequestBody UserCondition userCondition) {
+    public Result verifyPassword(@RequestBody UserCondition userCondition) {
         Integer id = userCondition.getId();
         String password = userCondition.getPassword();
 
@@ -142,6 +142,26 @@ public class UserController {
             return Result.ok();
         }
         return Result.fail(500, "密码错误");
+    }
+
+    /**
+     * 修改密码
+     * @param userCondition
+     * @return
+     */
+    @RequestMapping("/changePassword")
+    public Result changePassword(@RequestBody UserCondition userCondition) {
+        Integer id = userCondition.getId();
+        String password = userCondition.getPassword();
+
+        User user = userService.getById(id);
+        String salt = user.getSalt();
+
+        String newPassword = MD5Util.passwordMd5Encode(password, salt);
+        user.setPassword(newPassword);
+        userService.saveOrUpdate(user);
+
+        return Result.ok();
     }
 
     /**
