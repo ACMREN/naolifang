@@ -4,12 +4,13 @@ server:
   tomcat:
     uri-encoding: UTF-8
 
+
 spring:
-  http:
-    multipart:
-      maxFileSize: 10Mb
   profiles:
     active: test
+  servlet:
+    multipart:
+      max-file-size: 10MB
 
 
 mybatis-plus:
