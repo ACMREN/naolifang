@@ -13,7 +13,7 @@ public class UserCondition {
     private String phone;
     private String username;
     private String password;
-    private String validateCode;
+    private String text;
 
     private Integer pageNo;
     private Integer pageSize;

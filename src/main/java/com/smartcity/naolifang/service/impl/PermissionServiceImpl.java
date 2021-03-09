@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.smartcity.naolifang.service.RolePermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +33,10 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
     public List<Permission> getPermissionListByRoleId(Integer roleId) {
         List<RolePermission> rolePermissions = rolePermissionService.list(new QueryWrapper<RolePermission>().eq("role_id", roleId));
         List<Integer> permissionIds = rolePermissions.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
-        List<Permission> permissions = this.getBaseMapper().selectBatchIds(permissionIds);
-        return permissions;
+        if (!CollectionUtils.isEmpty(permissionIds)) {
+            List<Permission> permissions = this.getBaseMapper().selectBatchIds(permissionIds);
+            return permissions;
+        }
+        return new ArrayList<>();
     }
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.vo.DependantInfoVo;
 import lombok.Data;
@@ -80,7 +81,8 @@ public class DependantInfo implements Serializable {
         this.coupleName = dependantInfoVo.getCoupleName();
         this.institution = dependantInfoVo.getInstitution();
         this.imageUri = dependantInfoVo.getImageUri();
-        this.createTime = LocalDateTime.parse(dependantInfoVo.getCreateTime());
-        this.updateTime = LocalDateTime.parse(dependantInfoVo.getUpdateTime());
+        if (StringUtils.isNotBlank(dependantInfoVo.getCreateTime())) {
+            this.createTime = LocalDateTime.parse(dependantInfoVo.getCreateTime());
+        }
     }
 }

@@ -73,7 +73,7 @@ public class UserController {
     public Result login(@RequestBody UserCondition userCondition, HttpServletRequest request) {
         String username = userCondition.getUsername();
         String password = userCondition.getPassword();
-        String text = userCondition.getValidateCode();
+        String text = userCondition.getText();
         if (null == text) {
             return Result.fail(500, "登录失败，信息：验证码为空");
         }

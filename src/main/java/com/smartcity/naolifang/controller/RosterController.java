@@ -146,7 +146,7 @@ public class RosterController {
                 .like(StringUtils.isNotBlank(institution), "institution", institution)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = dependantInfoService.count(new QueryWrapper<DependantInfo>()
-                .eq(StringUtils.isNotBlank(gender), "gender", GenderEnum.getDataByName(gender).getCode())
+                .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(coupleName), "coupleName", coupleName)
                 .like(StringUtils.isNotBlank(institution), "institution", institution));
