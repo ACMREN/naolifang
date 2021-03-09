@@ -10,7 +10,6 @@ import com.smartcity.naolifang.common.util.MD5Util;
 import com.smartcity.naolifang.entity.vo.UserVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.util.DigestUtils;
 
 /**
  * <p>
@@ -87,8 +86,8 @@ public class User implements Serializable {
         this.password = MD5Util.passwordMd5Encode(userVo.getPassword(), salt);
         this.registerId = userVo.getRegisterId();
         this.remark = userVo.getRemark();
-        if (StringUtils.isNotBlank(userVo.getCreteTime())) {
-            this.createTime = LocalDateTime.parse(userVo.getCreteTime());
+        if (StringUtils.isNotBlank(userVo.getCreateTime())) {
+            this.createTime = LocalDateTime.parse(userVo.getCreateTime());
         }
     }
 }

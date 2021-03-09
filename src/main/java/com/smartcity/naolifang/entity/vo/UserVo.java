@@ -26,7 +26,7 @@ public class UserVo {
     private Integer isEnable;
     private Integer registerId;
     private String remark;
-    private String creteTime;
+    private String createTime;
     private String updateTime;
 
     private List<Integer> roleIds = new ArrayList<>();
@@ -43,7 +43,7 @@ public class UserVo {
         this.registerId = user.getRegisterId();
         this.remark = user.getRemark();
         this.isEnable = user.getIsEnable();
-        this.creteTime = dtf.format(user.getCreateTime());
+        this.createTime = dtf.format(user.getCreateTime());
         this.updateTime = dtf.format(user.getUpdateTime());
     }
 

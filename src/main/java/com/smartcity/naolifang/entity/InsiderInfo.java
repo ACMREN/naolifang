@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.vo.InsiderInfoVo;
+import com.smartcity.naolifang.entity.vo.UserVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -104,9 +105,19 @@ public class InsiderInfo implements Serializable {
         this.position = insiderInfoVo.getPosition();
         this.superior = insiderInfoVo.getSuperior();
         this.imageUri = insiderInfoVo.getImageUri();
-        this.isDelete = insiderInfoVo.getIsDelete();
         if (StringUtils.isNotBlank(insiderInfoVo.getCreateTime())) {
             this.createTime = LocalDateTime.parse(insiderInfoVo.getCreateTime());
         }
+    }
+
+    public void updateInsiderInfo(UserVo userVo) {
+        this.name = userVo.getName();
+        this.gender = GenderEnum.getDataByName(userVo.getGender()).getCode();
+        this.idCard = userVo.getIdCard();
+        this.phone = userVo.getPhone();
+        this.groupName = userVo.getGroupName();
+        this.position = userVo.getPosition();
+        this.superior = userVo.getSuperior();
+        this.isAccount = 1;
     }
 }

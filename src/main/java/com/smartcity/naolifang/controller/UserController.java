@@ -151,6 +151,23 @@ public class UserController {
      */
     @RequestMapping("/account/save")
     public Result saveUser(@RequestBody UserVo userVo) {
+        // 1. 保存内部人员信息
+        Integer registerId = userVo.getRegisterId();
+        InsiderInfo insiderInfo;
+        if (null != registerId) {
+            insiderInfo = insiderInfoService.getById(registerId);
+            insiderInfo.updateInsiderInfo(userVo);
+            insiderInfo.setUpdateTime(LocalDateTime.now());
+            insiderInfoService.saveOrUpdate(insiderInfo);
+        } else {
+            insiderInfo = new InsiderInfo();
+            insiderInfo.updateInsiderInfo(userVo);
+            insiderInfo.setCreateTime(LocalDateTime.now());
+            insiderInfo.setUpdateTime(LocalDateTime.now());
+            insiderInfoService.saveOrUpdate(insiderInfo);
+        }
+
+        // 2. 保存后台用户信息
         User user = new User(userVo);
         if (null == user.getCreateTime()) {
             user.setCreateTime(LocalDateTime.now());
@@ -158,7 +175,7 @@ public class UserController {
         user.setUpdateTime(LocalDateTime.now());
         userService.saveOrUpdate(user);
 
-        // 处理用户角色关系
+        // 3. 处理用户角色关系
         List<Integer> roleIds = userVo.getRoleIds();
         List<UserRole> userRoles = new ArrayList<>();
         for (Integer roleId : roleIds) {
