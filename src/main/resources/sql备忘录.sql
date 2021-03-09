@@ -90,9 +90,11 @@ CREATE TABLE `duty_info` (
 
 CREATE TABLE `message_polling_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
-    title VARCAHR(20) NOT NULL COMMENT '标题',
+    title VARCHAR(20) NOT NULL COMMENT '标题',
     content TEXT DEFAULT NULL COMMENT '内容',
     is_polling TINYINT(2) DEFAULT 0 COMMENT '是否轮询：0-否，1-是',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
-
-)
+    create_time DATETIME NOT NULL COMMENT '创建时间',
+    update_time DATETIME NOT NULL COMMENT '更新时间',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息轮询信息表';
