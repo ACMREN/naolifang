@@ -83,8 +83,10 @@ public class User implements Serializable {
     public User(UserVo userVo) {
         this.id = userVo.getId();
         this.username = userVo.getUsername();
-        this.salt = MD5Util.generateSalt();
-        this.password = MD5Util.passwordMd5Encode(userVo.getPassword(), salt);
+        if (StringUtils.isBlank(userVo.getPassword())) {
+            this.salt = MD5Util.generateSalt();
+            this.password = MD5Util.passwordMd5Encode(userVo.getPassword(), salt);
+        }
         this.registerId = userVo.getRegisterId();
         this.remark = userVo.getRemark();
         if (StringUtils.isNotBlank(userVo.getCreateTime())) {
