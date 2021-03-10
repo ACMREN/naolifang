@@ -93,7 +93,9 @@ public class UserController {
             return Result.fail(500, "登录失败，信息：输入的账号或密码错误");
         }
 
-        UserVo userVo = new UserVo(user);
+        InsiderInfo insiderInfo = insiderInfoService.getById(user.getRegisterId());
+
+        UserVo userVo = new UserVo(user).packageDetailInfo(insiderInfo);
 
         // 2. 组装用户的角色信息和权限信息
         List<UserRole> userRoleList = userRoleService.list(new QueryWrapper<UserRole>()
