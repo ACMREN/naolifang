@@ -1,6 +1,7 @@
 package com.smartcity.naolifang.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.smartcity.naolifang.entity.Role;
 import com.smartcity.naolifang.entity.UserRole;
 import com.smartcity.naolifang.mapper.RoleMapper;
@@ -10,6 +11,7 @@ import com.smartcity.naolifang.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +33,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public List<Role> getRoleListByUserId(Integer userId) {
         List<UserRole> userRoleList = userRoleService.list(new QueryWrapper<UserRole>().eq("user_id", userId));
         List<Integer> roleIds = userRoleList.stream().map(UserRole::getRoleId).collect(Collectors.toList());
-        List<Role> roles = this.getBaseMapper().selectBatchIds(roleIds);
-        return roles;
+        if (!CollectionUtils.isEmpty(roleIds)) {
+            List<Role> roles = this.getBaseMapper().selectBatchIds(roleIds);
+            return roles;
+        }
+        return new ArrayList<>();
     }
 }

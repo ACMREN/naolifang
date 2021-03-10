@@ -11,9 +11,11 @@ public class UserCondition {
     private String keyword;
     private String groupName;
     private String phone;
+    private String name;
     private String username;
     private String password;
     private String text;
+    private Integer isEnable;
 
     private String oldPassword;
     private String newPassword;

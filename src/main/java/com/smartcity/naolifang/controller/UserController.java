@@ -260,26 +260,34 @@ public class UserController {
         if (null == pageNo || null == pageSize) {
             return Result.fail(500, "获取用户列表失败，传入的页数和页码为空");
         }
-        String keyword = userCondition.getKeyword();
+        String name = userCondition.getName();
+        String username = userCondition.getUsername();
         String groupName = userCondition.getGroupName();
         String phone = userCondition.getPhone();
+        Integer isEnable = userCondition.getIsEnable();
         Integer offset = (pageNo - 1) * pageSize;
 
         // 1. 查询所有数据
         List<User> userList = userService.list(new QueryWrapper<User>()
-                .select("id", "username", "create_time", "update_time")
-                .like(StringUtils.isNotBlank(keyword), "username", keyword)
+                .select("id", "username", "register_id", "create_time", "update_time")
+                .like(StringUtils.isNotBlank(username), "username", username)
+                .eq(null != isEnable, "is_enable", isEnable)
                 .eq("is_delete", 0));
+        if (CollectionUtils.isEmpty(userList)) {
+            return Result.ok(new PageListVo<>(new ArrayList<>(), pageNo, pageNo, 0));
+        }
         Map<Integer, User> rosterIdUserMap = userList.stream().collect(Collectors.toMap(User::getRegisterId, Function.identity()));
         List<Integer> rosterIds = userList.stream().map(User::getRegisterId).collect(Collectors.toList());
         // 1.1 根据详细数据查询所有的符合条件的用户
         List<InsiderInfo> insiderInfos = insiderInfoService.list(new QueryWrapper<InsiderInfo>()
                 .in("id", rosterIds)
+                .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(groupName), "group_name", groupName)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
                 .in("id", rosterIds)
+                .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(groupName), "group_name", groupName));
 
