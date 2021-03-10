@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/emergencySolution")
+@RequestMapping("/message")
 public class EmergencySolutionController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class EmergencySolutionController {
      * @param emergencySolutionInfoVo
      * @return
      */
-    @RequestMapping("/emergencySolution/save")
+    @RequestMapping("/emergency/save")
     public Result saveEmergencySolution(@RequestBody EmergencySolutionInfoVo emergencySolutionInfoVo) {
         Integer id = emergencySolutionInfoVo.getId();
         EmergencySolutionInfo emergencySolutionInfo = new EmergencySolutionInfo(emergencySolutionInfoVo);
@@ -53,7 +53,7 @@ public class EmergencySolutionController {
      * @param emergencySolutionCondition
      * @return
      */
-    @RequestMapping("/emergencySolution/list")
+    @RequestMapping("/emergency/list")
     public Result listEmergencySolution(@RequestBody EmergencySolutionCondition emergencySolutionCondition) {
         Integer pageNo = emergencySolutionCondition.getPageNo();
         Integer pageSize = emergencySolutionCondition.getPageSize();
@@ -93,7 +93,7 @@ public class EmergencySolutionController {
      * @param emergencySolutionCondition
      * @return
      */
-    @RequestMapping("/emergencySolution/remove")
+    @RequestMapping("/emergency/remove")
     public Result deleteEmergencySolution(@RequestBody EmergencySolutionCondition emergencySolutionCondition) {
         List<Integer> ids = emergencySolutionCondition.getIds();
 
