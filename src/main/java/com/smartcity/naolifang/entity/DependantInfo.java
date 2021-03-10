@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.vo.DependantInfoVo;
 import lombok.Data;
@@ -82,7 +83,7 @@ public class DependantInfo implements Serializable {
         this.institution = dependantInfoVo.getInstitution();
         this.imageUri = dependantInfoVo.getImageUri();
         if (StringUtils.isNotBlank(dependantInfoVo.getCreateTime())) {
-            this.createTime = LocalDateTime.parse(dependantInfoVo.getCreateTime());
+            this.createTime = DateTimeUtil.stringToLocalDateTime(dependantInfoVo.getCreateTime());
         }
     }
 }

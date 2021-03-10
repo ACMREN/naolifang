@@ -9,4 +9,13 @@ public class DateTimeUtil {
     public static String localDateTimeToString(LocalDateTime localDateTime) {
         return dtf.format(localDateTime);
     }
+
+    public static LocalDateTime stringToLocalDateTime(String dateTime) {
+        return LocalDateTime.parse(dateTime, dtf);
+    }
+
+    public static void main(String[] args) {
+        String date = "2021-03-10 15:12:09";
+        System.out.println(stringToLocalDateTime(date));
+    }
 }

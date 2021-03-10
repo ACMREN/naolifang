@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.entity.vo.RoleVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -64,7 +65,7 @@ public class Role implements Serializable {
         this.remark = roleVo.getRemark();
         this.isDelete = roleVo.getIsDelete();
         if (StringUtils.isNotBlank(roleVo.getCreateTime())) {
-            this.createTime = LocalDateTime.parse(roleVo.getCreateTime());
+            this.createTime = DateTimeUtil.stringToLocalDateTime(roleVo.getCreateTime());
         }
     }
 }

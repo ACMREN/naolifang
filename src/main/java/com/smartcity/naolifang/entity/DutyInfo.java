@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.vo.DutyInfoVo;
 import lombok.Data;
@@ -67,8 +69,12 @@ public class DutyInfo implements Serializable {
         this.gender = GenderEnum.getDataByName(dutyInfoVo.getGender()).getCode();
         this.groupName = dutyInfoVo.getGroupName();
         this.position = dutyInfoVo.getPosition();
-        this.startTime = LocalDateTime.parse(dutyInfoVo.getStartTime());
-        this.endTime = LocalDateTime.parse(dutyInfoVo.getEndTime());
+        if (StringUtils.isNotBlank(dutyInfoVo.getStartTime())) {
+            this.startTime = DateTimeUtil.stringToLocalDateTime(dutyInfoVo.getStartTime());
+        }
+        if (StringUtils.isNotBlank(dutyInfoVo.getEndTime())) {
+            this.endTime = DateTimeUtil.stringToLocalDateTime(dutyInfoVo.getEndTime());
+        }
     }
 
     public DutyInfo() {

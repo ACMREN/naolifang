@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.entity.vo.PermissionVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -70,7 +71,7 @@ public class Permission implements Serializable {
         this.remark = permissionVo.getRemark();
         this.isDelete = permissionVo.getIsDelete();
         if (StringUtils.isNotBlank(permissionVo.getCreateTime())) {
-            this.createTime = LocalDateTime.parse(permissionVo.getCreateTime());
+            this.createTime = DateTimeUtil.stringToLocalDateTime(permissionVo.getCreateTime());
         }
     }
 }

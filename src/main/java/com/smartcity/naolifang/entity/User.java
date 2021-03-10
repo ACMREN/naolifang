@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.common.util.MD5Util;
 import com.smartcity.naolifang.entity.vo.UserVo;
 import lombok.Data;
@@ -87,7 +88,7 @@ public class User implements Serializable {
         this.registerId = userVo.getRegisterId();
         this.remark = userVo.getRemark();
         if (StringUtils.isNotBlank(userVo.getCreateTime())) {
-            this.createTime = LocalDateTime.parse(userVo.getCreateTime());
+            this.createTime = DateTimeUtil.stringToLocalDateTime(userVo.getCreateTime());
         }
     }
 }

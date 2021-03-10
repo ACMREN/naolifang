@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.vo.InsiderInfoVo;
 import com.smartcity.naolifang.entity.vo.UserVo;
@@ -106,7 +107,7 @@ public class InsiderInfo implements Serializable {
         this.superior = insiderInfoVo.getSuperior();
         this.imageUri = insiderInfoVo.getImageUri();
         if (StringUtils.isNotBlank(insiderInfoVo.getCreateTime())) {
-            this.createTime = LocalDateTime.parse(insiderInfoVo.getCreateTime());
+            this.createTime = DateTimeUtil.stringToLocalDateTime(insiderInfoVo.getCreateTime());
         }
     }
 
