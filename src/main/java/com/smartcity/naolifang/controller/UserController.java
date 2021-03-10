@@ -124,6 +124,41 @@ public class UserController {
     }
 
     /**
+     * 普通用户获取个人信息
+     * @param userCondition
+     * @return
+     */
+    @RequestMapping("/profile/detail")
+    public Result getProfileDetail(@RequestBody UserCondition userCondition) {
+        Integer id = userCondition.getId();
+        User user = userService.getById(id);
+
+        InsiderInfo insiderInfo = insiderInfoService.getById(user.getRegisterId());
+
+        UserVo userVo = new UserVo(user).packageDetailInfo(insiderInfo);
+
+        return Result.ok(userVo);
+    }
+
+    /**
+     * 普通用户修改个人信息
+     * @param userVo
+     * @return
+     */
+    @RequestMapping("/profile/save")
+    public Result saveProfile(@RequestBody UserVo userVo) {
+        Integer id = userVo.getId();
+        User user = userService.getById(id);
+
+
+        InsiderInfo insiderInfo = insiderInfoService.getById(user.getRegisterId());
+        insiderInfo.updateInsiderInfo(userVo);
+        insiderInfoService.saveOrUpdate(insiderInfo);
+
+        return Result.ok();
+    }
+
+    /**
      * 密码验证
      * @param userCondition
      * @return
