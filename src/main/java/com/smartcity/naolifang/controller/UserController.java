@@ -231,6 +231,7 @@ public class UserController {
         if (null == user.getCreateTime()) {
             user.setCreateTime(LocalDateTime.now());
         }
+        user.setRegisterId(insiderInfo.getId());
         user.setUpdateTime(LocalDateTime.now());
         userService.saveOrUpdate(user);
 
