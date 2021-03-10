@@ -269,7 +269,7 @@ public class UserController {
 
         // 1. 查询所有数据
         List<User> userList = userService.list(new QueryWrapper<User>()
-                .select("id", "username", "register_id", "create_time", "update_time")
+                .select("id", "username", "register_id", "is_enable", "create_time", "update_time")
                 .like(StringUtils.isNotBlank(username), "username", username)
                 .eq(null != isEnable, "is_enable", isEnable)
                 .eq("is_delete", 0));
