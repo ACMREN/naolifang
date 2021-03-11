@@ -122,10 +122,15 @@ CREATE TABLE `emergency_solution_info` (
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应急预案信息表';
 
-CREATE TABLE `vacation_inf` (
+CREATE TABLE `vacation_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
     name VARCHAR(20) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
     reason VARCHAR(200) DEFAULT NULL COMMENT '请假原因',
-
-)
+    leave_status TINYINT(2) DEFAULT 0 COMMENT '离营状态：0-未离营，1-已离营',
+    cancel_vacation_status TINYINT(2) DEFAULT 0 COMMENT '销假状态：0-未销假，1-已销假',
+    cancel_vacation_time DATETIME DEFAULT NULL COMMENT '销假时间',
+    approver VARCHAR(20) DEFAULT NULL COMMENT '批准人',
+    is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='请假信息表';
