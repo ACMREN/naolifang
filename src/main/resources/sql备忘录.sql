@@ -121,3 +121,11 @@ CREATE TABLE `emergency_solution_info` (
     update_time DATETIME NOT NULL COMMENT '更新时间',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应急预案信息表';
+
+CREATE TABLE `vacation_inf` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    name VARCHAR(20) NOT NULL COMMENT '姓名',
+    gender TINYINT(2) DEFAULT 0 COMMENT '性别',
+    reason VARCHAR(200) DEFAULT NULL COMMENT '请假原因',
+
+)

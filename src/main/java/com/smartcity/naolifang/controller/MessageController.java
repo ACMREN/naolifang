@@ -23,6 +23,8 @@ public class MessageController {
     @Autowired
     private MessagePollingInfoService messagePollingInfoService;
 
+    private static Integer pollingInterval = 0;
+
     /**
      * 保存轮询消息
      * @param messagePollingInfo
@@ -85,22 +87,23 @@ public class MessageController {
     @RequestMapping("/polling/getInterval")
     public Result  getPollingInterval() {
         File file = null;
-        Integer interval = 0;
-        try {
-            file = ResourceUtils.getFile("classpath:application-dev.properties");
-            FileInputStream inputStream = new FileInputStream(file);
-            Properties properties = new Properties();
-            properties.load(inputStream);
+        if (pollingInterval.intValue() == 0) {
+            try {
+                file = ResourceUtils.getFile("classpath:application-dev.properties");
+                FileInputStream inputStream = new FileInputStream(file);
+                Properties properties = new Properties();
+                properties.load(inputStream);
 
-            interval = Integer.valueOf(properties.getProperty("pollingInterval"));
+                pollingInterval = Integer.valueOf(properties.getProperty("pollingInterval"));
 
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+                inputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return Result.ok(interval);
+        return Result.ok(pollingInterval);
     }
 
     /**
@@ -113,6 +116,7 @@ public class MessageController {
         Integer newInterval = messageCondition.getNewInterval();
 
         File file = null;
+        pollingInterval = newInterval;
         try {
             file = ResourceUtils.getFile("classpath:application-dev.properties");
             FileInputStream inputStream = new FileInputStream(file);

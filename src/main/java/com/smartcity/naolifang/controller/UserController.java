@@ -93,32 +93,12 @@ public class UserController {
             return Result.fail(500, "登录失败，信息：输入的账号或密码错误");
         }
 
+        // 2. 组装用户的详细信息
         InsiderInfo insiderInfo = insiderInfoService.getById(user.getRegisterId());
-
         UserVo userVo = new UserVo(user).packageDetailInfo(insiderInfo);
 
-        // 2. 组装用户的角色信息和权限信息
-        List<UserRole> userRoleList = userRoleService.list(new QueryWrapper<UserRole>()
-                .select("role_id")
-                .eq("user_id", user.getId()));
-        if (!CollectionUtils.isEmpty(userRoleList)) {
-            List<Integer> roleIds = userRoleList.stream().map(UserRole::getRoleId).collect(Collectors.toList());
-            List<Role> roles = roleService.getRoleListByUserId(user.getId());
-            userVo.setRoles(roles);
-            if (!CollectionUtils.isEmpty(roleIds)) {
-                List<RolePermission> rolePermissionList = rolePermissionService.list(new QueryWrapper<RolePermission>()
-                        .select("permission_id")
-                        .in("role_id", roleIds));
-                List<Integer> permissionIds = rolePermissionList.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
-                if (!CollectionUtils.isEmpty(permissionIds)) {
-                    List<Permission> permissions = permissionService.list(new QueryWrapper<Permission>()
-                            .select("id", "permission_name", "permission_name_en")
-                            .in("id", permissionIds)
-                            .eq("is_delete", 0));
-                    userVo.setPermissions(permissions);
-                }
-            }
-        }
+        // 3. 组装用户的角色信息和权限信息
+        userService.packageUserRoleAndPermission(userVo);
 
         request.getSession().setAttribute("user", userVo);
 
@@ -135,9 +115,12 @@ public class UserController {
         Integer id = userCondition.getId();
         User user = userService.getById(id);
 
+        // 2. 组装用户的详细信息
         InsiderInfo insiderInfo = insiderInfoService.getById(user.getRegisterId());
-
         UserVo userVo = new UserVo(user).packageDetailInfo(insiderInfo);
+
+        // 3. 组装用户的角色信息和权限信息
+        userService.packageUserRoleAndPermission(userVo);
 
         return Result.ok(userVo);
     }
@@ -151,7 +134,6 @@ public class UserController {
     public Result saveProfile(@RequestBody UserVo userVo) {
         Integer id = userVo.getId();
         User user = userService.getById(id);
-
 
         InsiderInfo insiderInfo = insiderInfoService.getById(user.getRegisterId());
         insiderInfo.updateInsiderInfo(userVo);

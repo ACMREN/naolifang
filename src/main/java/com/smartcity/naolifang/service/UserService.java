@@ -2,6 +2,7 @@ package com.smartcity.naolifang.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.smartcity.naolifang.entity.User;
+import com.smartcity.naolifang.entity.vo.UserVo;
 
 /**
  * <p>
@@ -12,5 +13,7 @@ import com.smartcity.naolifang.entity.User;
  * @since 2021-03-03
  */
 public interface UserService extends IService<User> {
+
+    void packageUserRoleAndPermission(UserVo userVo);
 
 }
