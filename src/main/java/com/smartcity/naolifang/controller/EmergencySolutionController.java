@@ -7,6 +7,7 @@ import com.smartcity.naolifang.entity.AttachmentInfo;
 import com.smartcity.naolifang.entity.EmergencySolutionInfo;
 import com.smartcity.naolifang.entity.searchCondition.EmergencySolutionCondition;
 import com.smartcity.naolifang.entity.vo.EmergencySolutionInfoVo;
+import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.AttachmentInfoService;
 import com.smartcity.naolifang.service.EmergencySolutionInfoService;
@@ -67,6 +68,10 @@ public class EmergencySolutionController {
                 .eq("is_delete", 0)
                 .eq(StringUtils.isNotBlank(title), "title", title)
                 .last("limit " + offset + ", " + pageSize));
+        Integer totalCount = emergencySolutionInfoService.count(new QueryWrapper<EmergencySolutionInfo>()
+                .eq("is_delete", 0)
+                .eq(StringUtils.isNotBlank(title), "title", title));
+
         List<EmergencySolutionInfoVo> resultList = new ArrayList<>();
         for (EmergencySolutionInfo item : dataList) {
             EmergencySolutionInfoVo data = new EmergencySolutionInfoVo(item);
@@ -86,7 +91,10 @@ public class EmergencySolutionController {
 
             resultList.add(data);
         }
-        return Result.ok(resultList);
+
+        PageListVo pageListVo = new PageListVo(resultList, pageNo, pageSize, totalCount);
+
+        return Result.ok(pageListVo);
     }
 
     /**
