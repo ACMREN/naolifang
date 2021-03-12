@@ -58,6 +58,7 @@ public class MessageController {
         }
         Integer offset = (pageNo - 1) * pageSize;
         List<MessagePollingInfo> resultList = messagePollingInfoService.list(new QueryWrapper<MessagePollingInfo>()
+                .eq("is_delete", 0)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = messagePollingInfoService.count();
 

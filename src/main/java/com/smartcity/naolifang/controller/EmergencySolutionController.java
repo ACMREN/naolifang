@@ -64,6 +64,7 @@ public class EmergencySolutionController {
         String title = emergencySolutionCondition.getTitle();
 
         List<EmergencySolutionInfo> dataList = emergencySolutionInfoService.list(new QueryWrapper<EmergencySolutionInfo>()
+                .eq("is_delete", 0)
                 .eq(StringUtils.isNotBlank(title), "title", title)
                 .last("limit " + offset + ", " + pageSize));
         List<EmergencySolutionInfoVo> resultList = new ArrayList<>();
