@@ -63,6 +63,12 @@ public class DutyInfo implements Serializable {
      */
     private LocalDateTime endTime;
 
+    /**
+     * 是否已经删除：0-否，1-是
+     * @param dutyInfoVo
+     */
+    private Integer isDelete;
+
     public DutyInfo(DutyInfoVo dutyInfoVo) {
         this.id = dutyInfoVo.getId();
         this.name = dutyInfoVo.getName();

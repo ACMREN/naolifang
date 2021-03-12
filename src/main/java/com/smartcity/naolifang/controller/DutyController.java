@@ -51,6 +51,7 @@ public class DutyController {
         }
 
         List<DutyInfo> dutyInfos = dutyInfoService.list(new QueryWrapper<DutyInfo>()
+                .eq("is_delete", 0)
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(position), "position", position)
@@ -58,6 +59,7 @@ public class DutyController {
                 .like(StringUtils.isNotBlank(endTime), "end_time", endTime)
                 .last("limit " + offset + ", " + pageSize));
         dutyInfoService.count(new QueryWrapper<DutyInfo>()
+                .eq("is_delete", 0)
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(position), "position", position)
@@ -77,7 +79,12 @@ public class DutyController {
     @RequestMapping("/duty/remove")
     public Result deleteDuty(@RequestBody DutyCondition dutyCondition) {
         List<Integer> ids = dutyCondition.getIds();
-        dutyInfoService.removeByIds(ids);
+
+        List<DutyInfo> dutyInfos = dutyInfoService.listByIds(ids);
+        for (DutyInfo item : dutyInfos) {
+            item.setIsDelete(1);
+        }
+        dutyInfoService.saveOrUpdateBatch(dutyInfos);
 
         return Result.ok();
     }
