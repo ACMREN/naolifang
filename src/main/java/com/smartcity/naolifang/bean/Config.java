@@ -37,6 +37,11 @@ public class Config {
     @Value("${pdfMappingPath}")
     private String pdfMappingPath;
 
+    @Value("${imageDocPath}")
+    private String imageDocPath;
+    @Value("${imageMappingPath}")
+    private String imageMappingPath;
+
     @Value("${pollingInterval}")
     private String pollingInterval;
 }
