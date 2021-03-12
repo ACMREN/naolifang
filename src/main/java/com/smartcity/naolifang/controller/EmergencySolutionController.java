@@ -66,11 +66,11 @@ public class EmergencySolutionController {
 
         List<EmergencySolutionInfo> dataList = emergencySolutionInfoService.list(new QueryWrapper<EmergencySolutionInfo>()
                 .eq("is_delete", 0)
-                .eq(StringUtils.isNotBlank(title), "title", title)
+                .like(StringUtils.isNotBlank(title), "title", title)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = emergencySolutionInfoService.count(new QueryWrapper<EmergencySolutionInfo>()
                 .eq("is_delete", 0)
-                .eq(StringUtils.isNotBlank(title), "title", title));
+                .like(StringUtils.isNotBlank(title), "title", title));
 
         List<EmergencySolutionInfoVo> resultList = new ArrayList<>();
         for (EmergencySolutionInfo item : dataList) {
