@@ -28,7 +28,9 @@ public class VacationInfoVo {
         this.reason =  vacationInfo.getReason();
         this.leaveStatus = LeaveStatusEnum.getDataByCode(vacationInfo.getLeaveStatus()).getName();
         this.cancelVacationStatus = CancelVacationStatusEnum.getDataByCode(vacationInfo.getCancelVacationStatus()).getName();
-        this.cancelVacationTime = DateTimeUtil.localDateTimeToString(vacationInfo.getCancelVacationTime());
+        if (null != vacationInfo.getCancelVacationTime()) {
+            this.cancelVacationTime = DateTimeUtil.localDateTimeToString(vacationInfo.getCancelVacationTime());
+        }
         this.approver = vacationInfo.getApprover();
     }
 }

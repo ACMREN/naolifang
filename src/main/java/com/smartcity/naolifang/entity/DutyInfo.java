@@ -65,7 +65,6 @@ public class DutyInfo implements Serializable {
 
     /**
      * 是否已经删除：0-否，1-是
-     * @param dutyInfoVo
      */
     private Integer isDelete;
 

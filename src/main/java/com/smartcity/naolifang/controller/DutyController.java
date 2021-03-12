@@ -6,6 +6,7 @@ import com.smartcity.naolifang.entity.DutyInfo;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.searchCondition.DutyCondition;
 import com.smartcity.naolifang.entity.vo.DutyInfoVo;
+import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.DutyInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("duty")
+@RequestMapping("onCallOfficier")
 public class DutyController {
 
     @Autowired
     private DutyInfoService dutyInfoService;
 
-    @RequestMapping("/duty/save")
+    @RequestMapping("/save")
     public Result saveDuty(@RequestBody DutyInfoVo dutyInfoVo) {
         DutyInfo dutyInfo = new DutyInfo(dutyInfoVo);
 
@@ -32,7 +33,7 @@ public class DutyController {
         return Result.ok();
     }
 
-    @RequestMapping("/duty/list")
+    @RequestMapping("/list")
     public Result listDuty(@RequestBody DutyCondition dutyCondition) {
         Integer pageNo = dutyCondition.getPageNo();
         Integer pageSize = dutyCondition.getPageSize();
@@ -55,16 +56,16 @@ public class DutyController {
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(position), "position", position)
-                .like(StringUtils.isNotBlank(startTime), "start_time", startTime)
-                .like(StringUtils.isNotBlank(endTime), "end_time", endTime)
+                .gt(StringUtils.isNotBlank(startTime), "start_time", startTime)
+                .lt(StringUtils.isNotBlank(endTime), "end_time", endTime)
                 .last("limit " + offset + ", " + pageSize));
-        dutyInfoService.count(new QueryWrapper<DutyInfo>()
+        Integer totalCount = dutyInfoService.count(new QueryWrapper<DutyInfo>()
                 .eq("is_delete", 0)
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(position), "position", position)
-                .like(StringUtils.isNotBlank(startTime), "start_time", startTime)
-                .like(StringUtils.isNotBlank(endTime), "end_time", endTime)
+                .gt(StringUtils.isNotBlank(startTime), "start_time", startTime)
+                .lt(StringUtils.isNotBlank(endTime), "end_time", endTime)
                 .last("limit " + offset + ", " + pageSize));
 
         List<DutyInfoVo> resultList = new ArrayList<>();
@@ -73,10 +74,12 @@ public class DutyController {
             resultList.add(data);
         }
 
-        return Result.ok(resultList);
+        PageListVo pageListVo = new PageListVo(resultList, pageNo, pageSize, totalCount);
+
+        return Result.ok(pageListVo);
     }
 
-    @RequestMapping("/duty/remove")
+    @RequestMapping("/remove")
     public Result deleteDuty(@RequestBody DutyCondition dutyCondition) {
         List<Integer> ids = dutyCondition.getIds();
 

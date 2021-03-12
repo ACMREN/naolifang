@@ -44,12 +44,21 @@ public class VacationController {
         }
         Integer offset = (pageNo - 1) * pageSize;
         String name = vacationCondition.getName();
+        Integer genderInt = 0;
+        Integer leaveStatusInt = 0;
+        Integer cancelVacationStatusInt = 0;
         String gender = vacationCondition.getGender();
-        Integer genderInt = GenderEnum.getDataByName(vacationCondition.getGender()).getCode();
+        if (StringUtils.isNotBlank(gender)) {
+            genderInt = GenderEnum.getDataByName(vacationCondition.getGender()).getCode();
+        }
         String leaveStatus = vacationCondition.getLeaveStatus();
-        Integer leaveStatusInt = LeaveStatusEnum.getDataByName(vacationCondition.getLeaveStatus()).getCode();
+        if (StringUtils.isNotBlank(leaveStatus)) {
+            leaveStatusInt = LeaveStatusEnum.getDataByName(vacationCondition.getLeaveStatus()).getCode();
+        }
         String cancelVacationStatus = vacationCondition.getCancelVacationStatus();
-        Integer cancelVacationStatusInt = CancelVacationStatusEnum.getDataByName(vacationCondition.getCancelVacationStatus()).getCode();
+        if (StringUtils.isNotBlank(cancelVacationStatus)) {
+            cancelVacationStatusInt = CancelVacationStatusEnum.getDataByName(vacationCondition.getCancelVacationStatus()).getCode();
+        }
 
         List<VacationInfo> vacationInfos = vacationInfoService.list(new QueryWrapper<VacationInfo>()
                 .eq("is_delete", 0)
