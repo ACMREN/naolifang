@@ -3,6 +3,7 @@ package com.smartcity.naolifang.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.smartcity.naolifang.entity.MessagePollingInfo;
 import com.smartcity.naolifang.entity.searchCondition.MessageCondition;
+import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.MessagePollingInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,11 @@ public class MessageController {
         Integer offset = (pageNo - 1) * pageSize;
         List<MessagePollingInfo> resultList = messagePollingInfoService.list(new QueryWrapper<MessagePollingInfo>()
                 .last("limit " + offset + ", " + pageSize));
+        Integer totalCount = messagePollingInfoService.count();
 
-        return Result.ok(resultList);
+        PageListVo pageListVo = new PageListVo(resultList, pageNo, pageSize, totalCount);
+
+        return Result.ok(pageListVo);
     }
 
     /**
