@@ -17,7 +17,7 @@ public class DeviceCondition {
 
     private List<String> indexCodes = new ArrayList<>();
     private String controlType;
-    private String changeStatus;
+    private Integer changeStatus;
 
     private Integer pageNo;
     private Integer pageSize;

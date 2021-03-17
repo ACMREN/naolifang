@@ -123,12 +123,12 @@ public class DeviceController {
     @RequestMapping("/info/switch")
     public Result forbidDevice(@RequestBody DeviceCondition deviceCondition) {
         List<Integer> ids = deviceCondition.getIds();
-        String changeStatus = deviceCondition.getChangeStatus();
+        Integer changeStatus = deviceCondition.getChangeStatus();
         List<DeviceInfo> deviceInfos = deviceInfoService.listByIds(ids);
         for (DeviceInfo item : deviceInfos) {
-            item.setStatus(StatusEnum.getDataByName(changeStatus).getCode());
+            item.setStatus(changeStatus);
             // 如果是禁用设备，则要计算生命周期
-            if (changeStatus.equals(StatusEnum.FORBID.getName())) {
+            if (changeStatus.intValue() == 3) {
                 LocalDateTime createTime = item.getCreateTime();
                 LocalDateTime now = LocalDateTime.now();
                 Duration duration = Duration.between(createTime, now);
@@ -136,7 +136,7 @@ public class DeviceController {
                 item.setLiveTime(liveTime);
             }
             // 如果是启用设备，则要重新设备上线时间
-            if (changeStatus.equals(StatusEnum.ONLINE.getName())) {
+            if (changeStatus.intValue() == 1) {
                 item.setCreateTime(LocalDateTime.now());
             }
         }
