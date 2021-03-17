@@ -16,7 +16,7 @@ public class DeviceCondition {
     private String createEndTime;
 
     private List<String> indexCodes = new ArrayList<>();
-    private String controlType;
+    private Integer controlType;
     private Integer changeStatus;
 
     private Integer pageNo;

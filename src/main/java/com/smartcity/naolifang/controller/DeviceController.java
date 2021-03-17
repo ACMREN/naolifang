@@ -7,6 +7,7 @@ import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.entity.DeviceInfo;
 import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
+import com.smartcity.naolifang.entity.enumEntity.DoorStatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.entity.searchCondition.DeviceCondition;
 import com.smartcity.naolifang.entity.vo.DeviceInfoVo;
@@ -149,7 +150,7 @@ public class DeviceController {
     @RequestMapping("/control/gate")
     public Result doorControl(@RequestBody DeviceCondition deviceCondition) {
         List<String> indexCodes = deviceCondition.getIndexCodes();
-        String controlType = deviceCondition.getControlType();
+        Integer controlType = deviceCondition.getControlType();
 
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("doorIndexCodes", indexCodes);
@@ -178,7 +179,15 @@ public class DeviceController {
                 String doorIndexCode = data.getString("doorIndexCode");
                 DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>()
                         .eq("index_code", doorIndexCode));
-                deviceInfo.setDoorStatus(Integer.valueOf(controlType));
+                if (controlType.intValue() == 0) {
+                    deviceInfo.setDoorStatus(DoorStatusEnum.OPEN.getCode());
+                }
+                if (controlType.intValue() == 1 || controlType.intValue() == 2) {
+                    deviceInfo.setDoorStatus(DoorStatusEnum.NORMAL.getCode());
+                }
+                if (controlType.intValue() == 3) {
+                    deviceInfo.setDoorStatus(DoorStatusEnum.CLOSE.getCode());
+                }
                 deviceInfoService.saveOrUpdate(deviceInfo);
             }
         }
