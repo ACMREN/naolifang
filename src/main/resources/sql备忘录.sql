@@ -147,7 +147,7 @@ CREATE TABLE `device_info` (
     position VARCHAR(20) DEFAULT NULL COMMENT '位置',
     region TINYINT(2) DEFAULT NULL COMMENT '区域',
     maintain_person VARCHAR(20) DEFAULT NULL COMMENT '维护人员',
-    status TINYINT(2) DEFAULT 0 COMMENT '状态：0-离线，1-在线，2-已禁止，3-未激活',
+    status TINYINT(2) DEFAULT 0 COMMENT '状态：0-离线，1-在线，2-已禁用，3-未激活',
     door_status TINYINT(2) DEFAULT 0 COMMENT '门禁开关状态：0-正常开关，1-常关，2-常闭',
     create_time DATETIME NOT NULL COMMENT '上线时间',
     live_time BIGINT(20) DEFAULT NULL COMMENT '生命周期',

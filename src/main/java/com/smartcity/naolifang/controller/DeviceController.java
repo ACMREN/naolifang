@@ -35,7 +35,7 @@ public class DeviceController {
     @Autowired
     private Config config;
 
-    @RequestMapping("/save")
+    @RequestMapping("/info/save")
     public Result saveDevice(@RequestBody DeviceInfoVo deviceInfoVo) {
         DeviceInfo deviceInfo = new DeviceInfo(deviceInfoVo);
         String indexCode = deviceInfo.getIndexCode();
@@ -55,7 +55,7 @@ public class DeviceController {
         return Result.ok();
     }
 
-    @RequestMapping("/list")
+    @RequestMapping("/info/list")
     public Result listDevice(@RequestBody DeviceCondition deviceCondition) {
         Integer pageNo = deviceCondition.getPageNo();
         Integer pageSize = deviceCondition.getPageSize();
@@ -107,7 +107,7 @@ public class DeviceController {
         return Result.ok(pageListVo);
     }
 
-    @RequestMapping("/remove")
+    @RequestMapping("/info/remove")
     public Result deleteDevice(@RequestBody DeviceCondition deviceCondition) {
         List<Integer> ids = deviceCondition.getIds();
 
@@ -120,7 +120,7 @@ public class DeviceController {
         return Result.ok();
     }
 
-    @RequestMapping("/forbid")
+    @RequestMapping("/info/switch")
     public Result forbidDevice(@RequestBody DeviceCondition deviceCondition) {
         List<Integer> ids = deviceCondition.getIds();
         List<DeviceInfo> deviceInfos = deviceInfoService.listByIds(ids);
@@ -138,7 +138,7 @@ public class DeviceController {
         return Result.ok();
     }
 
-    @RequestMapping("/doorControl")
+    @RequestMapping("/control/gate")
     public Result doorControl(@RequestBody DeviceCondition deviceCondition) {
         List<String> indexCodes = deviceCondition.getIndexCodes();
         String controlType = deviceCondition.getControlType();
