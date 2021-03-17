@@ -145,9 +145,12 @@ CREATE TABLE `device_info` (
     ip VARCHAR(20) NOT NULL COMMENT 'ip地址',
     manufacturer VARCHAR(20) DEFAULT NULL COMMENT '厂商',
     position VARCHAR(20) DEFAULT NULL COMMENT '位置',
+    region TINYINT(2) DEFAULT NULL COMMENT '区域',
     maintain_person VARCHAR(20) DEFAULT NULL COMMENT '维护人员',
-    status TINYINT(2) DEFAULT 0 COMMENT '状态：0-离线，1-在线',
+    status TINYINT(2) DEFAULT 0 COMMENT '状态：0-离线，1-在线，2-已禁止，3-未激活',
+    door_status TINYINT(2) DEFAULT 0 COMMENT '门禁开关状态：0-正常开关，1-常关，2-常闭',
     create_time DATETIME NOT NULL COMMENT '上线时间',
+    live_time BIGINT(20) DEFAULT NULL COMMENT '生命周期',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备信息表';

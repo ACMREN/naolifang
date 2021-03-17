@@ -42,6 +42,19 @@ public class Config {
     @Value("${imageMappingPath}")
     private String imageMappingPath;
 
+    @Value("${hikivision.doorControl}")
+    private String hikivisionDoorControlUrl;
+    @Value("${hikivision.deviceSearch}")
+    private String hikivisionDeviceSearchUrl;
+    @Value("${hikivision.doorStatus}")
+    private String hikivisionDoorStatusUrl;
+    @Value("${hikivision.cameraStatus}")
+    private String hikivisionCameraStatusUrl;
+    @Value("${hikivision.encodeDeviceStatus}")
+    private String hikivisionEncodeDeviceStatusUrl;
+    @Value("${hikivision.readerStatus}")
+    private String hikivisionReaderStatusUrl;
+
     @Value("${pollingInterval}")
     private String pollingInterval;
 }
