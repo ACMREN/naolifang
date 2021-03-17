@@ -54,6 +54,11 @@ public class DutyInfo implements Serializable {
     private String position;
 
     /**
+     * 称谓
+     */
+    private String nickName;
+
+    /**
      * 值班开始时间
      */
     private LocalDateTime startTime;
@@ -74,6 +79,7 @@ public class DutyInfo implements Serializable {
         this.gender = GenderEnum.getDataByName(dutyInfoVo.getGender()).getCode();
         this.groupName = dutyInfoVo.getGroupName();
         this.position = dutyInfoVo.getPosition();
+        this.nickName = dutyInfoVo.getNickName();
         if (StringUtils.isNotBlank(dutyInfoVo.getStartTime())) {
             this.startTime = DateTimeUtil.stringToLocalDateTime(dutyInfoVo.getStartTime());
         }

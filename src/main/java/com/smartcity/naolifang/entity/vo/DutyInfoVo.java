@@ -11,6 +11,7 @@ public class DutyInfoVo {
     private String name;
     private String gender;
     private String position;
+    private String nickName;
     private String groupName;
     private String startTime;
     private String endTime;
@@ -20,6 +21,7 @@ public class DutyInfoVo {
         this.name = dutyInfo.getName();
         this.gender = GenderEnum.getDataByCode(dutyInfo.getGender()).getName();
         this.position = dutyInfo.getPosition();
+        this.nickName = dutyInfo.getNickName();
         this.groupName = dutyInfo.getGroupName();
         this.startTime = DateTimeUtil.localDateTimeToString(dutyInfo.getStartTime());
         this.endTime = DateTimeUtil.localDateTimeToString(dutyInfo.getEndTime());

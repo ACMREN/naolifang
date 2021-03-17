@@ -82,9 +82,11 @@ CREATE TABLE `duty_info` (
     name VARCHAR(20) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
     group_name VARCHAR(20) NOT NULL COMMENT '所属连队',
-    position VARCHAR(20) NOT NULL COMMENT '职位',
+    position VARCHAR(20) DEFAULT NULL COMMENT '职位',
+    nick_name VARCHAR(20) DEFAULT NULL COMMENT '称谓',
     start_time DATETIME NOT NULL COMMENT '值班开始时间',
     end_time DATETIME NOT NULL COMMENT '值班结束时间',
+    is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='值班信息表';
 
@@ -134,3 +136,32 @@ CREATE TABLE `vacation_info` (
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='请假信息表';
+
+CREATE TABLE `device_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    name VARCHAR(20) DEFAULT NULL COMMENT '设备名字',
+    type TINYINT(5) DEFAULT 0 COMMENT '设备类型',
+    index_code VARCHAR(50) NOT NULL COMMENT '设备编号',
+    ip VARCHAR(20) NOT NULL COMMENT 'ip地址',
+    manufacturer VARCHAR(20) DEFAULT NULL COMMENT '厂商',
+    position VARCHAR(20) DEFAULT NULL COMMENT '位置',
+    maintain_person VARCHAR(20) DEFAULT NULL COMMENT '维护人员',
+    status TINYINT(2) DEFAULT 0 COMMENT '状态：0-离线，1-在线',
+    create_time DATETIME NOT NULL COMMENT '上线时间',
+    is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='设备信息表';
+
+CREATE TABLE `alarm_event_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    content VARCHAR(20) NOT NULL COMMENT '告警内容',
+    alarm_type TINYINT(5) NOT NULL COMMENT '告警级别',
+    device_id INT(10) NOT NULL COMMENT '设备id',
+    fix_person VARCHAR(10) DEFAULT NULL COMMENT '维修人员',
+    status TINYINT(2) NOT NULL COMMENT '处理状态',
+    handle_person VARCHAR(10) DEFAULT NULL COMMENT '处理人员',
+    alarm_time DATETIME DEFAULT NULL COMMENT '告警时间',
+    handle_time DATETIME DEFAULT NULL COMMENT '处理时间',
+    is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件告警信息表';
