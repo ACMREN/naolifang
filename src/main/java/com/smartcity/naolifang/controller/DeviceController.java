@@ -48,7 +48,7 @@ public class DeviceController {
             indexCodes.add(indexCode);
             boolean match = deviceInfoService.verifyDevice(indexCodes, typeNameEn);
             if (match) {
-                deviceInfo.setCreateTime(LocalDateTime.now());
+                deviceInfo.setConnectTime(LocalDateTime.now());
                 deviceInfo.setStatus(StatusEnum.ONLINE.getCode());
             } else {
                 deviceInfo.setStatus(StatusEnum.INACTIVE.getCode());
@@ -134,7 +134,7 @@ public class DeviceController {
             item.setStatus(changeStatus);
             // 如果是禁用设备，则要计算生命周期
             if (changeStatus.intValue() == 3) {
-                LocalDateTime createTime = item.getCreateTime();
+                LocalDateTime createTime = item.getConnectTime();
                 LocalDateTime now = LocalDateTime.now();
                 Duration duration = Duration.between(createTime, now);
                 long liveTime = duration.toMillis();
@@ -142,7 +142,7 @@ public class DeviceController {
             }
             // 如果是启用设备，则要重新设备上线时间
             if (changeStatus.intValue() == 1) {
-                item.setCreateTime(LocalDateTime.now());
+                item.setConnectTime(LocalDateTime.now());
             }
         }
 
