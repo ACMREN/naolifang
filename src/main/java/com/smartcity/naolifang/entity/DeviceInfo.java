@@ -107,15 +107,21 @@ public class DeviceInfo implements Serializable {
     public DeviceInfo(DeviceInfoVo deviceInfoVo) {
         this.id = deviceInfoVo.getId();
         this.name = deviceInfoVo.getName();
-        this.type = DeviceTypeEnum.getDataByName(deviceInfoVo.getType()).getCode();
+        this.type = DeviceTypeEnum.getDataByNameEn(deviceInfoVo.getType()).getCode();
         this.indexCode = deviceInfoVo.getIndexCode();
         this.ip = deviceInfoVo.getIp();
         this.manufacturer = deviceInfoVo.getManufacturer();
         this.position = deviceInfoVo.getPosition();
-        this.region = RegionEnum.getDataByName(deviceInfoVo.getRegion()).getCode();
+        this.region = deviceInfoVo.getRegion();
         this.maintainPerson = deviceInfoVo.getMaintainPerson();
-        this.status = StatusEnum.getDataByName(deviceInfoVo.getStatus()).getCode();
-        this.doorStatus = DoorStatusEnum.getDataByName(deviceInfoVo.getDoorStatus()).getCode();
+        if (null != deviceInfoVo.getStatus()) {
+            this.status = deviceInfoVo.getStatus();
+        }
+        if (null != deviceInfoVo.getDoorStatus()) {
+            this.doorStatus = deviceInfoVo.getDoorStatus();
+        } else {
+            this.doorStatus = DoorStatusEnum.NORMAL.getCode();
+        }
         if (StringUtils.isNotBlank(deviceInfoVo.getCreateTime())) {
             this.createTime = DateTimeUtil.stringToLocalDateTime(deviceInfoVo.getCreateTime());
         }

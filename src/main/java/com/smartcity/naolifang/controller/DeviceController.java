@@ -39,16 +39,20 @@ public class DeviceController {
     @RequestMapping("/info/save")
     public Result saveDevice(@RequestBody DeviceInfoVo deviceInfoVo) {
         DeviceInfo deviceInfo = new DeviceInfo(deviceInfoVo);
-        String indexCode = deviceInfo.getIndexCode();
-        String typeNameEn = DeviceTypeEnum.getDataByCode(deviceInfo.getType()).getNameEn();
-        List<String> indexCodes = new ArrayList<>();
-        indexCodes.add(indexCode);
-        boolean match = deviceInfoService.verifyDevice(indexCodes, typeNameEn);
-        if (match) {
-            deviceInfo.setCreateTime(LocalDateTime.now());
-            deviceInfo.setStatus(StatusEnum.ONLINE.getCode());
-        } else {
-            deviceInfo.setStatus(StatusEnum.INACTIVE.getCode());
+
+        // 如果是新建的设备，那么要判断设备是否匹配
+        if (null == deviceInfoVo.getStatus()) {
+            String indexCode = deviceInfo.getIndexCode();
+            String typeNameEn = DeviceTypeEnum.getDataByCode(deviceInfo.getType()).getNameEn();
+            List<String> indexCodes = new ArrayList<>();
+            indexCodes.add(indexCode);
+            boolean match = deviceInfoService.verifyDevice(indexCodes, typeNameEn);
+            if (match) {
+                deviceInfo.setCreateTime(LocalDateTime.now());
+                deviceInfo.setStatus(StatusEnum.ONLINE.getCode());
+            } else {
+                deviceInfo.setStatus(StatusEnum.INACTIVE.getCode());
+            }
         }
 
         deviceInfoService.saveOrUpdate(deviceInfo);

@@ -48,4 +48,14 @@ public enum DeviceTypeEnum {
         }
         return null;
     }
+
+    public static DeviceTypeEnum getDataByNameEn(String nameEn) {
+        for (DeviceTypeEnum item : DeviceTypeEnum.values()) {
+            String itemNameEn = item.getNameEn();
+            if (nameEn.equals(itemNameEn)) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

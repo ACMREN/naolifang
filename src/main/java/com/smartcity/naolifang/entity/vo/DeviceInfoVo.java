@@ -17,10 +17,10 @@ public class DeviceInfoVo {
     private String ip;
     private String manufacturer;
     private String position;
-    private String region;
+    private Integer region;
     private String maintainPerson;
-    private String status;
-    private String doorStatus;
+    private Integer status;
+    private Integer doorStatus;
     private String createTime;
     private Long liveTime;
 
@@ -30,15 +30,15 @@ public class DeviceInfoVo {
     public DeviceInfoVo(DeviceInfo deviceInfo) {
         this.id = deviceInfo.getId();
         this.name = deviceInfo.getName();
-        this.type = DeviceTypeEnum.getDataByCode(deviceInfo.getType()).getName();
+        this.type = DeviceTypeEnum.getDataByCode(deviceInfo.getType()).getNameEn();
         this.indexCode = deviceInfo.getIndexCode();
         this.ip = deviceInfo.getIp();
         this.manufacturer = deviceInfo.getManufacturer();
         this.position = deviceInfo.getPosition();
-        this.region = RegionEnum.getDataByCode(deviceInfo.getRegion()).getName();
+        this.region = deviceInfo.getRegion();
         this.maintainPerson = deviceInfo.getMaintainPerson();
-        this.status = StatusEnum.getDataByCode(deviceInfo.getStatus()).getName();
-        this.doorStatus = DoorStatusEnum.getDataByCode(deviceInfo.getDoorStatus()).getName();
+        this.status = deviceInfo.getStatus();
+        this.doorStatus = deviceInfo.getDoorStatus();
         if (null != deviceInfo.getCreateTime()) {
             this.createTime = DateTimeUtil.localDateTimeToString(deviceInfo.getCreateTime());
         }
