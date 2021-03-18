@@ -40,7 +40,7 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
         boolean result = false;
         String dataStr = this.getDeviceByApi(indexCodes, type);
         JSONObject dataJson = JSONObject.parseObject(dataStr);
-        if (dataJson.getJSONObject("data").getString("list") == null) {
+        if (null == dataJson || dataJson.getJSONObject("data").getString("list") == null) {
             return false;
         }
 
