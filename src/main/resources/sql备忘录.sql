@@ -149,7 +149,7 @@ CREATE TABLE `device_info` (
     maintain_person VARCHAR(20) DEFAULT NULL COMMENT '维护人员',
     status TINYINT(2) DEFAULT 0 COMMENT '状态：0-离线，1-在线，2-已禁用，3-未激活',
     door_status TINYINT(2) DEFAULT 0 COMMENT '门禁开关状态：0-正常开关，1-常关，2-常闭',
-    create_time DATETIME NOT NULL COMMENT '上线时间',
+    connect_time DATETIME DEFAULT NULL COMMENT '上线时间',
     live_time BIGINT(20) DEFAULT NULL COMMENT '生命周期',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
@@ -168,3 +168,30 @@ CREATE TABLE `alarm_event_info` (
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件告警信息表';
+
+CREATE TABLE `visitor_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    name VARCHAR(20) NOT NULL COMMENT '访客姓名',
+    id_card VARCHAR(20) NOT NULL COMMENT '身份证号码',
+    phone VARCHAR(20) DEFAULT NULL COMMENT '联系电话',
+    visit_person VARCHAR(20) NOT NULL COMMENT '访问对象',
+    reason VARCHAR(200) DEFAULT NULL COMMENT '访问理由',
+    visit_start_time DATETIME NOT NULL COMMENT '访问开始时间',
+    visit_end_time DATETIME NOT NULL COMMENT '访问结束时间',
+    leave_time DATETIME DEFAULT NULL COMMENT '签离时间',
+    original_place VARCHAR(20) DEFAULT NULL COMMENT '出发地',
+    status TINYINT(2) DEFAULT 0 COMMENT '到访状态',
+    is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='访客信息表';
+
+CREATE TABLE `sign_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    visitor_id INT(10) NOT NULL COMMENT '访客id',
+    temperature VARCHAR(10) DEFAULT NULL COMMENT '体温',
+    health_code VARCHAR(10) DEFAULT NULL COMMENT '健康码颜色',
+    original_place VARCHAR(20) DEFAULT NULL COMMENT '出发地',
+    check_time DATE DEFAULT NULL COMMENT '核酸检测时间',
+    check_hospital VARCHAR(100) DEFAULT NULL COMMENT '检测医院',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='访客签入信息表';

@@ -47,25 +47,6 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
         return result;
     }
 
-    /**
-     * 验证输入参数是否符合获取到的参数
-     * @param deviceJson
-     * @param deviceInfo
-     * @return
-     */
-    private boolean verifyDeviceParam(JSONObject deviceJson, DeviceInfo deviceInfo) {
-        if (!deviceInfo.getName().equals(deviceJson.getString("name"))) {
-            return false;
-        }
-        if (!deviceInfo.getIp().equals(deviceJson.getString("ip"))) {
-            return false;
-        }
-        if (!deviceInfo.getManufacturer().equals(deviceJson.getString("manufacturer"))) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public String getDeviceByApi(List<String> indexCodes, String type) {
         Map<String, Object> paramMap = new HashMap<>();
