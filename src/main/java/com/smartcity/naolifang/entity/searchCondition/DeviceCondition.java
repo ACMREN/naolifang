@@ -9,11 +9,11 @@ import java.util.List;
 public class DeviceCondition {
     private List<Integer> ids = new ArrayList<>();
     private String index;
-    private String position;
-    private String status;
+    private Integer region;
+    private Integer status;
     private String type;
-    private String createStartTime;
-    private String createEndTime;
+    private String connectStartTime;
+    private String connectEndTime;
 
     private List<String> indexCodes = new ArrayList<>();
     private Integer controlType;

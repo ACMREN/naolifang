@@ -67,39 +67,35 @@ public class DeviceController {
         if (null == pageNo || null == pageSize) {
             return Result.fail(500, "获取设备列表信息失败，信息：传入的页码或数据条数为空");
         }
-        Integer statusInt = 0;
         Integer typeInt = 0;
         Integer offset = (pageNo - 1) * pageSize;
         String indexCode = deviceCondition.getIndex();
-        String position = deviceCondition.getPosition();
-        String status = deviceCondition.getStatus();
+        Integer region = deviceCondition.getRegion();
+        Integer status = deviceCondition.getStatus();
         String type = deviceCondition.getType();
-        String createStartTime = deviceCondition.getCreateStartTime();
-        String createEndTime = deviceCondition.getCreateEndTime();
-        if (StringUtils.isNotBlank(status)) {
-            statusInt = StatusEnum.getDataByName(deviceCondition.getStatus()).getCode();
-        }
+        String connectStartTime = deviceCondition.getConnectStartTime();
+        String connectEndTime = deviceCondition.getConnectEndTime();
         if (StringUtils.isNotBlank(type)) {
-            typeInt = DeviceTypeEnum.getDataByName(deviceCondition.getType()).getCode();
+            typeInt = DeviceTypeEnum.getDataByNameEn(deviceCondition.getType()).getCode();
         }
 
         List<DeviceInfo> dataList = deviceInfoService.list(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
                 .eq(StringUtils.isNotBlank(type), "type", typeInt)
-                .eq(StringUtils.isNotBlank(status), "status", statusInt)
+                .eq(null != status, "status", status)
+                .eq(null != region, "region", region)
                 .like(StringUtils.isNotBlank(indexCode), "index_code", indexCode)
-                .like(StringUtils.isNotBlank(position), "position", position)
-                .gt(StringUtils.isNotBlank(createStartTime), "connect_time", createStartTime)
-                .lt(StringUtils.isNotBlank(createEndTime), "connect_time", createEndTime)
+                .gt(StringUtils.isNotBlank(connectStartTime), "connect_time", connectStartTime)
+                .lt(StringUtils.isNotBlank(connectEndTime), "connect_time", connectEndTime)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
                 .eq(StringUtils.isNotBlank(type), "type", typeInt)
-                .eq(StringUtils.isNotBlank(status), "status", statusInt)
+                .eq(null != status, "status", status)
+                .eq(null != region, "region", region)
                 .like(StringUtils.isNotBlank(indexCode), "index_code", indexCode)
-                .like(StringUtils.isNotBlank(position), "position", position)
-                .gt(StringUtils.isNotBlank(createStartTime), "connect_time", createStartTime)
-                .lt(StringUtils.isNotBlank(createEndTime), "connect_time", createEndTime));
+                .gt(StringUtils.isNotBlank(connectStartTime), "connect_time", connectStartTime)
+                .lt(StringUtils.isNotBlank(connectEndTime), "connect_time", connectEndTime));
 
         List<DeviceInfoVo> resultList = new ArrayList<>();
         for (DeviceInfo item : dataList) {
