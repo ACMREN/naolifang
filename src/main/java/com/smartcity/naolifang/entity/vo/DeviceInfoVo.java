@@ -21,7 +21,7 @@ public class DeviceInfoVo {
     private String maintainPerson;
     private Integer status;
     private Integer doorStatus;
-    private String createTime;
+    private String connectTime;
     private Long liveTime;
 
     public DeviceInfoVo() {
@@ -39,8 +39,8 @@ public class DeviceInfoVo {
         this.maintainPerson = deviceInfo.getMaintainPerson();
         this.status = deviceInfo.getStatus();
         this.doorStatus = deviceInfo.getDoorStatus();
-        if (null != deviceInfo.getCreateTime()) {
-            this.createTime = DateTimeUtil.localDateTimeToString(deviceInfo.getCreateTime());
+        if (null != deviceInfo.getConnectTime()) {
+            this.connectTime = DateTimeUtil.localDateTimeToString(deviceInfo.getConnectTime());
         }
         this.liveTime = deviceInfo.getLiveTime();
     }

@@ -88,7 +88,7 @@ public class DeviceInfo implements Serializable {
     /**
      * 上线时间
      */
-    private LocalDateTime createTime;
+    private LocalDateTime connectTime;
 
     /**
      * 生命周期
@@ -122,8 +122,8 @@ public class DeviceInfo implements Serializable {
         } else {
             this.doorStatus = DoorStatusEnum.NORMAL.getCode();
         }
-        if (StringUtils.isNotBlank(deviceInfoVo.getCreateTime())) {
-            this.createTime = DateTimeUtil.stringToLocalDateTime(deviceInfoVo.getCreateTime());
+        if (StringUtils.isNotBlank(deviceInfoVo.getConnectTime())) {
+            this.connectTime = DateTimeUtil.stringToLocalDateTime(deviceInfoVo.getConnectTime());
         }
     }
 }
