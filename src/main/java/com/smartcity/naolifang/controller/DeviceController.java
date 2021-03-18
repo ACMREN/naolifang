@@ -89,8 +89,8 @@ public class DeviceController {
                 .eq(StringUtils.isNotBlank(status), "status", statusInt)
                 .like(StringUtils.isNotBlank(indexCode), "index_code", indexCode)
                 .like(StringUtils.isNotBlank(position), "position", position)
-                .gt(StringUtils.isNotBlank(createStartTime), "create_time", createStartTime)
-                .lt(StringUtils.isNotBlank(createEndTime), "create_time", createEndTime)
+                .gt(StringUtils.isNotBlank(createStartTime), "connect_time", createStartTime)
+                .lt(StringUtils.isNotBlank(createEndTime), "connect_time", createEndTime)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
@@ -98,8 +98,8 @@ public class DeviceController {
                 .eq(StringUtils.isNotBlank(status), "status", statusInt)
                 .like(StringUtils.isNotBlank(indexCode), "index_code", indexCode)
                 .like(StringUtils.isNotBlank(position), "position", position)
-                .gt(StringUtils.isNotBlank(createStartTime), "create_time", createStartTime)
-                .lt(StringUtils.isNotBlank(createEndTime), "create_time", createEndTime));
+                .gt(StringUtils.isNotBlank(createStartTime), "connect_time", createStartTime)
+                .lt(StringUtils.isNotBlank(createEndTime), "connect_time", createEndTime));
 
         List<DeviceInfoVo> resultList = new ArrayList<>();
         for (DeviceInfo item : dataList) {
