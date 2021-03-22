@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.smartcity.naolifang.common.util.DateTimeUtil;
+import com.smartcity.naolifang.entity.vo.SignInfoVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -57,5 +60,13 @@ public class SignInfo implements Serializable {
      */
     private String checkHospital;
 
-
+    public void updateSignInfo(SignInfoVo signInfoVo) {
+        this.id = signInfoVo.getId();
+        this.visitorId = signInfoVo.getVisitorId();
+        this.temperature = signInfoVo.getTemperature();
+        this.healthCode = signInfoVo.getHealthCode();
+        this.originalPlace = signInfoVo.getOriginalPlace();
+        this.checkTime = DateTimeUtil.stringToLocalDate(signInfoVo.getCheckTime());
+        this.checkHospital = signInfoVo.getCheckHospital();
+    }
 }

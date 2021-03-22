@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class VisitCondition {
     private List<Integer> ids = new ArrayList<>();
+    private Integer visitorId;
     private Integer id;
     private String name;
     private String idCard;

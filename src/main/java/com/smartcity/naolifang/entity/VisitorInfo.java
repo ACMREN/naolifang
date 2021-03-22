@@ -33,6 +33,11 @@ public class VisitorInfo implements Serializable {
     private Integer id;
 
     /**
+     * 访客唯一id
+     */
+    private String orderId;
+
+    /**
      * 访客姓名
      */
     private String name;

@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface VisitorInfoService extends IService<VisitorInfo> {
 
+    String appointToHikivision(String visitStartTime, String visitEndTime, String visitorName, String phoneNo);
 }

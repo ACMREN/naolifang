@@ -147,7 +147,7 @@ public class DeviceController {
         return Result.ok();
     }
 
-    @RequestMapping("/control/gate")
+    @RequestMapping("/control/door")
     public Result doorControl(@RequestBody DeviceCondition deviceCondition) {
         List<String> indexCodes = deviceCondition.getIndexCodes();
         Integer controlType = deviceCondition.getControlType();

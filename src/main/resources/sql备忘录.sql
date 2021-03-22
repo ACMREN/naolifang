@@ -171,6 +171,7 @@ CREATE TABLE `alarm_event_info` (
 
 CREATE TABLE `visitor_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    order_id VARCHAR(50) DEFAULT NULL COMMENT '访客唯一id',
     name VARCHAR(20) NOT NULL COMMENT '访客姓名',
     id_card VARCHAR(20) NOT NULL COMMENT '身份证号码',
     phone VARCHAR(20) DEFAULT NULL COMMENT '联系电话',
@@ -181,6 +182,7 @@ CREATE TABLE `visitor_info` (
     leave_time DATETIME DEFAULT NULL COMMENT '签离时间',
     original_place VARCHAR(20) DEFAULT NULL COMMENT '出发地',
     status TINYINT(2) DEFAULT 0 COMMENT '到访状态',
+    image_uri TEXT DEFAULT NULL COMMENT 'base64图片流',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='访客信息表';
