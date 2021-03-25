@@ -157,7 +157,7 @@ public class WarningController {
         return Result.ok();
     }
 
-    @RequestMapping("/device/list")
+    @RequestMapping("/list")
     public Result listDeviceWarning(@RequestBody WarningCondition warningCondition) {
         Integer pageNo = warningCondition.getPageNo();
         Integer pageSize = warningCondition.getPageSize();
@@ -219,7 +219,7 @@ public class WarningController {
         return Result.ok(pageListVo);
     }
 
-    @RequestMapping("/device/remove")
+    @RequestMapping("/remove")
     public Result deleteDeviceWarning(@RequestBody WarningCondition warningCondition) {
         List<Integer> ids = warningCondition.getIds();
 
