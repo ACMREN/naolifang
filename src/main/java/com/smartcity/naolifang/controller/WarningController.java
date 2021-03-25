@@ -233,7 +233,7 @@ public class WarningController {
      * @param alarmEventInfoVo
      * @return
      */
-    @RequestMapping("/handle")
+    @RequestMapping("/save")
     public Result handleWarningInfo(@RequestBody AlarmEventInfoVo alarmEventInfoVo) {
         Integer id = alarmEventInfoVo.getId();
         String handlePerson = alarmEventInfoVo.getHandlePerson();
