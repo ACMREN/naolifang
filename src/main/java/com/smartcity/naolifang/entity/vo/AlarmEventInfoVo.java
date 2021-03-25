@@ -11,10 +11,11 @@ public class AlarmEventInfoVo {
     private Integer warningLevel;
     private String indexCode;
     private String deviceName;
+    private String position;
     private Integer region;
     private Integer deviceType;
     private String alarmTime;
-    private String fixPerson;
+    private String maintainPerson;
     private Integer status;
     private String handlePerson;
     private String handleContent;
@@ -27,7 +28,7 @@ public class AlarmEventInfoVo {
         this.content = alarmEventInfo.getContent();
         this.warningLevel = alarmEventInfo.getAlarmLevel();
         this.alarmTime = DateTimeUtil.localDateTimeToString(alarmEventInfo.getAlarmTime());
-        this.fixPerson = alarmEventInfo.getFixPerson();
+        this.maintainPerson = alarmEventInfo.getFixPerson();
         this.status = alarmEventInfo.getStatus();
         this.handlePerson = alarmEventInfo.getHandlePerson();
         this.handlePerson = alarmEventInfo.getHandleContent();
