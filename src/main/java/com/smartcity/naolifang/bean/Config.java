@@ -56,6 +56,8 @@ public class Config {
     private String hikivisionReaderStatusUrl;
     @Value("${hikivision.appointment}")
     private String hikivisionAppointmentUrl;
+    @Value("${hikivision.playback}")
+    private String hikivisionPlaybackUrl;
 
     @Value("${pollingInterval}")
     private String pollingInterval;

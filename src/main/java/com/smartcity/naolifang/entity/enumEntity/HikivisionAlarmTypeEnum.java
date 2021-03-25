@@ -1,6 +1,6 @@
 package com.smartcity.naolifang.entity.enumEntity;
 
-public enum CameraAlarmTypeEnum {
+public enum HikivisionAlarmTypeEnum {
     MISS_VIDEO("视频丢失",131329),
     KEEP_OUT_VIDEO("视频遮挡",131330),
     MOVE_DETECT("移动侦测",131331),
@@ -50,7 +50,7 @@ public enum CameraAlarmTypeEnum {
     private int code;
     private String name;
 
-    CameraAlarmTypeEnum(String name, int code) {
+    HikivisionAlarmTypeEnum(String name, int code) {
         this.code = code;
         this.name = name;
     }
@@ -61,5 +61,25 @@ public enum CameraAlarmTypeEnum {
 
     public String getName() {
         return name;
+    }
+
+    public static HikivisionAlarmTypeEnum getDataByCode(int code) {
+        for (HikivisionAlarmTypeEnum item : HikivisionAlarmTypeEnum.values()) {
+            int itemCode = item.getCode();
+            if (code == itemCode) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public static HikivisionAlarmTypeEnum getDataByName(String name) {
+        for (HikivisionAlarmTypeEnum item : HikivisionAlarmTypeEnum.values()) {
+            String itemName = item.getName();
+            if (name.equals(itemName)) {
+                return item;
+            }
+        }
+        return null;
     }
 }

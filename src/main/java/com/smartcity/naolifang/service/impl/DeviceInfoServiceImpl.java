@@ -1,11 +1,9 @@
 package com.smartcity.naolifang.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.entity.DeviceInfo;
-import com.smartcity.naolifang.entity.enumEntity.CameraAlarmTypeEnum;
 import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
 import com.smartcity.naolifang.mapper.DeviceInfoMapper;
 import com.smartcity.naolifang.service.AlarmEventInfoService;

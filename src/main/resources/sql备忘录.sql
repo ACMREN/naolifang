@@ -41,7 +41,7 @@ CREATE TABLE `permission` (
 	permission_name VARCHAR(20) NOT NULL COMMENT '权限名称',
 	permission_name_en  VARCHAR(50) NOT NULL COMMENT '权限名称英文',
 	is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
-	remark VARCAHR(20) DEFAULT NULL COMMENT '备注',
+	remark VARCHAR(20) DEFAULT NULL COMMENT '备注',
 	create_time DATETIME NOT NULL COMMENT '创建时间',
 	update_time DATETIME NOT NULL COMMENT '更新时间',
 	PRIMARY KEY(id)
@@ -157,17 +157,29 @@ CREATE TABLE `device_info` (
 
 CREATE TABLE `alarm_event_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    alarm_type TINYINT(2) DEFAULT 0 COMMENT '告警类型：0-设备告警，1-事件告警',
     content VARCHAR(20) NOT NULL COMMENT '告警内容',
-    alarm_type TINYINT(5) NOT NULL COMMENT '告警级别',
+    alarm_level TINYINT(5) NOT NULL COMMENT '告警级别',
     device_id INT(10) NOT NULL COMMENT '设备id',
     fix_person VARCHAR(10) DEFAULT NULL COMMENT '维修人员',
     status TINYINT(2) NOT NULL COMMENT '处理状态',
     handle_person VARCHAR(10) DEFAULT NULL COMMENT '处理人员',
     alarm_time DATETIME DEFAULT NULL COMMENT '告警时间',
     handle_time DATETIME DEFAULT NULL COMMENT '处理时间',
+    handle_content TEXT DEFAULT NULL COMMENT '处理内容',
+    happen_time VARCHAR(30) DEFAULT NULL COMMENT '事件发生时间',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件告警信息表';
+
+CREATE TABLE `alarm_level_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    alarm_level TINYINT(2) DEFAULT 0 COMMENT '告警级别：0-一般。1-严重，2-非常严重',
+    region TINYINT(2) DEFAULT NULL COMMENT '区域：0-防护区，1-监控区，2-限制区',
+    alarm_type TINYINT(2) DEFAULT 0 COMMENT '告警类型：0-设备告警，1-事件告警',
+    malfunction_type BIGINT(20) DEFAULT 0 COMMENT '故障类型：0-离线，其它参照海康',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='告警等级信息表';
 
 CREATE TABLE `visitor_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',

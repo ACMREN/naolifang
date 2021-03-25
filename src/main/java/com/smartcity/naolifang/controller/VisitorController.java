@@ -45,8 +45,8 @@ public class VisitorController {
             visitorInfo = visitorInfoService.getById(id);
         }
         // 调用海康的预约接口
-        String visitStartTime = DateTimeUtil.stringToHivikisionTime(visitorInfoVo.getVisitStartTime());
-        String visitEndTime = DateTimeUtil.stringToHivikisionTime(visitorInfoVo.getVisitEndTime());
+        String visitStartTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitStartTime());
+        String visitEndTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitEndTime());
         String orderId = visitorInfoService.appointToHikivision(visitStartTime, visitEndTime, visitorInfoVo.getName(), visitorInfoVo.getPhone());
         if (StringUtils.isBlank(orderId)) {
             return Result.fail(500, "保存预约信息失败，信息：调用海康预约接口失败");
@@ -146,7 +146,7 @@ public class VisitorController {
                 }
                 if (eventType.equals(HikivisionEventTypeEnum.VISITOR_SIGN_OUT.getCode())) {
                     visitorInfo.setStatus(VisitStatusEnum.SIGN_OUT.getCode());
-                    visitorInfo.setLeaveTime(DateTimeUtil.stringToLocalDateTime(DateTimeUtil.hikivisionTimeToStr(endTime)));
+                    visitorInfo.setLeaveTime(DateTimeUtil.stringToLocalDateTime(DateTimeUtil.iso8601ToString(endTime)));
                     visitorInfoService.saveOrUpdate(visitorInfo);
                 }
             }

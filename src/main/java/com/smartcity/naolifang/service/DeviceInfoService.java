@@ -2,7 +2,6 @@ package com.smartcity.naolifang.service;
 
 import com.smartcity.naolifang.entity.DeviceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.smartcity.naolifang.entity.enumEntity.CameraAlarmTypeEnum;
 
 import java.util.List;
 
