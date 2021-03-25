@@ -31,6 +31,6 @@ public class AlarmEventInfoVo {
         this.maintainPerson = alarmEventInfo.getFixPerson();
         this.status = alarmEventInfo.getStatus();
         this.handlePerson = alarmEventInfo.getHandlePerson();
-        this.handlePerson = alarmEventInfo.getHandleContent();
+        this.handleContent = alarmEventInfo.getHandleContent();
     }
 }
