@@ -30,4 +30,11 @@ public class VideoController {
 
         return Result.ok();
     }
+
+    @RequestMapping("/photo/search")
+    public Result searchEventByPhoto() {
+
+
+        return Result.ok();
+    }
 }
