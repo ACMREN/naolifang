@@ -38,7 +38,7 @@ CREATE TABLE `role_permission` (
 
 CREATE TABLE `permission` (
 	id INT(10) AUTO_INCREMENT COMMENT '自增id',
-	permission_name VARCHAR(20) NOT NULL COMMENT '权限名称',
+	permission_name VARCHAR(50) NOT NULL COMMENT '权限名称',
 	permission_name_en  VARCHAR(50) NOT NULL COMMENT '权限名称英文',
 	is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
 	remark VARCHAR(20) DEFAULT NULL COMMENT '备注',
@@ -51,12 +51,12 @@ CREATE TABLE `insider_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
     name VARCHAR(10) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
-    id_card VARCHAR(20) NOT NULL COMMENT '身份证号码',
+    id_card VARCHAR(20) DEFAULT NULL COMMENT '身份证号码',
     phone VARCHAR(20) NOT NULL COMMENT '手机号码',
     group_name VARCHAR(20) NOT NULL COMMENT '所属连队',
     position VARCHAR(20) NOT NULL COMMENT '职位',
-    superior VARCHAR(20) NOT NULL COMMENT '直属上级',
-    image_uri VARCHAR(100) NOT NULL COMMENT '个人照片',
+    superior VARCHAR(20) DEFAULT NULL COMMENT '直属上级',
+    image_uri VARCHAR(100) DEFAULT NULL COMMENT '个人照片',
     is_account TINYINT(2) DEFAULT 0 COMMENT '是否拥有后台账号：0-否，1-是',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     create_time DATETIME NOT NULL COMMENT '创建时间',
@@ -209,3 +209,11 @@ CREATE TABLE `sign_info` (
     check_hospital VARCHAR(100) DEFAULT NULL COMMENT '检测医院',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='访客签入信息表';
+
+CREATE TABLE `face_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    photo_url VARCHAR(500) NOT NULL COMMENT '人脸图片',
+    name VARCHAR(10) DEFAULT NULL COMMENT '姓名',
+    id_card VARCHAR(20) DEFAULT NULL COMMENT '身份证号码',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='人脸图库信息表';

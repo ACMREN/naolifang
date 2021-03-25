@@ -3,7 +3,10 @@ package com.smartcity.naolifang.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.DateTimeUtil;
+import com.smartcity.naolifang.common.util.HttpUtil;
+import com.smartcity.naolifang.entity.FaceInfo;
 import com.smartcity.naolifang.entity.SignInfo;
 import com.smartcity.naolifang.entity.VisitorInfo;
 import com.smartcity.naolifang.entity.enumEntity.HikivisionEventTypeEnum;
@@ -15,6 +18,7 @@ import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.entity.vo.SignInfoVo;
 import com.smartcity.naolifang.entity.vo.VisitorInfoVo;
+import com.smartcity.naolifang.service.FaceInfoService;
 import com.smartcity.naolifang.service.SignInfoService;
 import com.smartcity.naolifang.service.VisitorInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +26,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/visitor")
@@ -34,6 +43,12 @@ public class VisitorController {
 
     @Autowired
     private SignInfoService signInfoService;
+
+    @Autowired
+    private FaceInfoService faceInfoService;
+
+    @Autowired
+    private Config config;
 
     @RequestMapping("/save")
     public Result saveVisitorInfo(@RequestBody VisitorInfoVo visitorInfoVo) {
@@ -136,6 +151,7 @@ public class VisitorController {
             JSONObject dataJson = item.getData();
             String visitorId  = dataJson.getString("visitorId");
             String endTime = dataJson.getString("endTime");
+            String photoUri = dataJson.getString("photoUrl");
 
             VisitorInfo visitorInfo = visitorInfoService.getOne(new QueryWrapper<VisitorInfo>().eq("order_id", visitorId));
             if (null != visitorInfo) {
@@ -148,6 +164,38 @@ public class VisitorController {
                     visitorInfo.setStatus(VisitStatusEnum.SIGN_OUT.getCode());
                     visitorInfo.setLeaveTime(DateTimeUtil.stringToLocalDateTime(DateTimeUtil.iso8601ToString(endTime)));
                     visitorInfoService.saveOrUpdate(visitorInfo);
+                }
+            }
+
+            // 如果包含有图片资源的话，则保存到人脸图库
+            if (StringUtils.isNotBlank(photoUri)) {
+                Map<String, Object> paramMap = new HashMap<>();
+                paramMap.put("url", photoUri);
+
+                try {
+                    URL url = new URL(config.getHikivisionPictureUrl());
+                    URLConnection connection = url.openConnection();
+                    connection.setRequestProperty("accept", "*/*");
+                    connection.setRequestProperty("connection", "Keep-Alive");
+                    connection.setRequestProperty("user-agent",
+                            "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    connection.setDoInput(true);
+                    connection.setDoOutput(true);
+                    PrintWriter out;
+                    JSONObject param = new JSONObject(paramMap);
+                    out = new PrintWriter(connection.getOutputStream());
+                    // 发送请求参数
+                    out.print(param);
+                    // flush输出流的缓冲
+                    out.flush();
+
+                    String photoUrl = connection.getHeaderField("Location");
+                    FaceInfo faceInfo = new FaceInfo();
+                    faceInfo.setPhotoUrl(photoUrl);
+                    faceInfoService.saveOrUpdate(faceInfo);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
