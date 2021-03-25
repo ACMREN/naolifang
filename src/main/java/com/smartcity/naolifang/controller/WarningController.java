@@ -203,7 +203,7 @@ public class WarningController {
             Integer deviceId = item.getDeviceId();
             DeviceInfo deviceInfo = null;
             if (null == deviceInfoMap.get(deviceId)) {
-                deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>().eq("device_id", deviceId));
+                deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>().eq("id", deviceId));
                 deviceInfoMap.put(deviceId, deviceInfo);
             } else {
                 deviceInfo = deviceInfoMap.get(deviceId);
