@@ -186,7 +186,7 @@ public class WarningController {
                 .gt(StringUtils.isNotBlank(alarmStartTime), "alarm_time", alarmStartTime)
                 .lt(StringUtils.isNotBlank(alarmEndTime), "alarm_time", alarmEndTime)
                 .last("limit " + offset + ", " + pageSize));
-        int totalCount = alarmLevelInfoService.count(new QueryWrapper<AlarmLevelInfo>()
+        int totalCount = alarmEventInfoService.count(new QueryWrapper<AlarmEventInfo>()
                 .eq("alarm_type", alarmType)
                 .eq(null != searchDeviceId, "device_id", searchDeviceId)
                 .eq(null != alarmLevel, "alarm_level", alarmLevel)
@@ -210,6 +210,7 @@ public class WarningController {
             }
             data.setIndexCode(deviceInfo.getIndexCode());
             data.setRegion(deviceInfo.getRegion());
+            data.setDeviceType(deviceInfo.getType());
 
             resultList.add(data);
         }

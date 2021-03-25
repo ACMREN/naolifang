@@ -11,6 +11,7 @@ public class AlarmEventInfoVo {
     private Integer warningLevel;
     private String indexCode;
     private Integer region;
+    private Integer deviceType;
     private String alarmTime;
     private String fixPerson;
     private Integer status;
