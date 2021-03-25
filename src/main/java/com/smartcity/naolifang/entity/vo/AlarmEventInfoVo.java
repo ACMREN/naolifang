@@ -8,7 +8,7 @@ import lombok.Data;
 public class AlarmEventInfoVo {
     private Integer id;
     private String content;
-    private Integer warningLevel;
+    private Integer alarmLevel;
     private String indexCode;
     private String deviceName;
     private String position;
@@ -26,7 +26,7 @@ public class AlarmEventInfoVo {
     public AlarmEventInfoVo(AlarmEventInfo alarmEventInfo) {
         this.id = alarmEventInfo.getId();
         this.content = alarmEventInfo.getContent();
-        this.warningLevel = alarmEventInfo.getAlarmLevel();
+        this.alarmLevel = alarmEventInfo.getAlarmLevel();
         this.alarmTime = DateTimeUtil.localDateTimeToString(alarmEventInfo.getAlarmTime());
         this.maintainPerson = alarmEventInfo.getFixPerson();
         this.status = alarmEventInfo.getStatus();
