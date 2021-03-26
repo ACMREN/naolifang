@@ -70,9 +70,12 @@ public class VisitorController {
 
         visitorInfoService.saveOrUpdate(visitorInfo);
 
-        SignInfo signInfo = new SignInfo();
-        signInfo.setVisitorId(visitorInfo.getId());
-        signInfoService.saveOrUpdate(signInfo);
+        SignInfo signInfo;
+        signInfo = signInfoService.getOne(new QueryWrapper<SignInfo>().eq("visitor_id", visitorInfo.getId()));
+        if (null == signInfo) {
+            signInfo.setVisitorId(visitorInfo.getId());
+            signInfoService.saveOrUpdate(signInfo);
+        }
 
         return Result.ok(visitorInfo.getId());
     }
