@@ -59,7 +59,9 @@ public class Config {
     @Value("${hikivision.playback}")
     private String hikivisionPlaybackUrl;
     @Value("${hikivision.pictureDownload}")
-    private String hikivisionPictureUrl;
+    private String hikivisionPictureDownUrl;
+    @Value("${hikivision.photoSearch}")
+    private String hikivisionPhotoSearchUrl;
 
     @Value("${pollingInterval}")
     private String pollingInterval;
