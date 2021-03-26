@@ -129,11 +129,15 @@ public class WarningController {
      */
     private AlarmLevelInfoVo packageAlarmLevelInfoVo(List<AlarmLevelInfo> dataList, Integer alarmType, Integer alarmLevel) {
         AlarmLevelInfoVo data = new AlarmLevelInfoVo();
-        Stream<AlarmLevelInfo> alarmLevelInfoStream = dataList.stream()
+        List<Integer> regionList = dataList.stream()
                 .filter(item1 -> item1.getAlarmLevel().intValue() == alarmLevel)
-                .filter(item1 -> item1.getAlarmType().intValue() == alarmType);
-        List<Integer> regionList = alarmLevelInfoStream.map(AlarmLevelInfo::getRegion).collect(Collectors.toList());
-        List<Integer> malfunctionTypeList = alarmLevelInfoStream.map(AlarmLevelInfo::getMalfunctionType).collect(Collectors.toList());
+                .filter(item1 -> item1.getAlarmType().intValue() == alarmType)
+                .map(AlarmLevelInfo::getRegion)
+                .distinct().collect(Collectors.toList());
+        List<Integer> malfunctionTypeList = dataList.stream()
+                .filter(item1 -> item1.getAlarmLevel().intValue() == alarmLevel)
+                .filter(item1 -> item1.getAlarmType().intValue() == alarmType)
+                .map(AlarmLevelInfo::getMalfunctionType).collect(Collectors.toList());
 
         data.setAlarmLevel(alarmLevel);
         data.setAlarmType(alarmType);

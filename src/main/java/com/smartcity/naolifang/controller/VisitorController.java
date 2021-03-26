@@ -173,7 +173,7 @@ public class VisitorController {
                 paramMap.put("url", photoUri);
 
                 try {
-                    URL url = new URL(config.getHikivisionPictureUrl());
+                    URL url = new URL(config.getHikivisionPictureDownUrl());
                     URLConnection connection = url.openConnection();
                     connection.setRequestProperty("accept", "*/*");
                     connection.setRequestProperty("connection", "Keep-Alive");
