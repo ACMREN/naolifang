@@ -60,13 +60,13 @@ public class VisitorController {
             visitorInfo = visitorInfoService.getById(id);
         }
         // 调用海康的预约接口
-        String visitStartTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitStartTime());
-        String visitEndTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitEndTime());
-        String orderId = visitorInfoService.appointToHikivision(visitStartTime, visitEndTime, visitorInfoVo.getName(), visitorInfoVo.getPhone());
-        if (StringUtils.isBlank(orderId)) {
-            return Result.fail(500, "保存预约信息失败，信息：调用海康预约接口失败");
-        }
-        visitorInfo.setOrderId(orderId);
+//        String visitStartTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitStartTime());
+//        String visitEndTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitEndTime());
+//        String orderId = visitorInfoService.appointToHikivision(visitStartTime, visitEndTime, visitorInfoVo.getName(), visitorInfoVo.getPhone());
+//        if (StringUtils.isBlank(orderId)) {
+//            return Result.fail(500, "保存预约信息失败，信息：调用海康预约接口失败");
+//        }
+//        visitorInfo.setOrderId(orderId);
 
         visitorInfoService.saveOrUpdate(visitorInfo);
 
