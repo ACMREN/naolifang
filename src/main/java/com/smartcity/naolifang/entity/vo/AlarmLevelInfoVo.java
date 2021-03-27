@@ -11,5 +11,5 @@ public class AlarmLevelInfoVo {
     private Integer alarmLevel;
     private List<Integer> regions = new ArrayList<>();
     private Integer alarmType;
-    private List<Integer> malfunctionTypes = new ArrayList<>();
+    private List<Long> malfunctionTypes = new ArrayList<>();
 }

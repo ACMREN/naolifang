@@ -9,6 +9,7 @@ import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.entity.AlarmEventInfo;
 import com.smartcity.naolifang.entity.AlarmLevelInfo;
+import com.smartcity.naolifang.entity.AlarmMalfunctionInfo;
 import com.smartcity.naolifang.entity.DeviceInfo;
 import com.smartcity.naolifang.entity.enumEntity.HikivisionAlarmTypeEnum;
 import com.smartcity.naolifang.entity.external.EventInfo;
@@ -21,6 +22,7 @@ import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.AlarmEventInfoService;
 import com.smartcity.naolifang.service.AlarmLevelInfoService;
+import com.smartcity.naolifang.service.AlarmMalfunctionInfoService;
 import com.smartcity.naolifang.service.DeviceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +46,9 @@ public class WarningController {
 
     @Autowired
     private AlarmEventInfoService alarmEventInfoService;
+
+    @Autowired
+    private AlarmMalfunctionInfoService alarmMalfunctionInfoService;
 
     @Autowired
     private Config config;
@@ -72,19 +77,30 @@ public class WarningController {
     @RequestMapping("/level/save")
     public Result saveWarningLevel(@RequestBody AlarmLevelInfoVo alarmLevelInfoVo) {
         List<Integer> regions = alarmLevelInfoVo.getRegions();
-        List<Integer> malfunctionTypes = alarmLevelInfoVo.getMalfunctionTypes();
+        List<Long> malfunctionTypes = alarmLevelInfoVo.getMalfunctionTypes();
         Integer alarmType = alarmLevelInfoVo.getAlarmType();
         Integer alarmLevel = alarmLevelInfoVo.getAlarmLevel();
 
+        // 1. 把数组转为字符串
+        StringBuilder sb = new StringBuilder(20);
         for (Integer region : regions) {
-            for (Integer malfunctionType : malfunctionTypes) {
-                AlarmLevelInfo data = new AlarmLevelInfo();
-                data.setAlarmLevel(alarmLevel);
-                data.setAlarmType(alarmType);
-                data.setRegion(region);
-                data.setMalfunctionType(malfunctionType);
-                alarmLevelInfoService.saveOrUpdate(data);
-            }
+            sb.append(region).append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+
+        // 2. 先插入告警级别数据
+        AlarmLevelInfo data = new AlarmLevelInfo();
+        data.setRegion(sb.toString());
+        data.setAlarmType(alarmType);
+        data.setAlarmLevel(alarmLevel);
+        alarmLevelInfoService.saveOrUpdate(data);
+
+        // 3. 插入告警级别和类型的关系数据
+        for (Long malfunctionType : malfunctionTypes) {
+            AlarmMalfunctionInfo alarmMalfunctionInfo = new AlarmMalfunctionInfo();
+            alarmMalfunctionInfo.setAlarmLevelId(data.getId());
+            alarmMalfunctionInfo.setMalfunctionType(malfunctionType);
+            alarmMalfunctionInfoService.saveOrUpdate(alarmMalfunctionInfo);
         }
 
         return Result.ok();
@@ -101,50 +117,39 @@ public class WarningController {
         List<AlarmLevelInfoVo> eventWarningList = new ArrayList<>();
 
         for (AlarmLevelInfo item : dataList) {
+            AlarmLevelInfoVo data = new AlarmLevelInfoVo();
             Integer alarmType = item.getAlarmType();
-            Integer alarmLevel = item.getAlarmLevel();
+
+            String regionStr = item.getRegion();
+            List<Integer> regions = new ArrayList<>();
+            String[] regionArr = regionStr.split(",");
+            for (String item1 : regionArr) {
+                regions.add(Integer.valueOf(item1));
+            }
+
+            Integer levelId = item.getId();
+            List<AlarmMalfunctionInfo> malfunctionInfos = alarmMalfunctionInfoService.list(new QueryWrapper<AlarmMalfunctionInfo>().eq("alarm_level_id", levelId));
+            List<Long> malfunctionTypes = malfunctionInfos.stream().map(AlarmMalfunctionInfo::getMalfunctionType).collect(Collectors.toList());
+
+            data.setId(item.getId());
+            data.setRegions(regions);
+            data.setAlarmType(alarmType);
+            data.setAlarmLevel(item.getAlarmLevel());
+            data.setMalfunctionTypes(malfunctionTypes);
+
             if (alarmType.intValue() == 0) {
-                AlarmLevelInfoVo data = this.packageAlarmLevelInfoVo(dataList, alarmType, alarmLevel);
                 deviceWarningList.add(data);
             }
             if (alarmType.intValue() == 1) {
-                AlarmLevelInfoVo data = this.packageAlarmLevelInfoVo(dataList, alarmType, alarmLevel);
                 eventWarningList.add(data);
             }
         }
 
-        JSONObject warningData = new JSONObject();
-        warningData.put("deviceWarning", deviceWarningList);
-        warningData.put("eventWarning", eventWarningList);
+        JSONObject resultJson = new JSONObject();
+        resultJson.put("deviceWarningList", deviceWarningList);
+        resultJson.put("eventWarningList", eventWarningList);
 
-        return Result.ok(warningData);
-    }
-
-    /**
-     * 组装告警等级数据VO
-     * @param dataList
-     * @param alarmType
-     * @param alarmLevel
-     * @return
-     */
-    private AlarmLevelInfoVo packageAlarmLevelInfoVo(List<AlarmLevelInfo> dataList, Integer alarmType, Integer alarmLevel) {
-        AlarmLevelInfoVo data = new AlarmLevelInfoVo();
-        List<Integer> regionList = dataList.stream()
-                .filter(item1 -> item1.getAlarmLevel().intValue() == alarmLevel)
-                .filter(item1 -> item1.getAlarmType().intValue() == alarmType)
-                .map(AlarmLevelInfo::getRegion)
-                .distinct().collect(Collectors.toList());
-        List<Integer> malfunctionTypeList = dataList.stream()
-                .filter(item1 -> item1.getAlarmLevel().intValue() == alarmLevel)
-                .filter(item1 -> item1.getAlarmType().intValue() == alarmType)
-                .map(AlarmLevelInfo::getMalfunctionType).collect(Collectors.toList());
-
-        data.setAlarmLevel(alarmLevel);
-        data.setAlarmType(alarmType);
-        data.setRegions(regionList);
-        data.setMalfunctionTypes(malfunctionTypeList);
-
-        return data;
+        return Result.ok(resultJson);
     }
 
     /**
@@ -155,6 +160,10 @@ public class WarningController {
     @RequestMapping("/level/remove")
     public Result deleteWarningLevel(@RequestBody WarningCondition warningCondition) {
         List<Integer> ids = warningCondition.getIds();
+
+        for (Integer id : ids) {
+            alarmMalfunctionInfoService.remove(new QueryWrapper<AlarmMalfunctionInfo>().eq("alarm_level_id", id));
+        }
 
         alarmLevelInfoService.removeByIds(ids);
 
@@ -319,9 +328,23 @@ public class WarningController {
             DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>().eq("index_code", indexCode));
             Integer deviceId = deviceInfo.getId();
             Integer region = deviceInfo.getRegion();
-            AlarmLevelInfo alarmLevelInfo = alarmLevelInfoService.getOne(new QueryWrapper<AlarmLevelInfo>()
-                    .eq("region", region)
-                    .eq("malfunction_type", eventType));
+            List<AlarmMalfunctionInfo> malfunctionInfos = alarmMalfunctionInfoService
+                    .list(new QueryWrapper<AlarmMalfunctionInfo>().eq("malfunction_type", eventType));
+            List<Integer> alarmLevelIds = malfunctionInfos.stream().map(AlarmMalfunctionInfo::getAlarmLevelId).distinct().collect(Collectors.toList());
+            List<AlarmLevelInfo> alarmLevelInfos = alarmLevelInfoService.list(new QueryWrapper<AlarmLevelInfo>()
+                    .like("region", region)
+                    .in("id", alarmLevelIds));
+
+            // 如果有多条重复记录，则取告警级别最高的一条
+            int finalAlarmLevel = -1;
+            if (alarmLevelInfos.size() > 1) {
+                for (AlarmLevelInfo item1 : alarmLevelInfos) {
+                    Integer alarmLevel = item1.getAlarmLevel();
+                    if (alarmLevel > finalAlarmLevel) {
+                        finalAlarmLevel = alarmLevel;
+                    }
+                }
+            }
 
             // 2. 组装告警记录数据
             alarmEventInfo.setContent(HikivisionAlarmTypeEnum.getDataByCode(eventType).getName());
@@ -329,7 +352,7 @@ public class WarningController {
             alarmEventInfo.setAlarmTime(LocalDateTime.now());
             alarmEventInfo.setHappenTime(happenTime);
             alarmEventInfo.setStatus(0);
-            alarmEventInfo.setAlarmLevel(alarmLevelInfo.getAlarmLevel());
+            alarmEventInfo.setAlarmLevel(finalAlarmLevel);
             alarmEventInfo.setAlarmType(1);
 
             alarmEventInfoService.saveOrUpdate(alarmEventInfo);

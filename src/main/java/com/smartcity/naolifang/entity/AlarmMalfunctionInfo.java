@@ -8,15 +8,15 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 告警等级信息表
+ * 告警等级故障类型表
  * </p>
  *
  * @author karl
- * @since 2021-03-22
+ * @since 2021-03-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class AlarmLevelInfo implements Serializable {
+public class AlarmMalfunctionInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,18 +27,14 @@ public class AlarmLevelInfo implements Serializable {
     private Integer id;
 
     /**
-     * 告警级别：0-一般。1-严重，2-非常严重
+     * 告警等级id
      */
-    private Integer alarmLevel;
+    private Integer alarmLevelId;
 
     /**
-     * 区域：0-防护区，1-监控区，2-限制区
+     * 故障类型：0-离线，其它参照海康
      */
-    private String region;
+    private Long malfunctionType;
 
-    /**
-     * 告警类型：0-设备告警，1-事件告警
-     */
-    private Integer alarmType;
 
 }
