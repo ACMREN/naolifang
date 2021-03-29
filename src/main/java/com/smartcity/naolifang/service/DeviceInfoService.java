@@ -19,6 +19,6 @@ public interface DeviceInfoService extends IService<DeviceInfo> {
 
     String getDeviceByApi(List<String> indexCodes, String type);
 
-    boolean judgeDeviceStatus(List<String> indexCodes, String type);
+    void judgeDeviceStatus(List<String> indexCodes, Integer type);
 
 }

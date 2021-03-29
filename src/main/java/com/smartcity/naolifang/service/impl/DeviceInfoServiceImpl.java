@@ -1,17 +1,22 @@
 package com.smartcity.naolifang.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.entity.DeviceInfo;
 import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
+import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.mapper.DeviceInfoMapper;
 import com.smartcity.naolifang.service.AlarmEventInfoService;
 import com.smartcity.naolifang.service.DeviceInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,29 +61,50 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
     }
 
     @Override
-    public boolean judgeDeviceStatus(List<String> indexCodes, String type) {
+    public void judgeDeviceStatus(List<String> indexCodes, Integer type) {
         String requestUrl = "";
-        if (type.equals(DeviceTypeEnum.ENCODE_DEVICE.getName())) {
+        if (type.equals(DeviceTypeEnum.ENCODE_DEVICE.getCode())) {
             requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionEncodeDeviceStatusUrl();
         }
-        if (type.equals(DeviceTypeEnum.DOOR.getName())) {
+        if (type.equals(DeviceTypeEnum.DOOR.getCode())) {
             requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionDoorStatusUrl();
         }
-        if (type.equals(DeviceTypeEnum.CAMERA.getName())) {
+        if (type.equals(DeviceTypeEnum.CAMERA.getCode())) {
             requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionCameraStatusUrl();
         }
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("indexCodes", indexCodes);
-        paramMap.put("status", 1);
 
         String resultStr = HttpUtil.doPost(requestUrl, paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
-        JSONObject deviceJson = resultJson.getJSONObject("data").getJSONArray("list").getJSONObject(0);
+        JSONArray deviceJsons = resultJson.getJSONObject("data").getJSONArray("list");
+        List<String> includeIndexCodes = new ArrayList<>();
 
-        Integer online = deviceJson.getInteger("online");
-        if (online == 1) {
-            return true;
+        // 1. 更新设备在线离线状态
+        if (!CollectionUtils.isEmpty(deviceJsons)) {
+            for (Object item : deviceJsons) {
+                JSONObject deviceJson = (JSONObject) item;
+                Integer online = deviceJson.getInteger("online");
+                String indexCode = deviceJson.getString("indexCode");
+                DeviceInfo deviceInfo = this.getOne(new QueryWrapper<DeviceInfo>().eq("index_code", indexCode));
+                if (online.intValue() == 1) {
+                    deviceInfo.setStatus(StatusEnum.ONLINE.getCode());
+                    this.saveOrUpdate(deviceInfo);
+                }
+                if (online.intValue() == 0) {
+                    deviceInfo.setStatus(StatusEnum.OFFLINE.getCode());
+                    this.saveOrUpdate(deviceInfo);
+                }
+                includeIndexCodes.add(indexCode);
+            }
         }
-        return false;
+
+        // 2. 不在返回列表的设备则是未激活状态
+        indexCodes.removeAll(includeIndexCodes);
+        for (String item : indexCodes) {
+            DeviceInfo deviceInfo = this.getOne(new QueryWrapper<DeviceInfo>().eq("index_code", item));
+            deviceInfo.setStatus(StatusEnum.INACTIVE.getCode());
+            this.saveOrUpdate(deviceInfo);
+        }
     }
 }
