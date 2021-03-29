@@ -156,7 +156,7 @@ public class DeviceController {
         paramMap.put("doorIndexCodes", indexCodes);
         paramMap.put("controlType", controlType);
 
-        String resultStr = HttpUtil.doPost(config.getHikivisionDoorControlUrl(), paramMap);
+        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionDoorControlUrl(), paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
         List<JSONObject> doorResultList = JSONObject.parseArray(resultJson.getString("data"), JSONObject.class);
 

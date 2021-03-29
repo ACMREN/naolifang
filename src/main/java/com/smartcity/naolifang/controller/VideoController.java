@@ -66,7 +66,7 @@ public class VideoController {
         paramMap.put("endTime", endTime);
         paramMap.put("facePicBinaryData", base64Str);
         paramMap.put("minSimilarity", 50);
-        String resultStr = HttpUtil.doPost(config.getHikivisionPhotoSearchUrl(), paramMap);
+        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionPhotoSearchUrl(), paramMap);
 
         JSONObject resultJson = JSONObject.parseObject(resultStr);
         List<JSONObject> dataList = JSONObject.parseArray(resultJson.getString("list"), JSONObject.class);

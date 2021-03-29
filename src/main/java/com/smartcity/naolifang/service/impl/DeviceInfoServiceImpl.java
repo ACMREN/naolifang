@@ -51,7 +51,7 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
         paramMap.put("resourceType", type);
         paramMap.put("resourceIndexCodes", indexCodes);
 
-        String resultStr = HttpUtil.doPost(config.getHikivisionDeviceSearchUrl(), paramMap);
+        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionDeviceSearchUrl(), paramMap);
         return resultStr;
     }
 
@@ -59,13 +59,13 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
     public boolean judgeDeviceStatus(List<String> indexCodes, String type) {
         String requestUrl = "";
         if (type.equals(DeviceTypeEnum.ENCODE_DEVICE.getName())) {
-            requestUrl = config.getHikivisionEncodeDeviceStatusUrl();
+            requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionEncodeDeviceStatusUrl();
         }
         if (type.equals(DeviceTypeEnum.DOOR.getName())) {
-            requestUrl = config.getHikivisionDoorStatusUrl();
+            requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionDoorStatusUrl();
         }
         if (type.equals(DeviceTypeEnum.CAMERA.getName())) {
-            requestUrl = config.getHikivisionCameraStatusUrl();
+            requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionCameraStatusUrl();
         }
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("indexCodes", indexCodes);

@@ -42,6 +42,9 @@ public class Config {
     @Value("${imageMappingPath}")
     private String imageMappingPath;
 
+    @Value("${hikivision.platform.url}")
+    private String hikivisionPlatformUrl;
+
     @Value("${hikivision.doorControl}")
     private String hikivisionDoorControlUrl;
     @Value("${hikivision.deviceSearch}")

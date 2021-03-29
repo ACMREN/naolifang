@@ -32,6 +32,7 @@ public class VisitorInfoServiceImpl extends ServiceImpl<VisitorInfoMapper, Visit
     @Override
     public String appointToHikivision(String visitStartTime, String visitEndTime, String visitorName, String phoneNo) {
         String receptionistId = UUID.randomUUID().toString();
+        String hikivisionPlatformUrl = config.getHikivisionPlatformUrl();
         String appointmentUrl = config.getHikivisionAppointmentUrl();
         HikivisionVisitorInfo visitorInfo = new HikivisionVisitorInfo();
         visitorInfo.setGender(1);
@@ -44,7 +45,7 @@ public class VisitorInfoServiceImpl extends ServiceImpl<VisitorInfoMapper, Visit
         paramMap.put("visitEndTime", visitEndTime);
         paramMap.put("visitorInfo", visitorInfo);
 
-        String resultStr = HttpUtil.doPost(appointmentUrl, paramMap);
+        String resultStr = HttpUtil.doPost(hikivisionPlatformUrl + appointmentUrl, paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
         int resultCode = resultJson.getInteger("code");
         if (resultCode == 0) {
