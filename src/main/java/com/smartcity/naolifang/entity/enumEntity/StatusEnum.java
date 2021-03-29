@@ -4,7 +4,8 @@ public enum StatusEnum {
     OFFLINE(0, "离线"),
     ONLINE(1, "在线"),
     FORBID(2, "已禁用"),
-    INACTIVE(3, "未激活")
+    INACTIVE(3, "未激活"),
+    ALARM(4, "告警")
     ;
 
 
