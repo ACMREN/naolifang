@@ -11,7 +11,9 @@ import com.smartcity.naolifang.entity.AlarmEventInfo;
 import com.smartcity.naolifang.entity.AlarmLevelInfo;
 import com.smartcity.naolifang.entity.AlarmMalfunctionInfo;
 import com.smartcity.naolifang.entity.DeviceInfo;
+import com.smartcity.naolifang.entity.enumEntity.HandleStatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.HikivisionAlarmTypeEnum;
+import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.entity.external.EventInfo;
 import com.smartcity.naolifang.entity.external.HikivisionBaseEvent;
 import com.smartcity.naolifang.entity.external.ParamInfo;
@@ -256,12 +258,20 @@ public class WarningController {
         String handleContent = alarmEventInfoVo.getHandleContent();
         Integer status = alarmEventInfoVo.getStatus();
 
+        // 1. 更新事件告警的状态
         AlarmEventInfo alarmEventInfo = alarmEventInfoService.getById(id);
         alarmEventInfo.setHandlePerson(handlePerson);
         alarmEventInfo.setHandleContent(handleContent);
         alarmEventInfo.setHandleTime(LocalDateTime.now());
         alarmEventInfo.setStatus(status);
         alarmEventInfoService.saveOrUpdate(alarmEventInfo);
+
+        // 2. 如果是处理完毕，则更新设备的状态
+        if (status.equals(HandleStatusEnum.HANDLED.getCode())) {
+            DeviceInfo deviceInfo = deviceInfoService.getById(alarmEventInfo.getDeviceId());
+            deviceInfo.setStatus(HandleStatusEnum.HANDLED.getCode());
+            deviceInfoService.saveOrUpdate(deviceInfo);
+        }
 
         return Result.ok();
     }
@@ -356,6 +366,9 @@ public class WarningController {
             alarmEventInfo.setAlarmType(1);
 
             alarmEventInfoService.saveOrUpdate(alarmEventInfo);
+
+            deviceInfo.setStatus(StatusEnum.ALARM.getCode());
+            deviceInfoService.saveOrUpdate(deviceInfo);
         }
 
         return Result.ok();
