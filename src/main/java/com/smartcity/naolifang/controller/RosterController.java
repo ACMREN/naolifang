@@ -63,10 +63,10 @@ public class RosterController {
             return Result.fail(500, "获取营内人员信息失败，信息：传入的页数和页码为空");
         }
         String name = rosterCondition.getName();
-        String groupName = rosterCondition.getGroupName();
+        String department = rosterCondition.getDepartment();
         String phone = rosterCondition.getPhone();
         String idCard = rosterCondition.getIdCard();
-        String superior = rosterCondition.getSuperior();
+        String nickName = rosterCondition.getNickName();
         String gender = rosterCondition.getGender();
         Integer genderInt = 0;
         if (StringUtils.isNotBlank(gender)) {
@@ -80,8 +80,8 @@ public class RosterController {
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
-                .like(StringUtils.isNotBlank(groupName), "group_name", groupName)
-                .like(StringUtils.isNotBlank(superior), "superior", superior)
+                .like(StringUtils.isNotBlank(department), "department", department)
+                .like(StringUtils.isNotBlank(nickName), "nick_name", nickName)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
                 .eq("is_account", 0)
@@ -89,8 +89,8 @@ public class RosterController {
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
-                .like(StringUtils.isNotBlank(groupName), "group_name", groupName)
-                .like(StringUtils.isNotBlank(superior), "superior", superior));
+                .like(StringUtils.isNotBlank(department), "department", department)
+                .like(StringUtils.isNotBlank(nickName), "nick_name", nickName));
 
         List<InsiderInfoVo> resultList = new ArrayList<>();
         for (InsiderInfo item : dataList) {
@@ -132,7 +132,7 @@ public class RosterController {
         Integer offset = (pageNo - 1) * pageSize;
         String name = rosterCondition.getName();
         String gender = rosterCondition.getGender();
-        String coupleName = rosterCondition.getCoupleName();
+        String relation = rosterCondition.getRelation();
         String institution = rosterCondition.getInstitution();
         Integer genderInt = 0;
         if (StringUtils.isNotBlank(gender)) {
@@ -142,13 +142,13 @@ public class RosterController {
         List<DependantInfo> dataList = dependantInfoService.list(new QueryWrapper<DependantInfo>()
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
-                .like(StringUtils.isNotBlank(coupleName), "coupleName", coupleName)
+                .like(StringUtils.isNotBlank(relation), "relation", relation)
                 .like(StringUtils.isNotBlank(institution), "institution", institution)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = dependantInfoService.count(new QueryWrapper<DependantInfo>()
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(name), "name", name)
-                .like(StringUtils.isNotBlank(coupleName), "coupleName", coupleName)
+                .like(StringUtils.isNotBlank(relation), "coupleName", relation)
                 .like(StringUtils.isNotBlank(institution), "institution", institution));
 
         List<DependantInfoVo> resultList = new ArrayList<>();

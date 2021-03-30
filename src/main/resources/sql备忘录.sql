@@ -73,6 +73,7 @@ CREATE TABLE `dependant_info` (
     relation VARCHAR(20) NOT NULL COMMENT '关联人员',
     relationship VARCHAR(20) NOT NULL COMMENT '关联关系',
     institution VARCHAR(20) NOT NULL COMMENT '工作单位',
+    phone VARCHAR(20) DEFAULT NULL COMMENT '手机号码',
     address VARCHAR(200) DEFAULT NULL COMMENT '住址',
     image_uri VARCHAR(100) NOT NULL COMMENT '个人照片',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',

@@ -13,11 +13,11 @@ public class RosterCondition {
     private String name;
     private String phone;
     private String gender;
-    private String groupName;
+    private String department;
     private String idCard;
-    private String superior;
+    private String nickName;
 
-    private String coupleName;
+    private String relation;
     private String institution;
 
     private Integer pageNo;
