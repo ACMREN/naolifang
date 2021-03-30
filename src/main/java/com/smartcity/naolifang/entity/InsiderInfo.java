@@ -116,6 +116,7 @@ public class InsiderInfo implements Serializable {
         this.department = insiderInfoVo.getDepartment();
         this.nickName = insiderInfoVo.getNickName();
         this.rankName = insiderInfoVo.getRankName();
+        this.address = insiderInfoVo.getAddress();
         this.imageUri = insiderInfoVo.getImageUri();
         if (StringUtils.isNotBlank(insiderInfoVo.getCreateTime())) {
             this.createTime = DateTimeUtil.stringToLocalDateTime(insiderInfoVo.getCreateTime());

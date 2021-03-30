@@ -131,6 +131,7 @@ public class RosterController {
         }
         Integer offset = (pageNo - 1) * pageSize;
         String name = rosterCondition.getName();
+        String phone = rosterCondition.getPhone();
         String gender = rosterCondition.getGender();
         String relation = rosterCondition.getRelation();
         String institution = rosterCondition.getInstitution();
@@ -141,12 +142,14 @@ public class RosterController {
 
         List<DependantInfo> dataList = dependantInfoService.list(new QueryWrapper<DependantInfo>()
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
+                .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(relation), "relation", relation)
                 .like(StringUtils.isNotBlank(institution), "institution", institution)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = dependantInfoService.count(new QueryWrapper<DependantInfo>()
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
+                .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(relation), "coupleName", relation)
                 .like(StringUtils.isNotBlank(institution), "institution", institution));
