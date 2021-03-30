@@ -294,9 +294,9 @@ public class WarningController {
 
         // 开启推流
         String rtspUrl = resultJson.getString("url");
-        String token = UUID.randomUUID().toString();
-        PushThread.PushRunnable runnable = new PushThread.PushRunnable(rtspUrl, token);
-        PushThread.PushRunnable.es.execute(runnable);
+//        String token = UUID.randomUUID().toString();
+//        PushThread.PushRunnable runnable = new PushThread.PushRunnable(rtspUrl, token);
+//        PushThread.PushRunnable.es.execute(runnable);
 
         return Result.ok(resultJson);
     }
@@ -332,23 +332,23 @@ public class WarningController {
             DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>().eq("index_code", indexCode));
             Integer deviceId = deviceInfo.getId();
             Integer region = deviceInfo.getRegion();
-            List<AlarmMalfunctionInfo> malfunctionInfos = alarmMalfunctionInfoService
-                    .list(new QueryWrapper<AlarmMalfunctionInfo>().eq("malfunction_type", eventType));
-            List<Integer> alarmLevelIds = malfunctionInfos.stream().map(AlarmMalfunctionInfo::getAlarmLevelId).distinct().collect(Collectors.toList());
-            List<AlarmLevelInfo> alarmLevelInfos = alarmLevelInfoService.list(new QueryWrapper<AlarmLevelInfo>()
-                    .like("region", region)
-                    .in("id", alarmLevelIds));
-
-            // 如果有多条重复记录，则取告警级别最高的一条
-            int finalAlarmLevel = -1;
-            if (alarmLevelInfos.size() > 1) {
-                for (AlarmLevelInfo item1 : alarmLevelInfos) {
-                    Integer alarmLevel = item1.getAlarmLevel();
-                    if (alarmLevel > finalAlarmLevel) {
-                        finalAlarmLevel = alarmLevel;
-                    }
-                }
-            }
+//            List<AlarmMalfunctionInfo> malfunctionInfos = alarmMalfunctionInfoService
+//                    .list(new QueryWrapper<AlarmMalfunctionInfo>().eq("malfunction_type", eventType));
+//            List<Integer> alarmLevelIds = malfunctionInfos.stream().map(AlarmMalfunctionInfo::getAlarmLevelId).distinct().collect(Collectors.toList());
+//            List<AlarmLevelInfo> alarmLevelInfos = alarmLevelInfoService.list(new QueryWrapper<AlarmLevelInfo>()
+//                    .like("region", region)
+//                    .in("id", alarmLevelIds));
+//
+//            // 如果有多条重复记录，则取告警级别最高的一条
+//            int finalAlarmLevel = -1;
+//            if (alarmLevelInfos.size() > 1) {
+//                for (AlarmLevelInfo item1 : alarmLevelInfos) {
+//                    Integer alarmLevel = item1.getAlarmLevel();
+//                    if (alarmLevel > finalAlarmLevel) {
+//                        finalAlarmLevel = alarmLevel;
+//                    }
+//                }
+//            }
 
             // 2. 组装告警记录数据
             alarmEventInfo.setContent(HikivisionAlarmTypeEnum.getDataByCode(eventType).getName());
@@ -370,7 +370,7 @@ public class WarningController {
                 alarmEventInfo.setHappenEndTime(happenTime);
             }
             alarmEventInfo.setStatus(0);
-            alarmEventInfo.setAlarmLevel(finalAlarmLevel);
+//            alarmEventInfo.setAlarmLevel(finalAlarmLevel);
             alarmEventInfo.setAlarmType(1);
             alarmEventInfoService.saveOrUpdate(alarmEventInfo);
 
