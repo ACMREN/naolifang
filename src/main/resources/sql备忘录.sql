@@ -164,6 +164,7 @@ CREATE TABLE `alarm_event_info` (
     alarm_type TINYINT(2) DEFAULT 0 COMMENT '告警类型：0-设备告警，1-事件告警',
     content VARCHAR(20) NOT NULL COMMENT '告警内容',
     alarm_level TINYINT(5) NOT NULL COMMENT '告警级别',
+    event_id VARCHAR(30) NOT NULL COMMENT '事件标识',
     device_id INT(10) NOT NULL COMMENT '设备id',
     fix_person VARCHAR(10) DEFAULT NULL COMMENT '维修人员',
     status TINYINT(2) NOT NULL COMMENT '处理状态',
@@ -171,7 +172,8 @@ CREATE TABLE `alarm_event_info` (
     alarm_time DATETIME DEFAULT NULL COMMENT '告警时间',
     handle_time DATETIME DEFAULT NULL COMMENT '处理时间',
     handle_content TEXT DEFAULT NULL COMMENT '处理内容',
-    happen_time VARCHAR(30) DEFAULT NULL COMMENT '事件发生时间',
+    happen_start_time VARCHAR(30) DEFAULT NULL COMMENT '事件发生开始时间',
+    happen_end_time VARCHAR(30) DEFAULT NULL COMMENT '事件发生结束时间',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='事件告警信息表';

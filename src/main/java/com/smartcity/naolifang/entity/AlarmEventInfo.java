@@ -43,6 +43,11 @@ public class AlarmEventInfo implements Serializable {
     private Integer alarmLevel;
 
     /**
+     * 告警事件标识
+     */
+    private String eventId;
+
+    /**
      * 设备id
      */
     private Integer deviceId;
@@ -78,9 +83,14 @@ public class AlarmEventInfo implements Serializable {
     private String handleContent;
 
     /**
-     * 发生时间
+     * 发生开始时间
      */
-    private String happenTime;
+    private String happenStartTime;
+
+    /**
+     * 发生结束时间
+     */
+    private String happenEndTime;
 
     /**
      * 是否已经删除：0-否，1-是

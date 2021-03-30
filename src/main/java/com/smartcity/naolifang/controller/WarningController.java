@@ -284,17 +284,10 @@ public class WarningController {
         DeviceInfo deviceInfo = deviceInfoService.getById(deviceId);
         String indexCode = deviceInfo.getIndexCode();
 
-        String happenTime = alarmEventInfo.getHappenTime();
-        String dateTime = DateTimeUtil.iso8601ToString(happenTime);
-        LocalDateTime localDateTime = DateTimeUtil.stringToLocalDateTime(dateTime);
-        localDateTime.minusSeconds(15);
-        dateTime = DateTimeUtil.localDateTimeToString(localDateTime);
-        String startTime = DateTimeUtil.stringToIso8601(dateTime);
-
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("cameraIndexCode", indexCode);
-        paramMap.put("beginTime", startTime);
-        paramMap.put("endTime", happenTime);
+        paramMap.put("beginTime", alarmEventInfo.getHappenStartTime());
+        paramMap.put("endTime", alarmEventInfo.getHappenEndTime());
         paramMap.put("protocol", "rtsp");
         String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionPlaybackUrl(), paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
@@ -333,6 +326,7 @@ public class WarningController {
             Integer eventType = item.getEventType();
             String indexCode = item.getSrcIndex();
             String happenTime = item.getHappenTime();
+            Integer status = item.getStatus();
 
             // 1. 根据设备信息，找出设备编号和告警级别
             DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>().eq("index_code", indexCode));
@@ -360,11 +354,24 @@ public class WarningController {
             alarmEventInfo.setContent(HikivisionAlarmTypeEnum.getDataByCode(eventType).getName());
             alarmEventInfo.setDeviceId(deviceId);
             alarmEventInfo.setAlarmTime(LocalDateTime.now());
-            alarmEventInfo.setHappenTime(happenTime);
+            if (status == 1 || status == 0) {
+                // 先默认设置前10秒和后5秒分别是回放开始和结束时间
+                String startTime = DateTimeUtil.iso8601ToString(happenTime);
+                LocalDateTime localDateTime = DateTimeUtil.stringToLocalDateTime(startTime);
+                String happenStartTime  = DateTimeUtil.localDateTimeToString(localDateTime.minusSeconds(10));
+                String endTime = DateTimeUtil.localDateTimeToString(localDateTime.plusSeconds(5));
+                String happenEndTime = DateTimeUtil.stringToIso8601(endTime);
+
+                alarmEventInfo.setHappenStartTime(happenStartTime);
+                alarmEventInfo.setHappenEndTime(happenEndTime);
+            }
+            if (status == 2) {
+                // 如果有结束事件，则设置为回放结束时间
+                alarmEventInfo.setHappenEndTime(happenTime);
+            }
             alarmEventInfo.setStatus(0);
             alarmEventInfo.setAlarmLevel(finalAlarmLevel);
             alarmEventInfo.setAlarmType(1);
-
             alarmEventInfoService.saveOrUpdate(alarmEventInfo);
 
             deviceInfo.setStatus(StatusEnum.ALARM.getCode());
