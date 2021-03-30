@@ -263,6 +263,7 @@ public class UserController {
         }
         Map<Integer, User> rosterIdUserMap = userList.stream().collect(Collectors.toMap(User::getRegisterId, Function.identity()));
         List<Integer> rosterIds = userList.stream().map(User::getRegisterId).collect(Collectors.toList());
+
         // 1.1 根据详细数据查询所有的符合条件的用户
         List<InsiderInfo> insiderInfos = insiderInfoService.list(new QueryWrapper<InsiderInfo>()
                 .in("id", rosterIds)
