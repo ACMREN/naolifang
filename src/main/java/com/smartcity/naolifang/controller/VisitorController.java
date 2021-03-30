@@ -26,14 +26,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/visitor")
@@ -142,6 +139,33 @@ public class VisitorController {
         return Result.ok();
     }
 
+    @RequestMapping("/track/find")
+    public Result findTrack(@RequestBody VisitCondition visitCondition) {
+        String startTime = visitCondition.getStartTime();
+        String endTime = visitCondition.getEndTime();
+        Integer visitorId = visitCondition.getVisitorId();
+
+        String isoStartTime = DateTimeUtil.stringToIso8601(startTime);
+        String isoEndTime = DateTimeUtil.stringToIso8601(endTime);
+
+        VisitorInfo visitorInfo = visitorInfoService.getById(visitorId);
+        String imageUri = visitorInfo.getImageUri();
+
+        try {
+            byte[] data = HttpUtil.downImageToByte(imageUri);
+            Base64.Encoder encoder = Base64.getEncoder();
+            String base64Str = encoder.encodeToString(data);
+
+            List<JSONObject> resultList = visitorInfoService.findTrackByPhoto(isoStartTime, isoEndTime, base64Str);
+
+            return Result.ok(resultList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Result.ok(new ArrayList<>());
+    }
+
     /**
      * 提供给海康访客机进行签到签离的接口
      * @param hikivisionBaseEvent
@@ -153,15 +177,49 @@ public class VisitorController {
         for (EventInfo item : eventInfos) {
             Integer eventType = item.getEventType();
             JSONObject dataJson = item.getData();
-            String visitorId  = dataJson.getString("ExtEventCardNo");
+            String visitorId = dataJson.getString("ExtEventCardNo");
             String endTime = dataJson.getString("endTime");
-            String photoUrl = dataJson.getString("ExtEventPictureURL");
+            String photoUri = dataJson.getString("ExtEventPictureURL");
+
+            String photoUrl = "";
+            // 如果包含有图片资源的话，则保存到人脸图库
+            if (StringUtils.isNotBlank(photoUri)) {
+                Map<String, Object> paramMap = new HashMap<>();
+                paramMap.put("url", photoUri);
+
+                try {
+                    URL url = new URL(config.getHikivisionPictureDownUrl());
+                    URLConnection connection = url.openConnection();
+                    connection.setRequestProperty("accept", "*/*");
+                    connection.setRequestProperty("connection", "Keep-Alive");
+                    connection.setRequestProperty("user-agent",
+                            "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    connection.setDoInput(true);
+                    connection.setDoOutput(true);
+                    PrintWriter out;
+                    JSONObject param = new JSONObject(paramMap);
+                    out = new PrintWriter(connection.getOutputStream());
+                    // 发送请求参数
+                    out.print(param);
+                    // flush输出流的缓冲
+                    out.flush();
+
+                    photoUrl = connection.getHeaderField("Location");
+                    FaceInfo faceInfo = new FaceInfo();
+                    faceInfo.setPhotoUrl(photoUrl);
+                    faceInfoService.saveOrUpdate(faceInfo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
             VisitorInfo visitorInfo = visitorInfoService.getOne(new QueryWrapper<VisitorInfo>().eq("order_id", visitorId));
             if (null != visitorInfo) {
                 // 如果是来宾卡通过的话，则修改到访状态为已签入
                 if (eventType.equals(HikivisionEventTypeEnum.GUEST_CARD_PASS.getCode())) {
                     visitorInfo.setStatus(VisitStatusEnum.SIGN_IN.getCode());
+                    visitorInfo.setImageUri(photoUrl);
                     visitorInfoService.saveOrUpdate(visitorInfo);
                 }
                 if (eventType.equals(HikivisionEventTypeEnum.VISITOR_SIGN_OUT.getCode())) {
@@ -170,13 +228,7 @@ public class VisitorController {
                     visitorInfoService.saveOrUpdate(visitorInfo);
                 }
             }
-
-            // 如果包含有图片资源的话，则保存到人脸图库
-            FaceInfo faceInfo = new FaceInfo();
-            faceInfo.setPhotoUrl(photoUrl);
-            faceInfoService.saveOrUpdate(faceInfo);
         }
-
         return Result.ok();
     }
 }

@@ -14,6 +14,8 @@ public class VisitCondition {
     private String idCard;
     private String phone;
     private Integer status;
+    private String startTime;
+    private String endTime;
 
     private Integer pageNo;
     private Integer pageSize;

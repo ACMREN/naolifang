@@ -293,7 +293,7 @@ public class WarningController {
         JSONObject resultJson = JSONObject.parseObject(resultStr);
 
         // 开启推流
-        String rtspUrl = resultJson.getString("url");
+//        String rtspUrl = resultJson.getString("url");
 //        String token = UUID.randomUUID().toString();
 //        PushThread.PushRunnable runnable = new PushThread.PushRunnable(rtspUrl, token);
 //        PushThread.PushRunnable.es.execute(runnable);

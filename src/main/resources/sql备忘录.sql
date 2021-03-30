@@ -87,7 +87,7 @@ CREATE TABLE `duty_info` (
     insider_id INT(20) NOT NULL COMMENT '内部人员id',
     name VARCHAR(20) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
-    group_name VARCHAR(20) NOT NULL COMMENT '所属连队',
+    group_name VARCHAR(20) DEFAULT NULL COMMENT '所属连队',
     position VARCHAR(20) DEFAULT NULL COMMENT '职位',
     nick_name VARCHAR(20) DEFAULT NULL COMMENT '称谓',
     start_time DATETIME NOT NULL COMMENT '值班开始时间',

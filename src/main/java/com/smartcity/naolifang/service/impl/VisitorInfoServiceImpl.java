@@ -2,6 +2,7 @@ package com.smartcity.naolifang.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.smartcity.naolifang.bean.Config;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.entity.VisitorInfo;
 import com.smartcity.naolifang.entity.vo.HikivisionVisitorInfo;
@@ -10,10 +11,9 @@ import com.smartcity.naolifang.service.VisitorInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * <p>
@@ -54,5 +54,34 @@ public class VisitorInfoServiceImpl extends ServiceImpl<VisitorInfoMapper, Visit
         }
 
         return null;
+    }
+
+    @Override
+    public List<JSONObject> findTrackByPhoto(String startTime, String endTime, String base64Str) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("startTime", startTime);
+        paramMap.put("endTime", endTime);
+        paramMap.put("facePicBinaryData", base64Str);
+        paramMap.put("minSimilarity", 80);
+        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionPhotoSearchUrl(), paramMap);
+
+        JSONObject resultJson = JSONObject.parseObject(resultStr);
+        List<JSONObject> dataList = JSONObject.parseArray(resultJson.getString("list"), JSONObject.class);
+        List<JSONObject> resultList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(dataList)) {
+            for (JSONObject item : dataList) {
+                JSONObject data = new JSONObject();
+                String indexCode = item.getString("cameraIndexCode");
+                String captureTime = item.getString("captureTime");
+                String bkgPicUrl = item.getString("bkgPicUrl");
+                String happenTime = DateTimeUtil.iso8601ToString(captureTime);
+                data.put("indexCode", indexCode);
+                data.put("happenTime", happenTime);
+                data.put("bkgPicUrl", bkgPicUrl);
+                resultList.add(data);
+            }
+        }
+
+        return resultList;
     }
 }

@@ -1,7 +1,10 @@
 package com.smartcity.naolifang.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.smartcity.naolifang.entity.VisitorInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +17,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface VisitorInfoService extends IService<VisitorInfo> {
 
     String appointToHikivision(String visitStartTime, String visitEndTime, String visitorName, String phoneNo);
+
+    List<JSONObject> findTrackByPhoto(String startTime, String endTime, String base64Str);
 }

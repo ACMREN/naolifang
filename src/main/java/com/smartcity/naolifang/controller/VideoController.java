@@ -8,6 +8,7 @@ import com.smartcity.naolifang.entity.FaceInfo;
 import com.smartcity.naolifang.entity.searchCondition.VideoCondition;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.FaceInfoService;
+import com.smartcity.naolifang.service.VisitorInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,9 @@ public class VideoController {
 
     @Autowired
     private FaceInfoService faceInfoService;
+
+    @Autowired
+    private VisitorInfoService visitorInfoService;
 
     @Autowired
     private Config config;
@@ -57,31 +61,14 @@ public class VideoController {
         String endTime = videoCondition.getEndTime();
         MultipartFile image = videoCondition.getImage();
 
+        String isoStartTime = DateTimeUtil.stringToIso8601(startTime);
+        String isoEndTime = DateTimeUtil.stringToIso8601(endTime);
+
         byte[] byteData = image.getBytes();
         Base64.Encoder encoder = Base64.getEncoder();
         String base64Str = encoder.encodeToString(byteData);
 
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("startTime", startTime);
-        paramMap.put("endTime", endTime);
-        paramMap.put("facePicBinaryData", base64Str);
-        paramMap.put("minSimilarity", 50);
-        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionPhotoSearchUrl(), paramMap);
-
-        JSONObject resultJson = JSONObject.parseObject(resultStr);
-        List<JSONObject> dataList = JSONObject.parseArray(resultJson.getString("list"), JSONObject.class);
-        List<JSONObject> resultList = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(dataList)) {
-            for (JSONObject item : dataList) {
-                JSONObject data = new JSONObject();
-                String indexCode = item.getString("cameraIndexCode");
-                String captureTime = item.getString("captureTime");
-                String happenTime = DateTimeUtil.iso8601ToString(captureTime);
-                data.put("indexCode", indexCode);
-                data.put("happenTime", happenTime);
-                resultList.add(data);
-            }
-        }
+        List<JSONObject> resultList = visitorInfoService.findTrackByPhoto(isoStartTime, isoEndTime, base64Str);
 
         return Result.ok(resultList);
     }

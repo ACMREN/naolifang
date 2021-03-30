@@ -83,6 +83,11 @@ public class VisitorInfo implements Serializable {
     private String originalPlace;
 
     /**
+     * 个人照片
+     */
+    private String imageUri;
+
+    /**
      * 到访状态
      */
     private Integer status;
