@@ -10,8 +10,10 @@ public class DependantInfoVo {
     private Integer id;
     private String name;
     private String gender;
-    private String coupleName;
+    private String relation;
+    private String relationship;
     private String institution;
+    private String address;
     private String imageUri;
     private Integer isDelete;
     private String createTime;
@@ -24,8 +26,10 @@ public class DependantInfoVo {
         this.id = dependantInfo.getId();
         this.name = dependantInfo.getName();
         this.gender = GenderEnum.getDataByCode(dependantInfo.getGender()).getName();
-        this.coupleName = dependantInfo.getCoupleName();
+        this.relation = dependantInfo.getRelation();
+        this.relationship = dependantInfo.getRelationship();
         this.institution = dependantInfo.getInstitution();
+        this.address = dependantInfo.getAddress();
         this.imageUri = dependantInfo.getImageUri();
         this.createTime = DateTimeUtil.localDateTimeToString(dependantInfo.getCreateTime());
         this.updateTime = DateTimeUtil.localDateTimeToString(dependantInfo.getUpdateTime());

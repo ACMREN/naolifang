@@ -43,14 +43,29 @@ public class DependantInfo implements Serializable {
     private Integer gender;
 
     /**
-     * 配偶姓名
+     * 关联人员
      */
-    private String coupleName;
+    private String relation;
+
+    /**
+     * 关联关系
+     */
+    private String relationship;
 
     /**
      * 工作单位
      */
     private String institution;
+
+    /**
+     * 手机号码
+     */
+    private String phone;
+
+    /**
+     * 住址
+     */
+    private String address;
 
     /**
      * 个人照片
@@ -79,8 +94,10 @@ public class DependantInfo implements Serializable {
         this.id = dependantInfoVo.getId();
         this.name = dependantInfoVo.getName();
         this.gender = GenderEnum.getDataByName(dependantInfoVo.getGender()).getCode();
-        this.coupleName = dependantInfoVo.getCoupleName();
+        this.relation = dependantInfoVo.getRelation();
+        this.relationship = dependantInfoVo.getRelationship();
         this.institution = dependantInfoVo.getInstitution();
+        this.address = dependantInfoVo.getAddress();
         this.imageUri = dependantInfoVo.getImageUri();
         if (StringUtils.isNotBlank(dependantInfoVo.getCreateTime())) {
             this.createTime = DateTimeUtil.stringToLocalDateTime(dependantInfoVo.getCreateTime());
