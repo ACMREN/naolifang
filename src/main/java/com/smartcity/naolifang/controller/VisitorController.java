@@ -153,9 +153,9 @@ public class VisitorController {
         for (EventInfo item : eventInfos) {
             Integer eventType = item.getEventType();
             JSONObject dataJson = item.getData();
-            String visitorId  = dataJson.getString("visitorId");
+            String visitorId  = dataJson.getString("ExtEventCardNo");
             String endTime = dataJson.getString("endTime");
-            String photoUri = dataJson.getString("photoUrl");
+            String photoUrl = dataJson.getString("ExtEventPictureURL");
 
             VisitorInfo visitorInfo = visitorInfoService.getOne(new QueryWrapper<VisitorInfo>().eq("order_id", visitorId));
             if (null != visitorInfo) {
@@ -172,7 +172,9 @@ public class VisitorController {
             }
 
             // 如果包含有图片资源的话，则保存到人脸图库
-
+            FaceInfo faceInfo = new FaceInfo();
+            faceInfo.setPhotoUrl(photoUrl);
+            faceInfoService.saveOrUpdate(faceInfo);
         }
 
         return Result.ok();
