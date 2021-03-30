@@ -58,6 +58,9 @@ public class SceneController {
         List<DutyInfoVo> resultList = new ArrayList<>();
         for (DutyInfo item : dutyList) {
             DutyInfoVo data = new DutyInfoVo(item);
+            Integer insiderId = item.getInsiderId();
+            InsiderInfo insiderInfo = insiderInfoService.getById(insiderId);
+            data.setImageUri(insiderInfo.getImageUri());
             resultList.add(data);
         }
 

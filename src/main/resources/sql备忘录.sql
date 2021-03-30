@@ -84,6 +84,7 @@ CREATE TABLE `dependant_info` (
 
 CREATE TABLE `duty_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    insider_id INT(20) NOT NULL COMMENT '内部人员id',
     name VARCHAR(20) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
     group_name VARCHAR(20) NOT NULL COMMENT '所属连队',

@@ -49,6 +49,11 @@ public class DutyInfo implements Serializable {
     private String groupName;
 
     /**
+     * 内部人员id
+     */
+    private Integer insiderId;
+
+    /**
      * 职位
      */
     private String position;
@@ -78,6 +83,7 @@ public class DutyInfo implements Serializable {
         this.name = dutyInfoVo.getName();
         this.gender = GenderEnum.getDataByName(dutyInfoVo.getGender()).getCode();
         this.groupName = dutyInfoVo.getGroupName();
+        this.insiderId = dutyInfoVo.getInsiderId();
         this.position = dutyInfoVo.getPosition();
         this.nickName = dutyInfoVo.getNickName();
         if (StringUtils.isNotBlank(dutyInfoVo.getStartTime())) {

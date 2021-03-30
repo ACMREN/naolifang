@@ -3,12 +3,14 @@ package com.smartcity.naolifang.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.entity.DutyInfo;
+import com.smartcity.naolifang.entity.InsiderInfo;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.searchCondition.DutyCondition;
 import com.smartcity.naolifang.entity.vo.DutyInfoVo;
 import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.DutyInfoService;
+import com.smartcity.naolifang.service.InsiderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,9 @@ public class DutyController {
 
     @Autowired
     private DutyInfoService dutyInfoService;
+
+    @Autowired
+    private InsiderInfoService insiderInfoService;
 
     @RequestMapping("/save")
     public Result saveDuty(@RequestBody DutyInfoVo dutyInfoVo) {
@@ -71,6 +76,9 @@ public class DutyController {
         List<DutyInfoVo> resultList = new ArrayList<>();
         for (DutyInfo item : dutyInfos) {
             DutyInfoVo data = new DutyInfoVo(item);
+            Integer insiderId = item.getInsiderId();
+            InsiderInfo insiderInfo = insiderInfoService.getById(insiderId);
+            data.setImageUri(insiderInfo.getImageUri());
             resultList.add(data);
         }
 
