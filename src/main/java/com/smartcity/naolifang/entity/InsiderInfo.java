@@ -49,24 +49,34 @@ public class InsiderInfo implements Serializable {
     private String idCard;
 
     /**
+     * 军衔号码
+     */
+    private String rankNum;
+
+    /**
      * 手机号码
      */
     private String phone;
 
     /**
-     * 所属连队
+     * 部门
      */
-    private String groupName;
+    private String department;
 
     /**
-     * 职位
+     * 称谓
      */
-    private String position;
+    private String nickName;
 
     /**
-     * 直属上级
+     * 军衔
      */
-    private String superior;
+    private String rankName;
+
+    /**
+     * 住址
+     */
+    private String address;
 
     /**
      * 个人照片
@@ -101,10 +111,11 @@ public class InsiderInfo implements Serializable {
         this.name = insiderInfoVo.getName();
         this.gender = GenderEnum.getDataByName(insiderInfoVo.getGender()).getCode();
         this.idCard = insiderInfoVo.getIdCard();
+        this.rankNum = insiderInfoVo.getRankNum();
         this.phone = insiderInfoVo.getPhone();
-        this.groupName = insiderInfoVo.getGroupName();
-        this.position = insiderInfoVo.getPosition();
-        this.superior = insiderInfoVo.getSuperior();
+        this.department = insiderInfoVo.getDepartment();
+        this.nickName = insiderInfoVo.getNickName();
+        this.rankName = insiderInfoVo.getRankName();
         this.imageUri = insiderInfoVo.getImageUri();
         if (StringUtils.isNotBlank(insiderInfoVo.getCreateTime())) {
             this.createTime = DateTimeUtil.stringToLocalDateTime(insiderInfoVo.getCreateTime());
@@ -115,10 +126,12 @@ public class InsiderInfo implements Serializable {
         this.name = userVo.getName();
         this.gender = GenderEnum.getDataByName(userVo.getGender()).getCode();
         this.idCard = userVo.getIdCard();
+        this.rankNum = userVo.getRankNum();
         this.phone = userVo.getPhone();
-        this.groupName = userVo.getGroupName();
-        this.position = userVo.getPosition();
-        this.superior = userVo.getSuperior();
+        this.department = userVo.getDepartment();
+        this.nickName = userVo.getNickName();
+        this.rankName = userVo.getRankName();
+        this.address = userVo.getAddress();
         this.isAccount = 1;
     }
 }

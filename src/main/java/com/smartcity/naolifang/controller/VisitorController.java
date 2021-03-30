@@ -159,8 +159,8 @@ public class VisitorController {
 
             VisitorInfo visitorInfo = visitorInfoService.getOne(new QueryWrapper<VisitorInfo>().eq("order_id", visitorId));
             if (null != visitorInfo) {
-                // 如果是登记的话，则修改到访状态为已签入
-                if (eventType.equals(HikivisionEventTypeEnum.VISITOR_SIGN_IN.getCode())) {
+                // 如果是来宾卡通过的话，则修改到访状态为已签入
+                if (eventType.equals(HikivisionEventTypeEnum.GUEST_CARD_PASS.getCode())) {
                     visitorInfo.setStatus(VisitStatusEnum.SIGN_IN.getCode());
                     visitorInfoService.saveOrUpdate(visitorInfo);
                 }
@@ -172,36 +172,7 @@ public class VisitorController {
             }
 
             // 如果包含有图片资源的话，则保存到人脸图库
-            if (StringUtils.isNotBlank(photoUri)) {
-                Map<String, Object> paramMap = new HashMap<>();
-                paramMap.put("url", photoUri);
 
-                try {
-                    URL url = new URL(config.getHikivisionPictureDownUrl());
-                    URLConnection connection = url.openConnection();
-                    connection.setRequestProperty("accept", "*/*");
-                    connection.setRequestProperty("connection", "Keep-Alive");
-                    connection.setRequestProperty("user-agent",
-                            "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                    connection.setDoInput(true);
-                    connection.setDoOutput(true);
-                    PrintWriter out;
-                    JSONObject param = new JSONObject(paramMap);
-                    out = new PrintWriter(connection.getOutputStream());
-                    // 发送请求参数
-                    out.print(param);
-                    // flush输出流的缓冲
-                    out.flush();
-
-                    String photoUrl = connection.getHeaderField("Location");
-                    FaceInfo faceInfo = new FaceInfo();
-                    faceInfo.setPhotoUrl(photoUrl);
-                    faceInfoService.saveOrUpdate(faceInfo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
         }
 
         return Result.ok();

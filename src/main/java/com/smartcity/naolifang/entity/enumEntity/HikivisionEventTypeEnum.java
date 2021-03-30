@@ -2,7 +2,8 @@ package com.smartcity.naolifang.entity.enumEntity;
 
 public enum HikivisionEventTypeEnum {
     VISITOR_SIGN_IN(1392513025, "访客登记"),
-    VISITOR_SIGN_OUT(1392513026, "访客签离")
+    VISITOR_SIGN_OUT(1392513026, "访客签离"),
+    GUEST_CARD_PASS(196868, "来宾卡通过")
     ;
 
     private int code;

@@ -17,10 +17,12 @@ public class UserVo {
     private String name;
     private String gender;
     private String username;
+    private String rankNum;
     private String idCard;
-    private String groupName;
-    private String position;
-    private String superior;
+    private String department;
+    private String nickName;
+    private String rankName;
+    private String address;
     private String phone;
     private String password;
     private Integer isEnable;
@@ -50,10 +52,12 @@ public class UserVo {
     public UserVo packageDetailInfo(InsiderInfo insiderInfo) {
         this.name = insiderInfo.getName();
         this.gender = GenderEnum.getDataByCode(insiderInfo.getGender()).getName();
+        this.rankNum = insiderInfo.getRankNum();
         this.idCard = insiderInfo.getIdCard();
-        this.groupName = insiderInfo.getGroupName();
-        this.position = insiderInfo.getPosition();
-        this.superior = insiderInfo.getSuperior();
+        this.department = insiderInfo.getDepartment();
+        this.nickName = insiderInfo.getNickName();
+        this.rankName = insiderInfo.getRankName();
+        this.address = insiderInfo.getAddress();
         this.phone = insiderInfo.getPhone();
 
         return this;
