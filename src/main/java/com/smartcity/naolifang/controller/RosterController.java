@@ -151,7 +151,7 @@ public class RosterController {
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(name), "name", name)
-                .like(StringUtils.isNotBlank(relation), "coupleName", relation)
+                .like(StringUtils.isNotBlank(relation), "relation", relation)
                 .like(StringUtils.isNotBlank(institution), "institution", institution));
 
         List<DependantInfoVo> resultList = new ArrayList<>();

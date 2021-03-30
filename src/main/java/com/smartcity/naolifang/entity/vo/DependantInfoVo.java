@@ -11,6 +11,7 @@ public class DependantInfoVo {
     private String name;
     private String gender;
     private String relation;
+    private String phone;
     private String relationship;
     private String institution;
     private String address;
@@ -28,6 +29,7 @@ public class DependantInfoVo {
         this.gender = GenderEnum.getDataByCode(dependantInfo.getGender()).getName();
         this.relation = dependantInfo.getRelation();
         this.relationship = dependantInfo.getRelationship();
+        this.phone = dependantInfo.getPhone();
         this.institution = dependantInfo.getInstitution();
         this.address = dependantInfo.getAddress();
         this.imageUri = dependantInfo.getImageUri();

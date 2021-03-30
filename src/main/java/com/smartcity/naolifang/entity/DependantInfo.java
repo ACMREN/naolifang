@@ -95,6 +95,7 @@ public class DependantInfo implements Serializable {
         this.name = dependantInfoVo.getName();
         this.gender = GenderEnum.getDataByName(dependantInfoVo.getGender()).getCode();
         this.relation = dependantInfoVo.getRelation();
+        this.phone = dependantInfoVo.getPhone();
         this.relationship = dependantInfoVo.getRelationship();
         this.institution = dependantInfoVo.getInstitution();
         this.address = dependantInfoVo.getAddress();
