@@ -15,7 +15,7 @@ public class RosterCondition {
     private String gender;
     private String department;
     private String idCard;
-    private String nickName;
+    private String rankNum;
 
     private String relation;
     private String institution;

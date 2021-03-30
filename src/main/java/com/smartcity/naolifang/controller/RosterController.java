@@ -66,7 +66,7 @@ public class RosterController {
         String department = rosterCondition.getDepartment();
         String phone = rosterCondition.getPhone();
         String idCard = rosterCondition.getIdCard();
-        String nickName = rosterCondition.getNickName();
+        String rankNum = rosterCondition.getRankNum();
         String gender = rosterCondition.getGender();
         Integer genderInt = 0;
         if (StringUtils.isNotBlank(gender)) {
@@ -81,7 +81,7 @@ public class RosterController {
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(department), "department", department)
-                .like(StringUtils.isNotBlank(nickName), "nick_name", nickName)
+                .like(StringUtils.isNotBlank(rankNum), "rank_num", rankNum)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
                 .eq("is_account", 0)
@@ -90,7 +90,7 @@ public class RosterController {
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(department), "department", department)
-                .like(StringUtils.isNotBlank(nickName), "nick_name", nickName));
+                .like(StringUtils.isNotBlank(rankNum), "rank_num", rankNum));
 
         List<InsiderInfoVo> resultList = new ArrayList<>();
         for (InsiderInfo item : dataList) {
