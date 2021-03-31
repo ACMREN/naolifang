@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/scene")
@@ -46,6 +47,9 @@ public class SceneController {
 
     @Autowired
     private DutyInfoService dutyInfoService;
+
+    @Autowired
+    private SignInfoService signInfoService;
 
     final String todayStartTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 00:00:00";
     final String todayEndTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 23:59:59";
@@ -100,6 +104,18 @@ public class SceneController {
         // 请假人数
         Integer totalVacation = vacationInfoService.count(new QueryWrapper<VacationInfo>()
                 .eq("cancel_vacation_status", 0));
+        // 体温检测人数
+        List<VisitorInfo> todayVisitor = visitorInfoService.list(new QueryWrapper<VisitorInfo>()
+                .gt("visitor_start_time", todayStartTime)
+                .lt("visitor_end_time", todayEndTime));
+        List<Integer> todayVisitorId = todayVisitor.stream().map(VisitorInfo::getId).collect(Collectors.toList());
+        Integer checkTemperature = signInfoService.count(new QueryWrapper<SignInfo>()
+                .in("visitor_id", todayVisitor)
+                .ne("temperature", null));
+        // 疑似发烧人数
+        Integer fever = signInfoService.count(new QueryWrapper<SignInfo>()
+                .in("visitor_id", todayVisitor)
+                .gt("temperature", 37));
 
         JSONObject resultJson = new JSONObject();
         resultJson.put("totalVisitor", totalVisitor);
@@ -110,6 +126,8 @@ public class SceneController {
         resultJson.put("totalSignOut", totalSignOut);
         resultJson.put("totalReject", totalReject);
         resultJson.put("totalVacation", totalVacation);
+        resultJson.put("checkTemperature", checkTemperature);
+        resultJson.put("fever", fever);
 
         return Result.ok(resultJson);
     }
