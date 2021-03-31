@@ -114,7 +114,7 @@ public class SceneController {
         return Result.ok(resultJson);
     }
 
-    @RequestMapping("/device/statstic")
+    @RequestMapping("/device/statistic")
     public Result statisticDevice() {
         // 离线设备
         Integer offline = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
