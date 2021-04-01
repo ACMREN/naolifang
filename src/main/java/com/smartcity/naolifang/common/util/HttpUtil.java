@@ -1,6 +1,10 @@
 package com.smartcity.naolifang.common.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hikvision.artemis.sdk.ArtemisHttpUtil;
+import com.hikvision.artemis.sdk.config.ArtemisConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -10,10 +14,12 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class HttpUtil {
+    private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 
     public static String doGet(String url, Map<String, Object> paramMap) {
         url += "?";
@@ -138,16 +144,25 @@ public class HttpUtil {
         return data;
     }
 
+    private static final String host = "https://rhev-demo.xicp.net:10443";
+    private static final String appKey = "";
+    private static final String appSecret = "";
+    private static final String ARTEMIS_PATH = "/artemis";
+    private static final String previewURLsApi = ARTEMIS_PATH + "/api/irds/v2/deviceResource/resources";
+    private static Map<String, String> path = new HashMap<String, String>(2) {
+        {
+            put("https://", previewURLsApi);//根据现场环境部署确认是http还是https
+        }
+    };
+    private static final String contentType = "application/json";
+
     public static void main(String[] args) throws ScriptException {
-//        Map<String, Object> paramMap = new HashMap<>();
-//        paramMap.put("pageNo", "1");
-//        paramMap.put("pageSize", "20");
-//        String result = HttpUtil.doPost("http://172.0.0.185:1999/device/getLiveCamList", paramMap);
-
-        ScriptEngineManager manager = new ScriptEngineManager();
-        List<ScriptEngineFactory> engineFactories = manager.getEngineFactories();
-        System.out.println(engineFactories);
-        ScriptEngine engine = manager.getEngineByName("JavaScript");
-
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("pageSize", 20);
+        jsonBody.put("pageNo", 1);
+        jsonBody.put("resourceType", "door");
+        String body = jsonBody.toJSONString();
+        String result = ArtemisHttpUtil.doPostStringArtemis(path, body, null, null, contentType , null);
+        System.out.println(result);
     }
 }

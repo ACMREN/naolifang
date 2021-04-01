@@ -14,6 +14,8 @@ import com.smartcity.naolifang.entity.vo.DeviceInfoVo;
 import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.DeviceInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/iotPlatform")
 public class DeviceController {
+    private Logger logger = LoggerFactory.getLogger(DeviceController.class);
 
     @Autowired
     private DeviceInfoService deviceInfoService;
@@ -73,6 +76,7 @@ public class DeviceController {
 
     @RequestMapping("/info/list")
     public Result listDevice(@RequestBody DeviceCondition deviceCondition) {
+        logger.info("=======开始获取设备列表========");
         Integer pageNo = deviceCondition.getPageNo();
         Integer pageSize = deviceCondition.getPageSize();
         if (null == pageNo || null == pageSize) {
@@ -115,6 +119,7 @@ public class DeviceController {
         }
 
         PageListVo pageListVo = new PageListVo(resultList, pageNo, pageSize, totalCount);
+        logger.info("=======结束获取设备列表========");
 
         return Result.ok(pageListVo);
     }
