@@ -8,10 +8,7 @@ import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
 import com.smartcity.naolifang.entity.enumEntity.HandleStatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
-import com.smartcity.naolifang.entity.vo.AlarmEventInfoVo;
-import com.smartcity.naolifang.entity.vo.AlarmLevelInfoVo;
-import com.smartcity.naolifang.entity.vo.DutyInfoVo;
-import com.smartcity.naolifang.entity.vo.Result;
+import com.smartcity.naolifang.entity.vo.*;
 import com.smartcity.naolifang.service.*;
 import org.bytedeco.opencv.opencv_core.Device;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +50,20 @@ public class SceneController {
 
     final String todayStartTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 00:00:00";
     final String todayEndTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 23:59:59";
+
+    @RequestMapping("/camera/list")
+    public Result listCamera() {
+        List<DeviceInfo> deviceInfos = deviceInfoService.list(new QueryWrapper<DeviceInfo>()
+                .eq("type", DeviceTypeEnum.DOOR.getCode()));
+
+        List<DeviceInfoVo> resultList = new ArrayList<>();
+        for (DeviceInfo item : deviceInfos) {
+            DeviceInfoVo data = new DeviceInfoVo(item);
+            resultList.add(data);
+        }
+
+        return Result.ok(resultList);
+    }
 
     @RequestMapping("/onCall")
     public Result onCall() {
