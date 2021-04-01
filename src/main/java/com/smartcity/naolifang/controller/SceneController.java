@@ -54,7 +54,7 @@ public class SceneController {
     @RequestMapping("/camera/list")
     public Result listCamera() {
         List<DeviceInfo> deviceInfos = deviceInfoService.list(new QueryWrapper<DeviceInfo>()
-                .eq("type", DeviceTypeEnum.DOOR.getCode()));
+                .eq("type", DeviceTypeEnum.CAMERA.getCode()));
 
         List<DeviceInfoVo> resultList = new ArrayList<>();
         for (DeviceInfo item : deviceInfos) {
