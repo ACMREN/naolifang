@@ -17,6 +17,7 @@ public class DeviceInfoVo {
     private String ip;
     private String manufacturer;
     private String position;
+    private String positionInfo;
     private Integer region;
     private String maintainPerson;
     private Integer status;
@@ -35,6 +36,7 @@ public class DeviceInfoVo {
         this.ip = deviceInfo.getIp();
         this.manufacturer = deviceInfo.getManufacturer();
         this.position = deviceInfo.getPosition();
+        this.positionInfo = deviceInfo.getPositionInfo();
         this.region = deviceInfo.getRegion();
         this.maintainPerson = deviceInfo.getMaintainPerson();
         this.status = deviceInfo.getStatus();

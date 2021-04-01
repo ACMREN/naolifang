@@ -66,6 +66,11 @@ public class DeviceInfo implements Serializable {
     private String position;
 
     /**
+     * 位置信息
+     */
+    private String positionInfo;
+
+    /**
      * 区域
      */
     private Integer region;
@@ -112,6 +117,7 @@ public class DeviceInfo implements Serializable {
         this.ip = deviceInfoVo.getIp();
         this.manufacturer = deviceInfoVo.getManufacturer();
         this.position = deviceInfoVo.getPosition();
+        this.positionInfo = deviceInfoVo.getPositionInfo();
         this.region = deviceInfoVo.getRegion();
         this.maintainPerson = deviceInfoVo.getMaintainPerson();
         if (null != deviceInfoVo.getStatus()) {

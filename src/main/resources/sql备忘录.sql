@@ -151,6 +151,7 @@ CREATE TABLE `device_info` (
     ip VARCHAR(20) NOT NULL COMMENT 'ip地址',
     manufacturer VARCHAR(20) DEFAULT NULL COMMENT '厂商',
     position VARCHAR(20) DEFAULT NULL COMMENT '位置',
+    position_info VARCHAR(200) DEFAULT NULL COMMENT '位置信息',
     region TINYINT(2) DEFAULT NULL COMMENT '区域',
     maintain_person VARCHAR(20) DEFAULT NULL COMMENT '维护人员',
     status TINYINT(2) DEFAULT 0 COMMENT '状态：0-离线，1-在线，2-已禁用，3-未激活',
