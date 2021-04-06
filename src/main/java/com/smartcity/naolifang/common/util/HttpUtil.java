@@ -16,10 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class HttpUtil {
     private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
@@ -172,6 +169,8 @@ public class HttpUtil {
             JSONObject jsonBody = new JSONObject(paramMap);
             String body = jsonBody.toJSONString();
             String result = ArtemisHttpUtil.doPostStringArtemis(path, body, null, null, contentType , null);
+            System.out.println(result);
+
             return result;
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -181,9 +180,9 @@ public class HttpUtil {
 
     public static void main(String[] args) throws IOException {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("pageNo", 1);
-        paramMap.put("pageSize", 20);
-        paramMap.put("resourceType", "door");
-        postToHikvisionPlatform("/api/irds/v2/deviceResource/resources", paramMap);
+        List<String> indexCodes = new ArrayList<>();
+        indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
+        paramMap.put("indexCodes", indexCodes);
+        postToHikvisionPlatform("/api/nms/v1/online/camera/get", paramMap);
     }
 }

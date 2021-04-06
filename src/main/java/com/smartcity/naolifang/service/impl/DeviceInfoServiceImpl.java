@@ -64,18 +64,18 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
     public void judgeDeviceStatus(List<String> indexCodes, Integer type) {
         String requestUrl = "";
         if (type.equals(DeviceTypeEnum.ENCODE_DEVICE.getCode())) {
-            requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionEncodeDeviceStatusUrl();
+            requestUrl = config.getHikivisionEncodeDeviceStatusUrl();
         }
         if (type.equals(DeviceTypeEnum.DOOR.getCode())) {
-            requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionDoorStatusUrl();
+            requestUrl = config.getHikivisionDoorStatusUrl();
         }
         if (type.equals(DeviceTypeEnum.CAMERA.getCode())) {
-            requestUrl = config.getHikivisionPlatformUrl() + config.getHikivisionCameraStatusUrl();
+            requestUrl = config.getHikivisionCameraStatusUrl();
         }
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("indexCodes", indexCodes);
 
-        String resultStr = HttpUtil.doPost(requestUrl, paramMap);
+        String resultStr = HttpUtil.postToHikvisionPlatform(requestUrl, paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
         JSONArray deviceJsons = resultJson.getJSONObject("data").getJSONArray("list");
         List<String> includeIndexCodes = new ArrayList<>();

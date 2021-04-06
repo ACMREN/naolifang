@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,16 +52,13 @@ public class VideoController {
 
     /**
      * 查询人员轨迹
-     * @param videoCondition
      * @return
      * @throws IOException
      */
     @RequestMapping("/photo/search")
-    public Result searchEventByPhoto(@RequestBody VideoCondition videoCondition) throws IOException {
-        String startTime = videoCondition.getStartTime();
-        String endTime = videoCondition.getEndTime();
-        MultipartFile image = videoCondition.getImage();
-
+    public Result searchEventByPhoto(@RequestParam("startTime")String startTime,
+                                     @RequestParam("endTime")String endTime,
+                                     @RequestParam("image")MultipartFile image) throws IOException {
         String isoStartTime = DateTimeUtil.stringToIso8601(startTime);
         String isoEndTime = DateTimeUtil.stringToIso8601(endTime);
 

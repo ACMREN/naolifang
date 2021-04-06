@@ -63,7 +63,7 @@ public class VisitorInfoServiceImpl extends ServiceImpl<VisitorInfoMapper, Visit
         paramMap.put("endTime", endTime);
         paramMap.put("facePicBinaryData", base64Str);
         paramMap.put("minSimilarity", 80);
-        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionPhotoSearchUrl(), paramMap);
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionPhotoSearchUrl(), paramMap);
 
         JSONObject resultJson = JSONObject.parseObject(resultStr);
         List<JSONObject> dataList = JSONObject.parseArray(resultJson.getString("list"), JSONObject.class);
