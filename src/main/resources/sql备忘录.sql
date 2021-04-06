@@ -98,7 +98,7 @@ CREATE TABLE `duty_info` (
 
 CREATE TABLE `message_polling_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
-    title VARCHAR(20) NOT NULL COMMENT '标题',
+    title VARCHAR(100) NOT NULL COMMENT '标题',
     content TEXT DEFAULT NULL COMMENT '内容',
     is_polling TINYINT(2) DEFAULT 0 COMMENT '是否轮询：0-否，1-是',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
