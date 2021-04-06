@@ -40,14 +40,13 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
 
     @Override
     public boolean verifyDevice(List<String> indexCodes, String type) {
-        boolean result = false;
         String dataStr = this.getDeviceByApi(indexCodes, type);
         JSONObject dataJson = JSONObject.parseObject(dataStr);
         if (null == dataJson || dataJson.getJSONObject("data").getString("list") == null) {
             return false;
         }
 
-        return result;
+        return true;
     }
 
     @Override
