@@ -150,7 +150,7 @@ CREATE TABLE `device_info` (
     index_code VARCHAR(50) NOT NULL COMMENT '设备编号',
     ip VARCHAR(20) NOT NULL COMMENT 'ip地址',
     manufacturer VARCHAR(20) DEFAULT NULL COMMENT '厂商',
-    position VARCHAR(20) DEFAULT NULL COMMENT '位置',
+    position TEXT DEFAULT NULL COMMENT '位置',
     position_info VARCHAR(200) DEFAULT NULL COMMENT '位置信息',
     region TINYINT(2) DEFAULT NULL COMMENT '区域',
     maintain_person VARCHAR(20) DEFAULT NULL COMMENT '维护人员',
