@@ -56,7 +56,7 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
         paramMap.put("resourceType", type);
         paramMap.put("resourceIndexCodes", indexCodes);
 
-        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionDeviceSearchUrl(), paramMap);
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionDeviceSearchUrl(), paramMap);
         return resultStr;
     }
 

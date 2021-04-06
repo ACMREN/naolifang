@@ -31,7 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/iotPlatform")
 public class DeviceController {
-    private Logger logger = LoggerFactory.getLogger(DeviceController.class);
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private DeviceInfoService deviceInfoService;
@@ -76,7 +76,7 @@ public class DeviceController {
 
     @RequestMapping("/info/list")
     public Result listDevice(@RequestBody DeviceCondition deviceCondition) {
-        logger.info("=======开始获取设备列表========");
+        logger.info("test");
         Integer pageNo = deviceCondition.getPageNo();
         Integer pageSize = deviceCondition.getPageSize();
         if (null == pageNo || null == pageSize) {
@@ -119,7 +119,6 @@ public class DeviceController {
         }
 
         PageListVo pageListVo = new PageListVo(resultList, pageNo, pageSize, totalCount);
-        logger.info("=======结束获取设备列表========");
 
         return Result.ok(pageListVo);
     }

@@ -1,6 +1,7 @@
 package com.smartcity.naolifang.common.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import org.slf4j.Logger;
@@ -14,12 +15,16 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class HttpUtil {
-    private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+
+    private static String hikivisionPlatformUrl = "";
 
     public static String doGet(String url, Map<String, Object> paramMap) {
         url += "?";
@@ -43,7 +48,7 @@ public class HttpUtil {
 
             // 获取结果流并转换成结果
             in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream(), "UTF8"));
+                    connection.getInputStream(), StandardCharsets.UTF_8));
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);
@@ -144,25 +149,41 @@ public class HttpUtil {
         return data;
     }
 
-    private static final String host = "https://rhev-demo.xicp.net:10443";
-    private static final String appKey = "";
-    private static final String appSecret = "";
-    private static final String ARTEMIS_PATH = "/artemis";
-    private static final String previewURLsApi = ARTEMIS_PATH + "/api/irds/v2/deviceResource/resources";
-    private static Map<String, String> path = new HashMap<String, String>(2) {
-        {
-            put("https://", previewURLsApi);//根据现场环境部署确认是http还是https
-        }
-    };
-    private static final String contentType = "application/json";
+    public static String postToHikvisionPlatform(String api, Map<String, Object> paramMap) {
+        try {
+            if (StringUtils.isBlank(hikivisionPlatformUrl)) {
+                Properties props = new Properties();
+                InputStream inputStream= HttpUtil.class.getClassLoader().getResourceAsStream("application-prod.properties");
+                props.load(inputStream);
+                hikivisionPlatformUrl = props.getProperty("hikivision.platform.url");
+            }
+            ArtemisConfig.host = hikivisionPlatformUrl;
+            ArtemisConfig.appKey = "26930432";
+            ArtemisConfig.appSecret = "ZbBuQUbPytNgIktNtBoF";
+            String ARTEMIS_PATH = "/artemis";
+            String previewURLsApi = ARTEMIS_PATH + api;
+            String contentType = "application/json";
+            Map<String, String> path = new HashMap<String, String>(2) {
+                {
+                    put("https://", previewURLsApi);//根据现场环境部署确认是http还是https
+                }
+            };
 
-    public static void main(String[] args) throws ScriptException {
-        JSONObject jsonBody = new JSONObject();
-        jsonBody.put("pageSize", 20);
-        jsonBody.put("pageNo", 1);
-        jsonBody.put("resourceType", "door");
-        String body = jsonBody.toJSONString();
-        String result = ArtemisHttpUtil.doPostStringArtemis(path, body, null, null, contentType , null);
-        System.out.println(result);
+            JSONObject jsonBody = new JSONObject(paramMap);
+            String body = jsonBody.toJSONString();
+            String result = ArtemisHttpUtil.doPostStringArtemis(path, body, null, null, contentType , null);
+            return result;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("pageNo", 1);
+        paramMap.put("pageSize", 20);
+        paramMap.put("resourceType", "door");
+        postToHikvisionPlatform("/api/irds/v2/deviceResource/resources", paramMap);
     }
 }
