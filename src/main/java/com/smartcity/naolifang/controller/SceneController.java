@@ -69,7 +69,9 @@ public class SceneController {
     public Result onCall() {
         List<DutyInfo> dutyList = dutyInfoService.list(new QueryWrapper<DutyInfo>()
                 .gt("start_time", todayStartTime)
-                .lt("start_time", todayEndTime));
+                .lt("start_time", todayEndTime)
+                .or().gt("end_time", todayStartTime)
+                .lt("end_time", todayEndTime));
         List<DutyInfoVo> resultList = new ArrayList<>();
         for (DutyInfo item : dutyList) {
             DutyInfoVo data = new DutyInfoVo(item);
