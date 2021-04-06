@@ -149,21 +149,27 @@ public class SceneController {
     public Result statisticDevice() {
         // 离线设备
         Integer offline = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
                 .eq("status", StatusEnum.OFFLINE));
         // 正常设备
         Integer normal = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
                 .eq("status", StatusEnum.OFFLINE));
         // 告警设备
         Integer alarm = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
                 .eq("status", StatusEnum.ALARM));
 
         // 设备总数
-        Integer total = deviceInfoService.count();;
+        Integer total = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0));;
         // 摄像机
         Integer camera = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
                 .eq("type", DeviceTypeEnum.CAMERA.getCode()));
         // 门禁
         Integer door = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
                 .eq("type", DeviceTypeEnum.DOOR.getCode()));
 
         JSONObject resultJson = new JSONObject();
