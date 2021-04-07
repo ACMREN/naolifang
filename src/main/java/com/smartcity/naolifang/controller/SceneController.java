@@ -68,6 +68,7 @@ public class SceneController {
     @RequestMapping("/onCall")
     public Result onCall() {
         List<DutyInfo> dutyList = dutyInfoService.list(new QueryWrapper<DutyInfo>()
+                .eq("is_delete", 0)
                 .ge("start_time", todayStartTime)
                 .le("start_time", todayEndTime)
                 .or().ge("end_time", todayStartTime)
