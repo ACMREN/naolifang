@@ -24,7 +24,7 @@ public class MessageController {
     @Autowired
     private MessagePollingInfoService messagePollingInfoService;
 
-    private static Integer pollingInterval = 0;
+    public static Integer pollingInterval = 0;
 
     /**
      * 保存轮询消息

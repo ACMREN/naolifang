@@ -48,6 +48,9 @@ public class SceneController {
     @Autowired
     private SignInfoService signInfoService;
 
+    @Autowired
+    private MessagePollingInfoService messagePollingInfoService;
+
     final String todayStartTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 00:00:00";
     final String todayEndTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 23:59:59";
 
@@ -85,12 +88,26 @@ public class SceneController {
         return Result.ok(resultList);
     }
 
+    @RequestMapping("/message")
+    public Result sceneMessageGet() {
+        List<MessagePollingInfo> messageList = messagePollingInfoService.list(new QueryWrapper<MessagePollingInfo>()
+                .eq("is_delete", 0)
+                .eq("is_polling", 1)
+                .orderByDesc("id"));
+
+        JSONObject resultJson = new JSONObject();
+        resultJson.put("messageList", messageList);
+        resultJson.put("interval", MessageController.pollingInterval);
+
+        return Result.ok(resultJson);
+    }
+
     @RequestMapping("/person/statistic")
     public Result statisticVisitor() {
         // 预约访客总数
         Integer totalVisitor = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
-                .gt("visitor_start_time", todayStartTime)
-                .lt("visitor_end_time", todayEndTime));
+                .gt("start_time", todayStartTime)
+                .lt("start_time", todayEndTime));
         // 内部人员总数
         Integer totalInsider = insiderInfoService.count();
         // 登记家属总数
@@ -98,30 +115,30 @@ public class SceneController {
         // 在访人数
         Integer totalVisiting = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
                 .eq("status", VisitStatusEnum.SIGN_IN)
-                .gt("visitor_start_time", todayStartTime)
-                .lt("visitor_end_time", todayEndTime));
+                .gt("start_time", todayStartTime)
+                .lt("start_time", todayEndTime));
         // 超时人数
         Integer totalTimeout = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
                 .eq("status", VisitStatusEnum.TIME_OUT)
-                .gt("visitor_start_time", todayStartTime)
-                .lt("visitor_end_time", todayEndTime));
+                .gt("start_time", todayStartTime)
+                .lt("start_time", todayEndTime));
         // 签离人数
         Integer totalSignOut = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
                 .eq("status", VisitStatusEnum.SIGN_OUT)
-                .gt("visitor_start_time", todayStartTime)
-                .lt("visitor_end_time", todayEndTime));
+                .gt("start_time", todayStartTime)
+                .lt("start_time", todayEndTime));
         // 拒绝入营
         Integer totalReject = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
                 .eq("status", VisitStatusEnum.REJECT)
-                .gt("visitor_start_time", todayStartTime)
-                .lt("visitor_end_time", todayEndTime));
+                .gt("start_time", todayStartTime)
+                .lt("start_time", todayEndTime));
         // 请假人数
         Integer totalVacation = vacationInfoService.count(new QueryWrapper<VacationInfo>()
                 .eq("cancel_vacation_status", 0));
         // 体温检测人数
         List<VisitorInfo> todayVisitor = visitorInfoService.list(new QueryWrapper<VisitorInfo>()
-                .gt("visitor_start_time", todayStartTime)
-                .lt("visitor_end_time", todayEndTime));
+                .gt("start_time", todayStartTime)
+                .lt("start_time", todayEndTime));
         List<Integer> todayVisitorId = todayVisitor.stream().map(VisitorInfo::getId).collect(Collectors.toList());
         Integer checkTemperature = signInfoService.count(new QueryWrapper<SignInfo>()
                 .in("visitor_id", todayVisitor)
