@@ -11,13 +11,19 @@ import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
 import com.smartcity.naolifang.entity.vo.*;
 import com.smartcity.naolifang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 @RestController
@@ -94,6 +100,24 @@ public class SceneController {
                 .eq("is_delete", 0)
                 .eq("is_polling", 1)
                 .orderByDesc("id"));
+
+        File file = null;
+        if (MessageController.pollingInterval.intValue() == 0) {
+            try {
+                file = ResourceUtils.getFile("classpath:application-dev.properties");
+                FileInputStream inputStream = new FileInputStream(file);
+                Properties properties = new Properties();
+                properties.load(inputStream);
+
+                MessageController.pollingInterval = Integer.valueOf(properties.getProperty("pollingInterval"));
+
+                inputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         JSONObject resultJson = new JSONObject();
         resultJson.put("messageList", messageList);
