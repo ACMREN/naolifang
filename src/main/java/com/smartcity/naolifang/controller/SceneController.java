@@ -10,8 +10,6 @@ import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
 import com.smartcity.naolifang.entity.vo.*;
 import com.smartcity.naolifang.service.*;
-import jdk.vm.ci.meta.Local;
-import org.bytedeco.opencv.opencv_core.Device;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
