@@ -10,12 +10,14 @@ import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
 import com.smartcity.naolifang.entity.vo.*;
 import com.smartcity.naolifang.service.*;
+import jdk.vm.ci.meta.Local;
 import org.bytedeco.opencv.opencv_core.Device;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -185,6 +187,7 @@ public class SceneController {
 
     @RequestMapping("/alarm/statistic")
     public Result statisticAlarm() {
+        System.out.println(LocalDateTime.now());
         String sevenDayBefore = DateTimeUtil.localDateToString(LocalDate.now().minusDays(7)) + " 00:00:00";
         // 今日告警总数
         Integer total = alarmEventInfoService.count(new QueryWrapper<AlarmEventInfo>()
@@ -211,7 +214,7 @@ public class SceneController {
                 .last("limit 0, 3"));
         List<AlarmEventInfoVo> resultList = new ArrayList<>();
         for (AlarmEventInfo item : alarmEventInfos) {
-            AlarmEventInfoVo data = new AlarmEventInfoVo();
+            AlarmEventInfoVo data = new AlarmEventInfoVo(item);
             Integer deviceId = item.getDeviceId();
             DeviceInfo deviceInfo = deviceInfoService.getById(deviceId);
 
@@ -224,7 +227,7 @@ public class SceneController {
         }
 
         JSONObject resultJson = new JSONObject();
-        resultJson.put("total",total);
+        resultJson.put("total", total);
         resultJson.put("handled", handled);
         resultJson.put("unHandle", unHandle);
         resultJson.put("handling", handling);
