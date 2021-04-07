@@ -33,7 +33,7 @@ public class DutyController {
     public Result saveDuty(@RequestBody DutyInfoVo dutyInfoVo) {
         DutyInfo dutyInfo = new DutyInfo(dutyInfoVo);
 
-        dutyInfoService.save(dutyInfo);
+        dutyInfoService.saveOrUpdate(dutyInfo);
 
         return Result.ok();
     }
