@@ -208,7 +208,7 @@ public class SceneController {
 
         List<AlarmEventInfo> alarmEventInfos = alarmEventInfoService.list(new QueryWrapper<AlarmEventInfo>()
                 .orderByDesc("id")
-                .last("limit 0, 3"));
+                .last("limit 0, 10"));
         List<AlarmEventInfoVo> resultList = new ArrayList<>();
         for (AlarmEventInfo item : alarmEventInfos) {
             AlarmEventInfoVo data = new AlarmEventInfoVo(item);
