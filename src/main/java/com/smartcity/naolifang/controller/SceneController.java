@@ -185,7 +185,6 @@ public class SceneController {
 
     @RequestMapping("/alarm/statistic")
     public Result statisticAlarm() {
-        System.out.println(LocalDateTime.now());
         String sevenDayBefore = DateTimeUtil.localDateToString(LocalDate.now().minusDays(7)) + " 00:00:00";
         // 今日告警总数
         Integer total = alarmEventInfoService.count(new QueryWrapper<AlarmEventInfo>()
@@ -213,6 +212,7 @@ public class SceneController {
         List<AlarmEventInfoVo> resultList = new ArrayList<>();
         for (AlarmEventInfo item : alarmEventInfos) {
             AlarmEventInfoVo data = new AlarmEventInfoVo(item);
+            data.setId(item.getId());
             Integer deviceId = item.getDeviceId();
             DeviceInfo deviceInfo = deviceInfoService.getById(deviceId);
 
