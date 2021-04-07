@@ -68,10 +68,10 @@ public class SceneController {
     @RequestMapping("/onCall")
     public Result onCall() {
         List<DutyInfo> dutyList = dutyInfoService.list(new QueryWrapper<DutyInfo>()
-                .gt("start_time", todayStartTime)
-                .lt("start_time", todayEndTime)
-                .or().gt("end_time", todayStartTime)
-                .lt("end_time", todayEndTime));
+                .ge("start_time", todayStartTime)
+                .le("start_time", todayEndTime)
+                .or().ge("end_time", todayStartTime)
+                .le("end_time", todayEndTime));
         List<DutyInfoVo> resultList = new ArrayList<>();
         for (DutyInfo item : dutyList) {
             DutyInfoVo data = new DutyInfoVo(item);
