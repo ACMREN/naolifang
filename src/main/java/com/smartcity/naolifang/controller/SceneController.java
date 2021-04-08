@@ -11,6 +11,7 @@ import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
 import com.smartcity.naolifang.entity.vo.*;
 import com.smartcity.naolifang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -164,13 +165,17 @@ public class SceneController {
                 .gt("visit_start_time", todayStartTime)
                 .lt("visit_start_time", todayEndTime));
         List<Integer> todayVisitorId = todayVisitor.stream().map(VisitorInfo::getId).collect(Collectors.toList());
-        Integer checkTemperature = signInfoService.count(new QueryWrapper<SignInfo>()
-                .in("visitor_id", todayVisitor)
-                .ne("temperature", null));
-        // 疑似发烧人数
-        Integer fever = signInfoService.count(new QueryWrapper<SignInfo>()
-                .in("visitor_id", todayVisitor)
-                .gt("temperature", 37));
+        Integer checkTemperature = 0;
+        Integer fever = 0;
+        if (!CollectionUtils.isEmpty(todayVisitorId)) {
+            checkTemperature = signInfoService.count(new QueryWrapper<SignInfo>()
+                    .in("visitor_id", todayVisitor)
+                    .ne("temperature", null));
+            // 疑似发烧人数
+            fever = signInfoService.count(new QueryWrapper<SignInfo>()
+                    .in("visitor_id", todayVisitor)
+                    .gt("temperature", 37));
+        }
 
         JSONObject resultJson = new JSONObject();
         resultJson.put("totalVisitor", totalVisitor);
