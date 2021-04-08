@@ -79,6 +79,21 @@ public class VisitorController {
         return Result.ok(visitorInfo.getId());
     }
 
+    /**
+     * 拒绝签入
+     * @param visitCondition
+     * @return
+     */
+    @RequestMapping("/reject")
+    public Result rejectSign(@RequestBody VisitCondition visitCondition) {
+        Integer id = visitCondition.getId();
+        VisitorInfo visitorInfo = visitorInfoService.getById(id);
+        visitorInfo.setStatus(VisitStatusEnum.REJECT.getCode());
+        visitorInfoService.saveOrUpdate(visitorInfo);
+
+        return Result.ok();
+    }
+
     @RequestMapping("/list")
     public Result listVisitorInfo(@RequestBody VisitCondition visitCondition) {
         Integer pageNo = visitCondition.getPageNo();
