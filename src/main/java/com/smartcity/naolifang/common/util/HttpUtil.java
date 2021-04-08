@@ -13,6 +13,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -184,5 +185,8 @@ public class HttpUtil {
         indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
         paramMap.put("indexCodes", indexCodes);
         postToHikvisionPlatform("/api/nms/v1/online/camera/get", paramMap);
+
+//        InetAddress ip = InetAddress.getByName("rhev-demo.xicp.net:10443");
+//        System.out.println("addr:" + ip.getHostAddress());
     }
 }

@@ -71,6 +71,7 @@ public class VisitorController {
         SignInfo signInfo;
         signInfo = signInfoService.getOne(new QueryWrapper<SignInfo>().eq("visitor_id", visitorInfo.getId()));
         if (null == signInfo) {
+            signInfo = new SignInfo();
             signInfo.setVisitorId(visitorInfo.getId());
             signInfoService.saveOrUpdate(signInfo);
         }
