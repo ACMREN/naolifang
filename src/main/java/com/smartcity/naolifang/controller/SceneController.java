@@ -81,7 +81,9 @@ public class SceneController {
                 .eq("is_delete", 0)
                 .ge("start_time", todayStartTime)
                 .le("start_time", todayEndTime)
-                .or().ge("end_time", todayStartTime)
+                .or()
+                .eq("is_delete", 0)
+                .ge("end_time", todayStartTime)
                 .le("end_time", todayEndTime));
         List<DutyInfoVo> resultList = new ArrayList<>();
         for (DutyInfo item : dutyList) {
