@@ -129,6 +129,22 @@ public class SceneController {
         return Result.ok(resultJson);
     }
 
+    /**
+     * 大屏获取所有设备
+     * @return
+     */
+    @RequestMapping("/device")
+    public Result sceneDeviceGet() {
+        List<DeviceInfo> deviceInfos = deviceInfoService.list();
+        List<DeviceInfoVo> resultList = new ArrayList<>();
+        for (DeviceInfo item : deviceInfos) {
+            DeviceInfoVo data = new DeviceInfoVo(item);
+            resultList.add(data);
+        }
+
+        return Result.ok(resultList);
+    }
+
     @RequestMapping("/person/statistic")
     public Result statisticVisitor() {
         // 预约访客总数
