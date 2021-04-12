@@ -65,6 +65,20 @@ public class Config {
     private String hikivisionPictureDownUrl;
     @Value("${hikivision.photoSearch}")
     private String hikivisionPhotoSearchUrl;
+    @Value("${hivikision.addPerson}")
+    private String hikivisionAddPersonUrl;
+    @Value("${hikivision.deletePerson}")
+    private String hikivisionDeletePersonUrl;
+    @Value("${hivkision.getRootOrg}")
+    private String hikivisionRootOrgUrl;
+    @Value("${hivkision.addPermission}")
+    private String hikivsionAddPermissionUrl;
+    @Value("${hivikision.permissionConfig}")
+    private String hikivisionPermissionCfgUrl;
+    @Value("${hivkision.downloadTask}")
+    private String hikivisionDownloadTaskUrl;
+    @Value("${hivkision.checkTask}")
+    private String hikivisionCheckTaskUrl;
 
     @Value("${pollingInterval}")
     private String pollingInterval;
