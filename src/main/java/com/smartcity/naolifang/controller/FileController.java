@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -135,7 +136,8 @@ public class FileController {
     }
 
     @RequestMapping("/test")
-    public Result testApi(Map<String, Object> paramMap) {
+    public Result testApi(JSONObject paramJson) {
+        Map<String, Object> paramMap = JSONObject.parseObject(paramJson.toJSONString(), HashMap.class);
         String url = (String) paramMap.get("url");
         String result = HttpUtil.postToHikvisionPlatform(url, paramMap);
 
