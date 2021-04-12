@@ -3,6 +3,7 @@ package com.smartcity.naolifang.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.entity.DeviceInfo;
@@ -38,6 +39,17 @@ public class DeviceController {
 
     @Autowired
     private Config config;
+
+    @RequestMapping("/hikivision/config/")
+    public Result getHikivsionConfig() {
+        String appKey = ArtemisConfig.appKey = "26930432";
+        String appSecret = ArtemisConfig.appSecret = "ZbBuQUbPytNgIktNtBoF";
+
+        JSONObject resultJson = new JSONObject();
+        resultJson.put("appKey", appKey);
+        resultJson.put("appsecret", appSecret);
+        return Result.ok(resultJson);
+    }
 
     @RequestMapping("/info/save")
     public Result saveDevice(@RequestBody DeviceInfoVo deviceInfoVo) {

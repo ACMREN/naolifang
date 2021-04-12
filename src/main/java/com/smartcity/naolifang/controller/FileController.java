@@ -31,17 +31,6 @@ public class FileController {
     @Autowired
     private AttachmentInfoService attachmentInfoService;
 
-    @RequestMapping("/hikivision/config/")
-    public Result getHikivsionConfig() {
-        String appKey = ArtemisConfig.appKey = "26930432";
-        String appSecret = ArtemisConfig.appSecret = "ZbBuQUbPytNgIktNtBoF";
-
-        JSONObject resultJson = new JSONObject();
-        resultJson.put("appKey", appKey);
-        resultJson.put("appsecret", appSecret);
-        return Result.ok(resultJson);
-    }
-
     /**
      * 上传图片
      * @param image
