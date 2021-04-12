@@ -1,10 +1,14 @@
 package com.smartcity.naolifang.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.smartcity.naolifang.bean.Config;
+import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.entity.AttachmentInfo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.AttachmentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -25,9 +30,15 @@ public class FileController {
     @Autowired
     private AttachmentInfoService attachmentInfoService;
 
-    @RequestMapping("/test")
-    public Result test() {
-        return Result.ok(config.getPollingInterval());
+    @RequestMapping("/hikivision/config/")
+    public Result getHikivsionConfig() {
+        String appKey = ArtemisConfig.appKey = "26930432";
+        String appSecret = ArtemisConfig.appSecret = "ZbBuQUbPytNgIktNtBoF";
+
+        JSONObject resultJson = new JSONObject();
+        resultJson.put("appKey", appKey);
+        resultJson.put("appsecret", appSecret);
+        return Result.ok(resultJson);
     }
 
     /**
@@ -121,5 +132,13 @@ public class FileController {
             e.printStackTrace();
         }
         return Result.fail(500, "上传文件失败，信息：保存文件时候出错");
+    }
+
+    @RequestMapping("/test")
+    public Result testApi(Map<String, Object> paramMap) {
+        String url = (String) paramMap.get("url");
+        String result = HttpUtil.postToHikvisionPlatform(url, paramMap);
+
+        return Result.ok(result);
     }
 }
