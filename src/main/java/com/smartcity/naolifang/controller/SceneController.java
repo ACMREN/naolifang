@@ -151,8 +151,7 @@ public class SceneController {
     public Result statisticVisitor() {
         // 预约访客总数
         Integer totalVisitor = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
-                .gt("visit_start_time", todayStartTime)
-                .lt("visit_start_time", todayEndTime));
+                .eq("status", VisitStatusEnum.NO_VISIT.getCode()));
         // 内部人员总数
         Integer totalInsider = insiderInfoService.count();
         // 登记家属总数
@@ -160,30 +159,21 @@ public class SceneController {
         // 在访人数
         Integer totalVisiting = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
                 .eq("status", VisitStatusEnum.SIGN_IN)
-                .gt("visit_start_time", todayStartTime)
-                .lt("visit_start_time", todayEndTime));
+                .or().eq("status", VisitStatusEnum.TIME_OUT));
         // 超时人数
         Integer totalTimeout = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
-                .eq("status", VisitStatusEnum.TIME_OUT)
-                .gt("visit_start_time", todayStartTime)
-                .lt("visit_start_time", todayEndTime));
+                .eq("status", VisitStatusEnum.TIME_OUT));
         // 签离人数
         Integer totalSignOut = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
-                .eq("status", VisitStatusEnum.SIGN_OUT)
-                .gt("visit_start_time", todayStartTime)
-                .lt("visit_start_time", todayEndTime));
+                .eq("status", VisitStatusEnum.SIGN_OUT));
         // 拒绝入营
         Integer totalReject = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
-                .eq("status", VisitStatusEnum.REJECT)
-                .gt("visit_start_time", todayStartTime)
-                .lt("visit_start_time", todayEndTime));
+                .eq("status", VisitStatusEnum.REJECT));
         // 请假人数
         Integer totalVacation = vacationInfoService.count(new QueryWrapper<VacationInfo>()
                 .eq("cancel_vacation_status", 0));
         // 体温检测人数
-        List<VisitorInfo> todayVisitor = visitorInfoService.list(new QueryWrapper<VisitorInfo>()
-                .gt("visit_start_time", todayStartTime)
-                .lt("visit_start_time", todayEndTime));
+        List<VisitorInfo> todayVisitor = visitorInfoService.list(new QueryWrapper<VisitorInfo>());
         List<Integer> todayVisitorId = todayVisitor.stream().map(VisitorInfo::getId).collect(Collectors.toList());
         Integer checkTemperature = 0;
         Integer fever = 0;
@@ -194,7 +184,7 @@ public class SceneController {
             // 疑似发烧人数
             fever = signInfoService.count(new QueryWrapper<SignInfo>()
                     .in("visitor_id", todayVisitor)
-                    .gt("temperature", 37));
+                    .gt("temperature", 37.5));
         }
 
         JSONObject resultJson = new JSONObject();
