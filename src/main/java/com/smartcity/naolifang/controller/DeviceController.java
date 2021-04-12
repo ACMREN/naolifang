@@ -44,10 +44,12 @@ public class DeviceController {
     public Result getHikivsionConfig() {
         String appKey = ArtemisConfig.appKey = "26930432";
         String appSecret = ArtemisConfig.appSecret = "ZbBuQUbPytNgIktNtBoF";
+        String ip = "192.168.1.24";
 
         JSONObject resultJson = new JSONObject();
         resultJson.put("appKey", appKey);
         resultJson.put("appsecret", appSecret);
+        resultJson.put("ip", ip);
         return Result.ok(resultJson);
     }
 
