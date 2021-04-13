@@ -358,16 +358,17 @@ public class WarningController {
                 // 先默认设置前10秒和后5秒分别是回放开始和结束时间
                 String startTime = DateTimeUtil.iso8601ToString(happenTime);
                 LocalDateTime localDateTime = DateTimeUtil.stringToLocalDateTime(startTime);
-                String happenStartTime  = DateTimeUtil.localDateTimeToString(localDateTime.minusSeconds(10));
-                String endTime = DateTimeUtil.localDateTimeToString(localDateTime.plusSeconds(5));
-                String happenEndTime = DateTimeUtil.stringToIso8601(endTime);
+                String happenStartTime  = String.valueOf(localDateTime.minusSeconds(10).getSecond());
+                String happenEndTime = String.valueOf(localDateTime.plusSeconds(5).getSecond());
 
                 alarmEventInfo.setHappenStartTime(happenStartTime);
                 alarmEventInfo.setHappenEndTime(happenEndTime);
             }
             if (status == 2) {
                 // 如果有结束事件，则设置为回放结束时间
-                alarmEventInfo.setHappenEndTime(happenTime);
+                String endTime = DateTimeUtil.iso8601ToString(happenTime);
+                LocalDateTime localDateTime = DateTimeUtil.stringToLocalDateTime(endTime);
+                alarmEventInfo.setHappenEndTime(String.valueOf(localDateTime.plusSeconds(5).getSecond()));
             }
             alarmEventInfo.setStatus(0);
 //            alarmEventInfo.setAlarmLevel(finalAlarmLevel);

@@ -182,10 +182,12 @@ public class HttpUtil {
     public static void main(String[] args) throws IOException {
         Map<String, Object> paramMap = new HashMap<>();
         List<String> indexCodes = new ArrayList<>();
-        indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
-        paramMap.put("indexCodes", indexCodes);
+//        indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
+//        paramMap.put("indexCodes", indexCodes);
         paramMap.put("resourceType", "camera");
-        postToHikvisionPlatform("/api/resource/v1/resource/indexCodes/search", paramMap);
+        paramMap.put("pageNo", 1);
+        paramMap.put("pageSize", 20);
+        postToHikvisionPlatform("/api/irds/v2/deviceResource/resources", paramMap);
 
 //        InetAddress ip = InetAddress.getByName("rhev-demo.xicp.net:10443");
 //        System.out.println("addr:" + ip.getHostAddress());
