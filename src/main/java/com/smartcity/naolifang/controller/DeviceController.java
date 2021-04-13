@@ -41,7 +41,7 @@ public class DeviceController {
     private Config config;
 
     @RequestMapping("/hikivision/config/")
-    public Result getHikivsionConfig() {
+    public Result getHikivisionConfig() {
         String appKey = ArtemisConfig.appKey = "26930432";
         String appSecret = ArtemisConfig.appSecret = "ZbBuQUbPytNgIktNtBoF";
         String ip = "192.168.1.24";

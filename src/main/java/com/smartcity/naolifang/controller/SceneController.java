@@ -81,29 +81,18 @@ public class SceneController {
 
     @RequestMapping("/camera/polling/save")
     public Result saveCameraPollingInfo(@RequestBody CameraPollingInfoBo cameraPollingInfoBo) {
-        Integer id = cameraPollingInfoBo.getId();
         Integer userId = cameraPollingInfoBo.getUserId();
         List<Integer> cameraIds = cameraPollingInfoBo.getCameraIds();
 
         List<CameraPollingInfo> cameraPollingInfos = new ArrayList<>();
-        if (id == null) {
-            for (Integer cameraId : cameraIds) {
-                CameraPollingInfo cameraPollingInfo = new CameraPollingInfo();
-                cameraPollingInfo.setUserId(userId);
-                cameraPollingInfo.setCameraId(cameraId);
-                cameraPollingInfos.add(cameraPollingInfo);
-            }
-            cameraPollingInfoService.saveBatch(cameraPollingInfos);
-        } else {
-            cameraPollingInfoService.remove(new QueryWrapper<CameraPollingInfo>().eq("user_id", userId));
-            for (Integer cameraId : cameraIds) {
-                CameraPollingInfo cameraPollingInfo = new CameraPollingInfo();
-                cameraPollingInfo.setUserId(userId);
-                cameraPollingInfo.setCameraId(cameraId);
-                cameraPollingInfos.add(cameraPollingInfo);
-            }
-            cameraPollingInfoService.saveBatch(cameraPollingInfos);
+        cameraPollingInfoService.remove(new QueryWrapper<CameraPollingInfo>().eq("user_id", userId));
+        for (Integer cameraId : cameraIds) {
+            CameraPollingInfo cameraPollingInfo = new CameraPollingInfo();
+            cameraPollingInfo.setUserId(userId);
+            cameraPollingInfo.setCameraId(cameraId);
+            cameraPollingInfos.add(cameraPollingInfo);
         }
+        cameraPollingInfoService.saveBatch(cameraPollingInfos);
 
         return Result.ok();
     }

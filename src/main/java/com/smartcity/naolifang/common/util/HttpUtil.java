@@ -184,7 +184,8 @@ public class HttpUtil {
         List<String> indexCodes = new ArrayList<>();
         indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
         paramMap.put("indexCodes", indexCodes);
-        postToHikvisionPlatform("/api/nms/v1/online/camera/get", paramMap);
+        paramMap.put("resourceType", "camera");
+        postToHikvisionPlatform("/api/resource/v1/resource/indexCodes/search", paramMap);
 
 //        InetAddress ip = InetAddress.getByName("rhev-demo.xicp.net:10443");
 //        System.out.println("addr:" + ip.getHostAddress());
