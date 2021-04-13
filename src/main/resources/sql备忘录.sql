@@ -232,3 +232,10 @@ CREATE TABLE `face_info` (
     id_card VARCHAR(20) DEFAULT NULL COMMENT '身份证号码',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='人脸图库信息表';
+
+CREATE TABLE `camera_polling_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    user_id INT(10) NOT NULL COMMENT '用户id',
+    camera_id INT(10) NOT NULL COMMENT '摄像头id',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='摄像头轮询信息表';

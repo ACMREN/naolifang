@@ -58,6 +58,9 @@ public class SceneController {
     @Autowired
     private MessagePollingInfoService messagePollingInfoService;
 
+    @Autowired
+    private CameraPollingInfoService cameraPollingInfoService;
+
     final String todayStartTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 00:00:00";
     final String todayEndTime = DateTimeUtil.localDateToString(LocalDate.now()) + " 23:59:59";
 
@@ -73,6 +76,51 @@ public class SceneController {
         }
 
         return Result.ok(resultList);
+    }
+
+    @RequestMapping("/camera/polling/save")
+    public Result saveCameraPollingInfo(CameraPollingInfoBo cameraPollingInfoBo) {
+        Integer id = cameraPollingInfoBo.getId();
+        Integer userId = cameraPollingInfoBo.getUserId();
+        List<Integer> cameraIds = cameraPollingInfoBo.getCameraIds();
+
+        List<CameraPollingInfo> cameraPollingInfos = new ArrayList<>();
+        if (id == null) {
+            for (Integer cameraId : cameraIds) {
+                CameraPollingInfo cameraPollingInfo = new CameraPollingInfo();
+                cameraPollingInfo.setUserId(userId);
+                cameraPollingInfo.setCameraId(cameraId);
+                cameraPollingInfos.add(cameraPollingInfo);
+            }
+            cameraPollingInfoService.saveBatch(cameraPollingInfos);
+        } else {
+            cameraPollingInfoService.remove(new QueryWrapper<CameraPollingInfo>().eq("user_id", userId));
+            for (Integer cameraId : cameraIds) {
+                CameraPollingInfo cameraPollingInfo = new CameraPollingInfo();
+                cameraPollingInfo.setUserId(userId);
+                cameraPollingInfo.setCameraId(cameraId);
+                cameraPollingInfos.add(cameraPollingInfo);
+            }
+            cameraPollingInfoService.saveBatch(cameraPollingInfos);
+        }
+
+        return Result.ok();
+    }
+
+    @RequestMapping("/camera/polling/list")
+    public Result listCameraPollingInfo(Integer userId) {
+        List<CameraPollingInfo> cameraPollingInfos = cameraPollingInfoService.list(new QueryWrapper<CameraPollingInfo>().eq("user_id", userId));
+
+        List<DeviceInfoVo> cameraInfos = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(cameraPollingInfos)) {
+            for (CameraPollingInfo item : cameraPollingInfos) {
+                Integer cameraId = item.getCameraId();
+                DeviceInfo cameraInfo = deviceInfoService.getById(cameraId);
+                DeviceInfoVo cameraInfoVo = new DeviceInfoVo(cameraInfo);
+                cameraInfos.add(cameraInfoVo);
+            }
+        }
+        return Result.ok(cameraInfos);
     }
 
     @RequestMapping("/onCall")
