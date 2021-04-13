@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface FaceInfoService extends IService<FaceInfo> {
 
+    String saveFaceInfo(String photoUri);
 }

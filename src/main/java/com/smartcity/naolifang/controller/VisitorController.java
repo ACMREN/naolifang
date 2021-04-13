@@ -210,38 +210,8 @@ public class VisitorController {
             String endTime = dataJson.getString("endTime");
             String photoUri = dataJson.getString("ExtEventPictureURL");
 
-            String photoUrl = "";
             // 如果包含有图片资源的话，则保存到人脸图库
-            if (StringUtils.isNotBlank(photoUri)) {
-                Map<String, Object> paramMap = new HashMap<>();
-                paramMap.put("url", photoUri);
-
-                try {
-                    URL url = new URL(config.getHikivisionPictureDownUrl());
-                    URLConnection connection = url.openConnection();
-                    connection.setRequestProperty("accept", "*/*");
-                    connection.setRequestProperty("connection", "Keep-Alive");
-                    connection.setRequestProperty("user-agent",
-                            "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                    connection.setDoInput(true);
-                    connection.setDoOutput(true);
-                    PrintWriter out;
-                    JSONObject param = new JSONObject(paramMap);
-                    out = new PrintWriter(connection.getOutputStream());
-                    // 发送请求参数
-                    out.print(param);
-                    // flush输出流的缓冲
-                    out.flush();
-
-                    photoUrl = connection.getHeaderField("Location");
-                    FaceInfo faceInfo = new FaceInfo();
-                    faceInfo.setPhotoUrl(photoUrl);
-                    faceInfoService.saveOrUpdate(faceInfo);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            String photoUrl = faceInfoService.saveFaceInfo(photoUri);
 
             VisitorInfo visitorInfo = visitorInfoService.getOne(new QueryWrapper<VisitorInfo>().eq("order_id", visitorId));
             if (null != visitorInfo) {
