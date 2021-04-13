@@ -147,12 +147,25 @@ public class VisitorController {
     @RequestMapping("/sign")
     public Result getSignInfo(@RequestBody SignInfoVo signInfoVo) {
         Integer visitorId = signInfoVo.getVisitorId();
+        String temperatureStr = signInfoVo.getTemperature();
+        if (StringUtils.isNotBlank(temperatureStr) && !this.isNumber(temperatureStr)) {
+            return Result.fail(400, "签到失败，信息：输入的体温必须为数字");
+        }
         SignInfo signInfo = signInfoService.getOne(new QueryWrapper<SignInfo>().eq("visitor_id", visitorId));
 
         signInfo.updateSignInfo(signInfoVo);
         signInfoService.saveOrUpdate(signInfo);
 
         return Result.ok();
+    }
+
+    private boolean isNumber(String number) {
+        try {
+            Double temp = Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 
     @RequestMapping("/track/find")
