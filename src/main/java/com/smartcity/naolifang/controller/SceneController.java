@@ -264,8 +264,9 @@ public class SceneController {
                 .lt("alarm_time", todayEndTime));
 
         List<AlarmEventInfo> alarmEventInfos = alarmEventInfoService.list(new QueryWrapper<AlarmEventInfo>()
-                .orderByDesc("id")
-                .last("limit 0, 10"));
+                .gt("alarm_time", sevenDayBefore)
+                .lt("alarm_time", todayEndTime)
+                .orderByDesc("id"));
         List<AlarmEventInfoVo> resultList = new ArrayList<>();
         for (AlarmEventInfo item : alarmEventInfos) {
             AlarmEventInfoVo data = new AlarmEventInfoVo(item);
