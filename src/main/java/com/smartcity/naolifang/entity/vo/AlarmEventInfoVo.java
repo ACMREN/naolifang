@@ -15,6 +15,8 @@ public class AlarmEventInfoVo {
     private Integer region;
     private Integer deviceType;
     private String alarmTime;
+    private String happenStartTime;
+    private String happenEndTime;
     private String maintainPerson;
     private Integer status;
     private String handlePerson;
@@ -28,6 +30,8 @@ public class AlarmEventInfoVo {
         this.content = alarmEventInfo.getContent();
         this.alarmLevel = alarmEventInfo.getAlarmLevel();
         this.alarmTime = DateTimeUtil.localDateTimeToString(alarmEventInfo.getAlarmTime());
+        this.happenStartTime = alarmEventInfo.getHappenStartTime();
+        this.happenEndTime = alarmEventInfo.getHappenEndTime();
         this.maintainPerson = alarmEventInfo.getFixPerson();
         this.status = alarmEventInfo.getStatus();
         this.handlePerson = alarmEventInfo.getHandlePerson();

@@ -25,6 +25,9 @@ public class DeviceInfoVo {
     private String connectTime;
     private Long liveTime;
 
+    private String happenStartTime;
+    private String happenEndTime;
+
     public DeviceInfoVo() {
     }
 
