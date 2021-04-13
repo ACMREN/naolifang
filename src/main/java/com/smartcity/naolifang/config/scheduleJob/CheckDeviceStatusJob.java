@@ -24,7 +24,7 @@ public class CheckDeviceStatusJob {
     /**
      * 定时更新设备状态
      */
-//    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     public void checkDeviceStatusJob() {
         logger.info("=========开始更新设备状态==========");
         List<DeviceInfo> deviceInfos = deviceInfoService.list(new QueryWrapper<DeviceInfo>()

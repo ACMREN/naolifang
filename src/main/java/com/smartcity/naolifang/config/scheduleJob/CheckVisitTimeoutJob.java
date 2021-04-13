@@ -5,6 +5,8 @@ import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.entity.VisitorInfo;
 import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
 import com.smartcity.naolifang.service.VisitorInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Component
 public class CheckVisitTimeoutJob {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private VisitorInfoService visitorInfoService;
@@ -25,6 +28,7 @@ public class CheckVisitTimeoutJob {
      */
     @Scheduled(cron = "0 0/30 * * * ?")
     public void checkVisitTimeout() {
+        logger.info("=========开始检测访问状态==========");
         String begin = DateTimeUtil.localDateToString(LocalDate.now()) + " 00:00:00";
         String end = DateTimeUtil.localDateToString(LocalDate.now()) + " 23:59:59";
 
@@ -45,5 +49,6 @@ public class CheckVisitTimeoutJob {
         }
 
         visitorInfoService.saveOrUpdateBatch(dataList);
+        logger.info("=========结束检测访问状态==========");
     }
 }

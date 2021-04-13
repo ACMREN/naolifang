@@ -86,15 +86,17 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
                 Integer online = deviceJson.getInteger("online");
                 String indexCode = deviceJson.getString("indexCode");
                 DeviceInfo deviceInfo = this.getOne(new QueryWrapper<DeviceInfo>().eq("index_code", indexCode));
-                if (online.intValue() == 1) {
-                    deviceInfo.setStatus(StatusEnum.ONLINE.getCode());
-                    this.saveOrUpdate(deviceInfo);
+                if (null != deviceInfo) {
+                    if (online.intValue() == 1) {
+                        deviceInfo.setStatus(StatusEnum.ONLINE.getCode());
+                        this.saveOrUpdate(deviceInfo);
+                    }
+                    if (online.intValue() == 0) {
+                        deviceInfo.setStatus(StatusEnum.OFFLINE.getCode());
+                        this.saveOrUpdate(deviceInfo);
+                    }
+                    includeIndexCodes.add(indexCode);
                 }
-                if (online.intValue() == 0) {
-                    deviceInfo.setStatus(StatusEnum.OFFLINE.getCode());
-                    this.saveOrUpdate(deviceInfo);
-                }
-                includeIndexCodes.add(indexCode);
             }
         }
 
