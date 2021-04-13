@@ -47,8 +47,8 @@ public class DeviceController {
         String ip = "192.168.1.24";
 
         JSONObject resultJson = new JSONObject();
-        resultJson.put("appKey", appKey);
-        resultJson.put("appsecret", appSecret);
+        resultJson.put("appkey", appKey);
+        resultJson.put("secret", appSecret);
         resultJson.put("ip", ip);
         return Result.ok(resultJson);
     }
