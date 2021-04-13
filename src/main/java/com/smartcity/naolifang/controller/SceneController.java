@@ -75,12 +75,6 @@ public class SceneController {
         List<DeviceInfoVo> resultList = new ArrayList<>();
         for (DeviceInfo item : deviceInfos) {
             DeviceInfoVo data = new DeviceInfoVo(item);
-            Integer status = item.getStatus();
-            if (status.equals(StatusEnum.ALARM.getCode())) {
-                AlarmEventInfo alarmEventInfo = alarmEventInfoService.getOne(new QueryWrapper<AlarmEventInfo>().eq("device_id", item.getId()));
-                data.setHappenStartTime(alarmEventInfo.getHappenStartTime());
-                data.setHappenEndTime(alarmEventInfo.getHappenEndTime());
-            }
             resultList.add(data);
         }
 
@@ -188,6 +182,13 @@ public class SceneController {
         List<DeviceInfoVo> resultList = new ArrayList<>();
         for (DeviceInfo item : deviceInfos) {
             DeviceInfoVo data = new DeviceInfoVo(item);
+            Integer status = item.getStatus();
+            if (status.equals(StatusEnum.ALARM.getCode())) {
+                AlarmEventInfo alarmEventInfo = alarmEventInfoService.getOne(new QueryWrapper<AlarmEventInfo>().eq("device_id", item.getId()));
+
+                data.setHappenStartTime(alarmEventInfo.getHappenStartTime());
+                data.setHappenEndTime(alarmEventInfo.getHappenEndTime());
+            }
             resultList.add(data);
         }
 
