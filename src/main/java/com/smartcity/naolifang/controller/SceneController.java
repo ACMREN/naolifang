@@ -8,6 +8,7 @@ import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
 import com.smartcity.naolifang.entity.enumEntity.HandleStatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
+import com.smartcity.naolifang.entity.searchCondition.SceneCondition;
 import com.smartcity.naolifang.entity.vo.*;
 import com.smartcity.naolifang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
@@ -98,7 +100,8 @@ public class SceneController {
     }
 
     @RequestMapping("/camera/polling/list")
-    public Result listCameraPollingInfo(Integer userId) {
+    public Result listCameraPollingInfo(@RequestBody SceneCondition sceneCondition) {
+        Integer userId = sceneCondition.getUserId();
         List<CameraPollingInfo> cameraPollingInfos = cameraPollingInfoService.list(new QueryWrapper<CameraPollingInfo>().eq("user_id", userId));
 
         List<DeviceInfoVo> cameraInfos = new ArrayList<>();
