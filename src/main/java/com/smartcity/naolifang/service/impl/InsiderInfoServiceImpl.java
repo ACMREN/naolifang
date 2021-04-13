@@ -36,6 +36,23 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
     private DependantInfoService dependantInfoService;
 
     @Override
+    public List<Integer> getPersonFromHikivisionPlatform() {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("resourceType", "person");
+
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionGetResourceUrl(), paramMap);
+        JSONObject resultJson = JSONObject.parseObject(resultStr);
+        List<JSONObject> personDatas = JSONObject.parseArray(resultJson.getString("data"), JSONObject.class);
+        List<Integer> insiderId = new ArrayList<>();
+        for (JSONObject personData : personDatas) {
+            Integer id = personData.getInteger("id");
+            insiderId.add(id);
+        }
+
+        return insiderId;
+    }
+
+    @Override
     public boolean addPersonToHikivisionPlatform(Integer id, Integer type) {
         // 1. 获取基本信息
         String name = "";

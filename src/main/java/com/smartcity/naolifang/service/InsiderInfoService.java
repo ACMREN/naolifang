@@ -16,6 +16,18 @@ import java.util.List;
  */
 public interface InsiderInfoService extends IService<InsiderInfo> {
 
+    /**
+     * 获取已经上传到海康平台的人员名单
+     * @return
+     */
+    List<Integer> getPersonFromHikivisionPlatform();
+
+    /**
+     * 上传人员名单到海康平台
+     * @param id
+     * @param type
+     * @return
+     */
     boolean addPersonToHikivisionPlatform(Integer id, Integer type);
 
     String getRootOrg();

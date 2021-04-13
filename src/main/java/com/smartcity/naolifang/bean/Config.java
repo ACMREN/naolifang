@@ -65,6 +65,8 @@ public class Config {
     private String hikivisionPictureDownUrl;
     @Value("${hikivision.photoSearch}")
     private String hikivisionPhotoSearchUrl;
+    @Value("${hikivision.getResource}")
+    private String hikivisionGetResourceUrl;
     @Value("${hikivision.addPerson}")
     private String hikivisionAddPersonUrl;
     @Value("${hikivision.deletePerson}")
