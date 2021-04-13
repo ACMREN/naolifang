@@ -13,6 +13,7 @@ import com.smartcity.naolifang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -79,7 +80,7 @@ public class SceneController {
     }
 
     @RequestMapping("/camera/polling/save")
-    public Result saveCameraPollingInfo(CameraPollingInfoBo cameraPollingInfoBo) {
+    public Result saveCameraPollingInfo(@RequestBody CameraPollingInfoBo cameraPollingInfoBo) {
         Integer id = cameraPollingInfoBo.getId();
         Integer userId = cameraPollingInfoBo.getUserId();
         List<Integer> cameraIds = cameraPollingInfoBo.getCameraIds();
