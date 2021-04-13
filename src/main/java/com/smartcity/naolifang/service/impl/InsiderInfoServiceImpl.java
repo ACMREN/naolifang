@@ -120,7 +120,7 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
     }
 
     @Override
-    public Result batchAddPermissionToHikivisionPlatform(List<String> indexCodes, List<String> deviceIndexCodes) {
+    public Result batchConfigPermissionToHikivisionPlatform(List<String> indexCodes, List<String> deviceIndexCodes, Integer configType) {
         // 1. 配置个人数据
         List<JSONObject> personDatas = new ArrayList<>();
         JSONObject personData = new JSONObject();
@@ -136,7 +136,13 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
         paramMap.put("resourceInfos", resourceInfos);
 
         // 3. 请求添加权限的接口
-        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionAddPermissionUrl(), paramMap);
+        String configUrl = "";
+        if (configType == 0) {
+            configUrl = config.getHikivisionAddPermissionUrl();
+        } else {
+            configUrl = config.getHikivisionDeletePersonUrl();
+        }
+        String resultStr = HttpUtil.postToHikvisionPlatform(configUrl, paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
         Integer code = resultJson.getInteger("code");
         if (code.intValue() != 0) {

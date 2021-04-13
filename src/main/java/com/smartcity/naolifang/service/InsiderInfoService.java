@@ -32,6 +32,6 @@ public interface InsiderInfoService extends IService<InsiderInfo> {
 
     String getRootOrg();
 
-    Result batchAddPermissionToHikivisionPlatform(List<String> indexCodes, List<String> deviceIndexCodes);
+    Result batchConfigPermissionToHikivisionPlatform(List<String> indexCodes, List<String> deviceIndexCodes, Integer configType);
 
 }
