@@ -289,7 +289,7 @@ public class WarningController {
         paramMap.put("beginTime", alarmEventInfo.getHappenStartTime());
         paramMap.put("endTime", alarmEventInfo.getHappenEndTime());
         paramMap.put("protocol", "rtsp");
-        String resultStr = HttpUtil.doPost(config.getHikivisionPlatformUrl() + config.getHikivisionPlaybackUrl(), paramMap);
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionPlaybackUrl(), paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
 
         // 开启推流

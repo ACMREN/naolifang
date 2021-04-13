@@ -12,6 +12,7 @@ import com.smartcity.naolifang.mapper.DeviceInfoMapper;
 import com.smartcity.naolifang.service.AlarmEventInfoService;
 import com.smartcity.naolifang.service.DeviceInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -75,6 +76,9 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
         paramMap.put("indexCodes", indexCodes);
 
         String resultStr = HttpUtil.postToHikvisionPlatform(requestUrl, paramMap);
+        if (StringUtils.isBlank(resultStr)) {
+            return;
+        }
         JSONObject resultJson = JSONObject.parseObject(resultStr);
         JSONArray deviceJsons = resultJson.getJSONObject("data").getJSONArray("list");
         List<String> includeIndexCodes = new ArrayList<>();

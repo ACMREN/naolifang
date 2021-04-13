@@ -21,6 +21,8 @@ import com.smartcity.naolifang.entity.vo.VisitorInfoVo;
 import com.smartcity.naolifang.service.FaceInfoService;
 import com.smartcity.naolifang.service.SignInfoService;
 import com.smartcity.naolifang.service.VisitorInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/visitor")
 public class VisitorController {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private VisitorInfoService visitorInfoService;
@@ -58,13 +61,13 @@ public class VisitorController {
             visitorInfo = visitorInfoService.getById(id);
         }
         // 调用海康的预约接口
-//        String visitStartTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitStartTime());
-//        String visitEndTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitEndTime());
-//        String orderId = visitorInfoService.appointToHikivision(visitStartTime, visitEndTime, visitorInfoVo.getName(), visitorInfoVo.getPhone());
-//        if (StringUtils.isBlank(orderId)) {
-//            return Result.fail(500, "保存预约信息失败，信息：调用海康预约接口失败");
-//        }
-//        visitorInfo.setOrderId(orderId);
+        String visitStartTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitStartTime());
+        String visitEndTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitEndTime());
+        String orderId = visitorInfoService.appointToHikivision(visitStartTime, visitEndTime, visitorInfoVo.getName(), visitorInfoVo.getPhone());
+        if (StringUtils.isBlank(orderId)) {
+            return Result.fail(500, "保存预约信息失败，信息：调用海康预约接口失败");
+        }
+        visitorInfo.setOrderId(orderId);
 
         visitorInfoService.saveOrUpdate(visitorInfo);
 
@@ -202,6 +205,7 @@ public class VisitorController {
      */
     @RequestMapping("/external/sign")
     public Result updateVisitStatus(@RequestBody HikivisionBaseEvent hikivisionBaseEvent) {
+        logger.info("收到海康传入的签到/签离信息：" + hikivisionBaseEvent.toString());
         List<EventInfo> eventInfos = hikivisionBaseEvent.getParams().getEvents();
         for (EventInfo item : eventInfos) {
             Integer eventType = item.getEventType();
