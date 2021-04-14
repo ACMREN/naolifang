@@ -46,8 +46,8 @@ public class VisitorInfoServiceImpl extends ServiceImpl<VisitorInfoMapper, Visit
 
         String resultStr = HttpUtil.postToHikvisionPlatform(appointmentUrl, paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
-        int resultCode = resultJson.getInteger("code");
-        if (resultCode == 0) {
+        String resultCode = resultJson.getString("code");
+        if (resultCode.equals("0")) {
             String orderId = resultJson.getJSONObject("data").getString("orderId");
             return orderId;
         }

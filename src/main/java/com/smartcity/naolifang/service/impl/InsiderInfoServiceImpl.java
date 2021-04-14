@@ -102,8 +102,8 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
         // 4. 请求结果
         String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionAddPersonUrl(), paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
-        Integer code = resultJson.getInteger("code");
-        if (code.intValue() == 0) {
+        String code = resultJson.getString("code");
+        if (code.equals("0")) {
             return true;
         }
         return false;
@@ -144,10 +144,10 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
         }
         String resultStr = HttpUtil.postToHikvisionPlatform(configUrl, paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
-        Integer code = resultJson.getInteger("code");
-        if (code.intValue() != 0) {
+        String code = resultJson.getString("code");
+        if (!code.equals("0")) {
             String msg = resultJson.getString("msg");
-            return Result.fail(code, msg);
+            return Result.fail(500, code + ":" + msg);
         }
 
         // 4. 配置设备数据
@@ -160,10 +160,10 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
         // 5. 请求出入权限配置快捷下载接口
         resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionPermissionCfgUrl(), paramMap);
         resultJson = JSONObject.parseObject(resultStr);
-        code = resultJson.getInteger("code");
-        if (code.intValue() != 0) {
+        code = resultJson.getString("code");
+        if (!code.equals("0")) {
             String msg = resultJson.getString("msg");
-            return Result.fail(code, msg);
+            return Result.fail(500, code + ":" + msg);
         }
         String taskId = resultJson.getJSONObject("data").getString("taskId");
 
@@ -174,10 +174,10 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
         // 7. 请求下载任务接口
         resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionDownloadTaskUrl(), paramMap);
         resultJson = JSONObject.parseObject(resultStr);
-        code = resultJson.getInteger("code");
-        if (code.intValue() != 0) {
+        code = resultJson.getString("code");
+        if (!code.equals("0")) {
             String msg = resultJson.getString("msg");
-            return Result.fail(code, msg);
+            return Result.fail(500, code + ":" + msg);
         }
 
         // 8. 查看下载任务的完成情况
@@ -194,10 +194,10 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
     private Result checkDownloadTask(Map<String, Object> paramMap) {
         String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionCheckTaskUrl(), paramMap);
         JSONObject resultJson = JSONObject.parseObject(resultStr);
-        Integer code = resultJson.getInteger("code");
-        if (code.intValue() != 0) {
+        String code = resultJson.getString("code");
+        if (!code.equals("0")) {
             String msg = resultJson.getString("msg");
-            return Result.fail(code, msg);
+            return Result.fail(500, code + ":" + msg);
         }
         Boolean isFinish = resultJson.getJSONObject("data").getBoolean("isDownloadFinished");
         if (!isFinish) {
