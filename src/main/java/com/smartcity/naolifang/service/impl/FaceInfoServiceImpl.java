@@ -56,9 +56,10 @@ public class FaceInfoServiceImpl extends ServiceImpl<FaceInfoMapper, FaceInfo> i
                 out.flush();
 
                 photoUrl = connection.getHeaderField("Location");
-                FaceInfo faceInfo = new FaceInfo();
-                faceInfo.setPhotoUrl(photoUrl);
-                this.saveOrUpdate(faceInfo);
+                // 第一期先不处理人脸图库的逻辑
+//                FaceInfo faceInfo = new FaceInfo();
+//                faceInfo.setPhotoUrl(photoUrl);
+//                this.saveOrUpdate(faceInfo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
