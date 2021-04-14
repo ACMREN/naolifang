@@ -228,6 +228,7 @@ public class WarningController {
             data.setDeviceType(deviceInfo.getType());
             data.setDeviceName(deviceInfo.getName());
             data.setPosition(deviceInfo.getPosition());
+            data.setPositionInfo(deviceInfo.getPositionInfo());
 
             resultList.add(data);
         }
