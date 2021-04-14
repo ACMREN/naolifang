@@ -77,17 +77,6 @@ public class DeviceController {
         return Result.ok();
     }
 
-    @RequestMapping("/forbid")
-    public Result forbidDevice(@RequestBody DeviceInfoVo deviceInfoVo) {
-        Integer id = deviceInfoVo.getId();
-
-        DeviceInfo deviceInfo = deviceInfoService.getById(id);
-        deviceInfo.setStatus(StatusEnum.FORBID.getCode());
-        deviceInfoService.saveOrUpdate(deviceInfo);
-
-        return Result.ok();
-    }
-
     @RequestMapping("/info/list")
     public Result listDevice(@RequestBody DeviceCondition deviceCondition) {
         logger.info("test");
