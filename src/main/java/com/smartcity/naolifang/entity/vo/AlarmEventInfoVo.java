@@ -12,6 +12,7 @@ public class AlarmEventInfoVo {
     private String indexCode;
     private String deviceName;
     private String position;
+    private String positionInfo;
     private Integer region;
     private Integer deviceType;
     private String alarmTime;
