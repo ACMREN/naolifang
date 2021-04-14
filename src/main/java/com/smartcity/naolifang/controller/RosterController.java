@@ -1,10 +1,17 @@
 package com.smartcity.naolifang.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.entity.DependantInfo;
 import com.smartcity.naolifang.entity.InsiderInfo;
+import com.smartcity.naolifang.entity.VisitorInfo;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
+import com.smartcity.naolifang.entity.enumEntity.HikivisionEventTypeEnum;
+import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
+import com.smartcity.naolifang.entity.external.EventInfo;
+import com.smartcity.naolifang.entity.external.HikivisionBaseEvent;
 import com.smartcity.naolifang.entity.searchCondition.RosterCondition;
 import com.smartcity.naolifang.entity.searchCondition.UserCondition;
 import com.smartcity.naolifang.entity.vo.DependantInfoVo;
@@ -13,6 +20,8 @@ import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.DependantInfoService;
 import com.smartcity.naolifang.service.InsiderInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/roster")
 public class RosterController {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private InsiderInfoService insiderInfoService;
@@ -107,6 +117,34 @@ public class RosterController {
         List<Integer> ids = rosterCondition.getIds();
         insiderInfoService.removeByIds(ids);
 
+        return Result.ok();
+    }
+
+    @RequestMapping("/insider/external/sign")
+    public Result insiderSign(@RequestBody HikivisionBaseEvent hikivisionBaseEvent) {
+        logger.info("收到海康传入的内部人员签到/签离信息：" + hikivisionBaseEvent.toString());
+        List<EventInfo> eventInfos = hikivisionBaseEvent.getParams().getEvents();
+        for (EventInfo item : eventInfos) {
+            Integer eventType = item.getEventType();
+            JSONObject dataJson = item.getData();
+            String deviceIndexCode = item.getSrcIndex();
+            String personId = dataJson.getString("ExtEventPersonNo");
+
+            InsiderInfo insiderInfo = insiderInfoService.getById(Integer.valueOf(personId));
+            if (null != insiderInfo) {
+                // 如果人脸通过认证，则更新离营状态
+                if (eventType.equals(HikivisionEventTypeEnum.FACE_PASS.getCode())) {
+                    if (deviceIndexCode.equals("123")) {
+                        insiderInfo.setIsOut(1);
+                    }
+                    if (deviceIndexCode.equals("456")) {
+                        insiderInfo.setIsOut(0);
+                    }
+                    insiderInfoService.saveOrUpdate(insiderInfo);
+                }
+            }
+
+        }
         return Result.ok();
     }
 

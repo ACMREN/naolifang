@@ -34,6 +34,11 @@ public class InsiderInfo implements Serializable {
     private Integer id;
 
     /**
+     * 海康唯一标识
+     */
+    private String indexCode;
+
+    /**
      * 姓名
      */
     private String name;
@@ -92,6 +97,11 @@ public class InsiderInfo implements Serializable {
      * 是否已经删除：0-否，1-是
      */
     private Integer isDelete;
+
+    /**
+     * 是否离营：0-否，1-是
+     */
+    private Integer isOut;
 
     /**
      * 创建时间

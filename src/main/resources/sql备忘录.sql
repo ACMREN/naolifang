@@ -49,6 +49,7 @@ CREATE TABLE `permission` (
 
 CREATE TABLE `insider_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    index_code VARCHAR(100) DEFAULT NULL COMMENT '海康唯一标识',
     name VARCHAR(10) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
     id_card VARCHAR(20) DEFAULT NULL COMMENT '身份证号码',
@@ -61,6 +62,7 @@ CREATE TABLE `insider_info` (
     image_uri VARCHAR(100) DEFAULT NULL COMMENT '个人照片',
     is_account TINYINT(2) DEFAULT 0 COMMENT '是否拥有后台账号：0-否，1-是',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
+    is_out TINYINT(2) DEFAULT 0 COMMENT '是否离营：0-否，1-是',
     create_time DATETIME NOT NULL COMMENT '创建时间',
     update_time DATETIME NOT NULL COMMENT '更新时间',
     PRIMARY KEY(id)
@@ -68,6 +70,7 @@ CREATE TABLE `insider_info` (
 
 CREATE TABLE `dependant_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    index_code VARCHAR(100) DEFAULT NULL COMMENT '海康唯一标识',
     name VARCHAR(20) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
     relation VARCHAR(20) NOT NULL COMMENT '关联人员',

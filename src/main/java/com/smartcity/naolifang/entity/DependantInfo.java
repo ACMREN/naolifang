@@ -33,6 +33,11 @@ public class DependantInfo implements Serializable {
     private Integer id;
 
     /**
+     * 海康唯一标识
+     */
+    private String indexCode;
+
+    /**
      * 姓名
      */
     private String name;

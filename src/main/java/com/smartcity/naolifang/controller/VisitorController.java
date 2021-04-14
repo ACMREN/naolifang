@@ -205,7 +205,7 @@ public class VisitorController {
      */
     @RequestMapping("/external/sign")
     public Result updateVisitStatus(@RequestBody HikivisionBaseEvent hikivisionBaseEvent) {
-        logger.info("收到海康传入的签到/签离信息：" + hikivisionBaseEvent.toString());
+        logger.info("收到海康传入的访客签到/签离信息：" + hikivisionBaseEvent.toString());
         List<EventInfo> eventInfos = hikivisionBaseEvent.getParams().getEvents();
         for (EventInfo item : eventInfos) {
             Integer eventType = item.getEventType();
