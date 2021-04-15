@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.common.util.HttpUtil;
+import com.smartcity.naolifang.common.util.SystemUtil;
 import com.smartcity.naolifang.entity.FaceInfo;
 import com.smartcity.naolifang.entity.SignInfo;
 import com.smartcity.naolifang.entity.VisitorInfo;
@@ -187,7 +188,7 @@ public class VisitorController {
         String imageUri = visitorInfo.getImageUri();
 
         try {
-            byte[] data = HttpUtil.downImageToByte(imageUri);
+            byte[] data = HttpUtil.downImageToByte(SystemUtil.getLocalAddress() + ":2020" + imageUri);
             Base64.Encoder encoder = Base64.getEncoder();
             String base64Str = encoder.encodeToString(data);
 
