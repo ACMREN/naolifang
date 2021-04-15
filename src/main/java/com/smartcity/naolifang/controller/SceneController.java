@@ -125,7 +125,8 @@ public class SceneController {
                 .or(wrapper -> wrapper
                         .eq("is_delete", 0)
                         .ge("end_time", todayStartTime)
-                        .le("end_time", todayEndTime)));
+                        .le("end_time", todayEndTime))
+                .orderByDesc("id"));
         List<DutyInfoVo> resultList = new ArrayList<>();
         for (DutyInfo item : dutyList) {
             DutyInfoVo data = new DutyInfoVo(item);
