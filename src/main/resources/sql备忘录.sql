@@ -124,7 +124,7 @@ CREATE TABLE `attachment_info` (
 
 CREATE TABLE `emergency_solution_info` (
     id INT(10) AUTO_INCREMENT COMMENT '自增id',
-    title VARCHAR(20) NOT NULL COMMENT '标题',
+    title VARCHAR(50) NOT NULL COMMENT '标题',
     description VARCHAR(200) DEFAULT NULL COMMENT '概述',
     solution TEXT DEFAULT NULL COMMENT '处理办法',
     attachment_ids VARCHAR(200) DEFAULT NULL COMMENT '附件id',
