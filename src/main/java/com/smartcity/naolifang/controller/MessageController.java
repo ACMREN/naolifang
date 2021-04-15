@@ -3,6 +3,7 @@ package com.smartcity.naolifang.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.smartcity.naolifang.entity.MessagePollingInfo;
 import com.smartcity.naolifang.entity.searchCondition.MessageCondition;
+import com.smartcity.naolifang.entity.vo.MessagePollingInfoVo;
 import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.MessagePollingInfoService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -57,10 +59,16 @@ public class MessageController {
             return Result.fail(500, "获取消息轮询信息失败，信息：传入的页码或数据条数为空");
         }
         Integer offset = (pageNo - 1) * pageSize;
-        List<MessagePollingInfo> resultList = messagePollingInfoService.list(new QueryWrapper<MessagePollingInfo>()
+        List<MessagePollingInfo> dataList = messagePollingInfoService.list(new QueryWrapper<MessagePollingInfo>()
                 .eq("is_delete", 0)
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = messagePollingInfoService.count();
+
+        List<MessagePollingInfoVo> resultList = new ArrayList<>();
+        for (MessagePollingInfo item : dataList) {
+            MessagePollingInfoVo data = new MessagePollingInfoVo(item);
+            resultList.add(data);
+        }
 
         PageListVo pageListVo = new PageListVo(resultList, pageNo, pageSize, totalCount);
 
