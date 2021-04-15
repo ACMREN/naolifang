@@ -177,6 +177,7 @@ public class SceneController {
     @RequestMapping("/device")
     public Result sceneDeviceGet() {
         List<DeviceInfo> deviceInfos = deviceInfoService.list(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
                 .ne("status", StatusEnum.FORBID.getCode())
                 .ne("status", StatusEnum.INACTIVE.getCode()));
         List<DeviceInfoVo> resultList = new ArrayList<>();
