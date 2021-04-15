@@ -79,7 +79,7 @@ public class VideoController {
         String isoStartTime = DateTimeUtil.stringToIso8601(startTime);
         String isoEndTime = DateTimeUtil.stringToIso8601(endTime);
 
-        byte[] byteData = HttpUtil.downImageToByte(SystemUtil.getLocalAddress() + ":2020" + imageUrl);
+        byte[] byteData = HttpUtil.downImageToByte("http://" + SystemUtil.getLocalAddress() + ":2020" + imageUrl);
         Base64.Encoder encoder = Base64.getEncoder();
         String base64Str = encoder.encodeToString(byteData);
 

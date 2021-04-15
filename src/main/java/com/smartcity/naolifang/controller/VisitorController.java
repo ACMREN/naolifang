@@ -188,7 +188,7 @@ public class VisitorController {
         String imageUri = visitorInfo.getImageUri();
 
         try {
-            byte[] data = HttpUtil.downImageToByte(SystemUtil.getLocalAddress() + ":2020" + imageUri);
+            byte[] data = HttpUtil.downImageToByte("http://" + SystemUtil.getLocalAddress() + ":2020" + imageUri);
             Base64.Encoder encoder = Base64.getEncoder();
             String base64Str = encoder.encodeToString(data);
 
