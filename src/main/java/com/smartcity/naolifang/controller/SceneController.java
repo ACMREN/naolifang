@@ -256,15 +256,15 @@ public class SceneController {
         // 离线设备
         Integer offline = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
-                .eq("status", StatusEnum.OFFLINE));
+                .eq("status", StatusEnum.OFFLINE.getCode()));
         // 正常设备
         Integer normal = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
-                .eq("status", StatusEnum.OFFLINE));
+                .eq("status", StatusEnum.OFFLINE.getCode()));
         // 告警设备
         Integer alarm = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
-                .eq("status", StatusEnum.ALARM));
+                .eq("status", StatusEnum.ALARM.getCode()));
 
         // 设备总数
         Integer total = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
