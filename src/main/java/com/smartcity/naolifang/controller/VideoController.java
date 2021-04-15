@@ -112,7 +112,7 @@ public class VideoController {
                     .like("idCard", idCard));
             return packingResult(resultList, insiderInfos, dependantInfos);
         }
-        return Result.ok();
+        return Result.ok(new ArrayList<>());
     }
 
     /**
