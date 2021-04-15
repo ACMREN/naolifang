@@ -68,6 +68,7 @@ public class SceneController {
     @RequestMapping("/camera/list")
     public Result listCamera() {
         List<DeviceInfo> deviceInfos = deviceInfoService.list(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
                 .eq("type", DeviceTypeEnum.CAMERA.getCode()));
 
         List<DeviceInfoVo> resultList = new ArrayList<>();
