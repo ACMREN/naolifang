@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.HttpUtil;
+import com.smartcity.naolifang.entity.AlarmEventInfo;
 import com.smartcity.naolifang.entity.DeviceInfo;
 import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
+import com.smartcity.naolifang.entity.enumEntity.HandleStatusEnum;
 import com.smartcity.naolifang.entity.enumEntity.StatusEnum;
 import com.smartcity.naolifang.mapper.DeviceInfoMapper;
 import com.smartcity.naolifang.service.AlarmEventInfoService;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +101,23 @@ public class DeviceInfoServiceImpl extends ServiceImpl<DeviceInfoMapper, DeviceI
                     if (online.intValue() == 0) {
                         deviceInfo.setStatus(StatusEnum.OFFLINE.getCode());
                         this.saveOrUpdate(deviceInfo);
+
+                        // 查看是否已经存在一条该设备还没处理的离线告警
+                        // 如果不存在则创建新的设备告警
+                        AlarmEventInfo alarmEventInfo = alarmEventInfoService.getOne(new QueryWrapper<AlarmEventInfo>()
+                                .eq("device_id", deviceInfo.getId())
+                                .eq("event_id", "0")
+                                .ne("status", HandleStatusEnum.HANDLED.getCode()));
+                        if (null == alarmEventInfo) {
+                            alarmEventInfo = new AlarmEventInfo();
+                            alarmEventInfo.setAlarmType(0);
+                            alarmEventInfo.setContent("离线");
+                            alarmEventInfo.setEventId("0");
+                            alarmEventInfo.setDeviceId(deviceInfo.getId());
+                            alarmEventInfo.setStatus(0);
+                            alarmEventInfo.setAlarmTime(LocalDateTime.now());
+                            alarmEventInfoService.saveOrUpdate(alarmEventInfo);
+                        }
                     }
                     includeIndexCodes.add(indexCode);
                 }
