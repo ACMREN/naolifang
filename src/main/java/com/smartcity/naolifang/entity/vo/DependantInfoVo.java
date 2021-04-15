@@ -10,6 +10,7 @@ public class DependantInfoVo {
     private Integer id;
     private String name;
     private String gender;
+    private String idCard;
     private String relation;
     private String phone;
     private String relationship;
@@ -27,6 +28,7 @@ public class DependantInfoVo {
         this.id = dependantInfo.getId();
         this.name = dependantInfo.getName();
         this.gender = GenderEnum.getDataByCode(dependantInfo.getGender()).getName();
+        this.idCard = dependantInfo.getIdCard();
         this.relation = dependantInfo.getRelation();
         this.relationship = dependantInfo.getRelationship();
         this.phone = dependantInfo.getPhone();

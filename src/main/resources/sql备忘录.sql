@@ -73,6 +73,7 @@ CREATE TABLE `dependant_info` (
     index_code VARCHAR(100) DEFAULT NULL COMMENT '海康唯一标识',
     name VARCHAR(20) NOT NULL COMMENT '姓名',
     gender TINYINT(2) DEFAULT 0 COMMENT '性别',
+    id_card VARCHAR(20) DEFAULT NULL COMMENT '身份证号码',
     relation VARCHAR(20) NOT NULL COMMENT '关联人员',
     relationship VARCHAR(20) NOT NULL COMMENT '关联关系',
     institution VARCHAR(20) NOT NULL COMMENT '工作单位',

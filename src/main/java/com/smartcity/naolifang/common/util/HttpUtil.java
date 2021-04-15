@@ -184,10 +184,16 @@ public class HttpUtil {
         List<String> indexCodes = new ArrayList<>();
 //        indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
 //        paramMap.put("indexCodes", indexCodes);
-        paramMap.put("resourceType", "camera");
+        paramMap.put("personId", "test123");
+        paramMap.put("personName", "测试人员123");
+        paramMap.put("certificateType", 111);
+        paramMap.put("certificateNo", "440682199510201364");
+        paramMap.put("gender", 1);
+        paramMap.put("orgIndexCode", "root000000");
+        paramMap.put("resourceType", "person");
         paramMap.put("pageNo", 1);
         paramMap.put("pageSize", 20);
-        postToHikvisionPlatform("/api/irds/v2/deviceResource/resources", paramMap);
+        postToHikvisionPlatform("/api/resource/v2/person/advance/personList", paramMap);
 
 //        InetAddress ip = InetAddress.getByName("rhev-demo.xicp.net:10443");
 //        System.out.println("addr:" + ip.getHostAddress());

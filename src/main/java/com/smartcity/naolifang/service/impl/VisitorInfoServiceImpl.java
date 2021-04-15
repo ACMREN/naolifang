@@ -31,7 +31,7 @@ public class VisitorInfoServiceImpl extends ServiceImpl<VisitorInfoMapper, Visit
 
     @Override
     public String appointToHikivision(String visitStartTime, String visitEndTime, String visitorName, String phoneNo) {
-        String receptionistId = UUID.randomUUID().toString();
+        String receptionistId = "test123";
         String appointmentUrl = config.getHikivisionAppointmentUrl();
         HikivisionVisitorInfo visitorInfo = new HikivisionVisitorInfo();
         visitorInfo.setGender(1);

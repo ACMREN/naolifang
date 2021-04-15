@@ -58,15 +58,18 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
         String name = "";
         Integer gender = 0;
         String imageUri = "";
+        String idCard = "";
         if (type == 0) {
             InsiderInfo insiderInfo = this.getById(id);
             name = insiderInfo.getName();
             gender = GenderEnum.getDataByCode(insiderInfo.getGender()).getCode() + 1;
+            idCard = insiderInfo.getIdCard();
             imageUri = insiderInfo.getImageUri();
         } else {
             DependantInfo dependantInfo = dependantInfoService.getById(id);
             name = dependantInfo.getName();
             gender = GenderEnum.getDataByCode(dependantInfo.getGender()).getCode() + 1;
+            idCard = dependantInfo.getIdCard();
             imageUri = dependantInfo.getImageUri();
         }
         String fileName = imageUri.substring(imageUri.lastIndexOf("/"));
@@ -93,6 +96,8 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
 
         // 3. 放入参数列表
         Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("certificateType", 111);
+        paramMap.put("certificateNo", idCard);
         paramMap.put("personId", id);
         paramMap.put("personName", name);
         paramMap.put("gender", gender);

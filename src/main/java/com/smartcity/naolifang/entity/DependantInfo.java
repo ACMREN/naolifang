@@ -48,6 +48,11 @@ public class DependantInfo implements Serializable {
     private Integer gender;
 
     /**
+     * 身份证号码
+     */
+    private String idCard;
+
+    /**
      * 关联人员
      */
     private String relation;
@@ -99,6 +104,7 @@ public class DependantInfo implements Serializable {
         this.id = dependantInfoVo.getId();
         this.name = dependantInfoVo.getName();
         this.gender = GenderEnum.getDataByName(dependantInfoVo.getGender()).getCode();
+        this.idCard = dependantInfoVo.getIdCard();
         this.relation = dependantInfoVo.getRelation();
         this.phone = dependantInfoVo.getPhone();
         this.relationship = dependantInfoVo.getRelationship();
