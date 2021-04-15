@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.HttpUtil;
+import com.smartcity.naolifang.entity.CameraPollingInfo;
 import com.smartcity.naolifang.entity.DeviceInfo;
 import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
 import com.smartcity.naolifang.entity.enumEntity.DoorStatusEnum;
@@ -14,6 +15,7 @@ import com.smartcity.naolifang.entity.searchCondition.DeviceCondition;
 import com.smartcity.naolifang.entity.vo.DeviceInfoVo;
 import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
+import com.smartcity.naolifang.service.CameraPollingInfoService;
 import com.smartcity.naolifang.service.DeviceInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,9 @@ public class DeviceController {
 
     @Autowired
     private DeviceInfoService deviceInfoService;
+
+    @Autowired
+    private CameraPollingInfoService cameraPollingInfoService;
 
     @Autowired
     private Config config;
@@ -135,6 +140,9 @@ public class DeviceController {
             item.setIsDelete(1);
         }
         deviceInfoService.saveOrUpdateBatch(dataList);
+
+        // 把用户大屏显示中的摄像头轮询列表对应信息删除
+        cameraPollingInfoService.remove(new QueryWrapper<CameraPollingInfo>().eq("camera_id", ids));
 
         return Result.ok();
     }
