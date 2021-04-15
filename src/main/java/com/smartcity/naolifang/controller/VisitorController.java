@@ -118,6 +118,7 @@ public class VisitorController {
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
+                .orderByDesc("id")
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
                 .eq("is_delete",  0)
