@@ -277,6 +277,10 @@ public class SceneController {
         Integer door = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
                 .eq("type", DeviceTypeEnum.DOOR.getCode()));
+        // 编码设备
+        Integer encodeDevice = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
+                .eq("is_delete", 0)
+                .eq("type", DeviceTypeEnum.ENCODE_DEVICE.getCode()));
 
         JSONObject resultJson = new JSONObject();
         resultJson.put("offline", offline);
@@ -285,6 +289,7 @@ public class SceneController {
         resultJson.put("total", total);
         resultJson.put("camera", camera);
         resultJson.put("door", door);
+        resultJson.put("encodeDevice", encodeDevice);
 
         return Result.ok(resultJson);
     }
