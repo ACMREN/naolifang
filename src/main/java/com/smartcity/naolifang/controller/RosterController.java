@@ -209,4 +209,56 @@ public class RosterController {
 
         return Result.ok();
     }
+
+    /**
+     * 根据关键字搜索花名册人员
+     * @param rosterCondition
+     * @return
+     */
+    @RequestMapping("/search")
+    public Result searchRoster(@RequestBody RosterCondition rosterCondition) {
+        String name = rosterCondition.getName();
+        String idCard = rosterCondition.getIdCard();
+        List<JSONObject> resultList = new ArrayList<>();
+        if (StringUtils.isNotBlank(name)) {
+            List<InsiderInfo> insiderInfos = insiderInfoService.list(new QueryWrapper<InsiderInfo>()
+                    .like("name", name));
+            List<DependantInfo> dependantInfos = dependantInfoService.list(new QueryWrapper<DependantInfo>()
+                    .like("name", name));
+            return packingResult(resultList, insiderInfos, dependantInfos);
+        }
+        if (StringUtils.isNotBlank(idCard)) {
+            List<InsiderInfo> insiderInfos = insiderInfoService.list(new QueryWrapper<InsiderInfo>()
+                    .like("idCard", idCard));
+            List<DependantInfo> dependantInfos = dependantInfoService.list(new QueryWrapper<DependantInfo>()
+                    .like("idCard", idCard));
+            return packingResult(resultList, insiderInfos, dependantInfos);
+        }
+        return Result.ok();
+    }
+
+    /**
+     * 组装结果数据
+     * @param resultList
+     * @param insiderInfos
+     * @param dependantInfos
+     * @return
+     */
+    private Result packingResult(List<JSONObject> resultList, List<InsiderInfo> insiderInfos, List<DependantInfo> dependantInfos) {
+        for (InsiderInfo item : insiderInfos) {
+            JSONObject data = new JSONObject();
+            data.put("name", item.getName());
+            data.put("idCard", item.getIdCard());
+            data.put("imageUri", item.getImageUri());
+            resultList.add(data);
+        }
+        for (DependantInfo item : dependantInfos) {
+            JSONObject data = new JSONObject();
+            data.put("name", item.getName());
+            data.put("idCard", item.getIdCard());
+            data.put("imageUri", item.getImageUri());
+            resultList.add(data);
+        }
+        return Result.ok(resultList);
+    }
 }
