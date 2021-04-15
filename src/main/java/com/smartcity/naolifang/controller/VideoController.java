@@ -74,7 +74,7 @@ public class VideoController {
     public Result searchEventByPhoto(@RequestBody FileCondition fileCondition) throws IOException {
         String startTime = fileCondition.getStartTime();
         String endTime = fileCondition.getEndTime();
-        String imageUrl = fileCondition.getImageUrl();
+        String imageUrl = fileCondition.getImageUri();
 
         String isoStartTime = DateTimeUtil.stringToIso8601(startTime);
         String isoEndTime = DateTimeUtil.stringToIso8601(endTime);

@@ -6,5 +6,5 @@ import lombok.Data;
 public class FileCondition {
     private String startTime;
     private String endTime;
-    private String imageUrl;
+    private String imageUri;
 }
