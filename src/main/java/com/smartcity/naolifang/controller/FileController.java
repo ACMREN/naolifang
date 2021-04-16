@@ -46,13 +46,16 @@ public class FileController {
         String uuid = UUID.randomUUID().toString();
         String docPath = "";
         String mappingPath = "";
+        String fileName = image.getOriginalFilename();
+        String baseName = fileName.split("\\.")[0];
+        String suffix = fileName.split("\\.")[1];
+        String newFileName = baseName + "-"+ uuid + "." + suffix;
         if (type.equals("avatar")) {
-            String fileName = image.getOriginalFilename();
-            String baseName = fileName.split("\\.")[0];
-            String suffix = fileName.split("\\.")[1];
-            String newFileName = baseName + "-"+ uuid + "." + suffix;
             docPath = config.getAvatarDocPath() + newFileName;
             mappingPath = config.getAvatarMappingPath() + newFileName;
+        } else if ((type.equals("tmp"))) {
+            docPath = config.getTmpDocPath() + newFileName;
+            mappingPath = config.getTmpMappingPath() + newFileName;
         }
 
         File imageFile = new File(docPath);
