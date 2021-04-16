@@ -42,6 +42,11 @@ public class Config {
     @Value("${imageMappingPath}")
     private String imageMappingPath;
 
+    @Value("${tmpDocPath}")
+    private String tmpDocPath;
+    @Value("${tmpMappingPath}")
+    private String tmpMappingPath;
+
     @Value("${hikivision.platform.url}")
     private String hikivisionPlatformUrl;
 
