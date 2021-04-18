@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.common.util.DateTimeUtil;
-import com.smartcity.naolifang.entity.DependantInfo;
-import com.smartcity.naolifang.entity.InsiderInfo;
-import com.smartcity.naolifang.entity.VisitorInfo;
+import com.smartcity.naolifang.entity.*;
 import com.smartcity.naolifang.entity.enumEntity.GenderEnum;
 import com.smartcity.naolifang.entity.enumEntity.HikivisionEventTypeEnum;
 import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
@@ -19,6 +17,8 @@ import com.smartcity.naolifang.entity.vo.InsiderInfoVo;
 import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.DependantInfoService;
+import com.smartcity.naolifang.service.DeviceInfoService;
+import com.smartcity.naolifang.service.InsideOutRecordService;
 import com.smartcity.naolifang.service.InsiderInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +41,12 @@ public class RosterController {
 
     @Autowired
     private DependantInfoService dependantInfoService;
+
+    @Autowired
+    private DeviceInfoService deviceInfoService;
+
+    @Autowired
+    private InsideOutRecordService insideOutRecordService;
 
     /**
      * 新增/更新内部人员
@@ -125,20 +131,31 @@ public class RosterController {
         logger.info("收到海康传入的内部人员签到/签离信息：" + hikivisionBaseEvent.toString());
         List<EventInfo> eventInfos = hikivisionBaseEvent.getParams().getEvents();
         for (EventInfo item : eventInfos) {
+            // 1. 获取签到/签离事件信息
             Integer eventType = item.getEventType();
             JSONObject dataJson = item.getData();
             String deviceIndexCode = item.getSrcIndex();
+            String happenTime = item.getHappenTime();
             String personId = dataJson.getString("ExtEventPersonNo");
+            InsideOutRecord insideOutRecord = new InsideOutRecord();
 
+            // 2. 更新人员的在离营状态
             InsiderInfo insiderInfo = insiderInfoService.getOne(new QueryWrapper<InsiderInfo>().eq("index_code", personId));
             if (null != insiderInfo) {
+                insideOutRecord.setPersonId(insiderInfo.getId());
+                insideOutRecord.setName(insiderInfo.getName());
+                insideOutRecord.setIdCard(insiderInfo.getIdCard());
+                insideOutRecord.setImageUri(insiderInfo.getImageUri());
+                insideOutRecord.setPersonType(0);
                 // 如果人脸通过认证，则更新离营状态
                 if (eventType.equals(HikivisionEventTypeEnum.FACE_PASS.getCode())) {
                     if (deviceIndexCode.equals("123")) {
                         insiderInfo.setIsOut(1);
+                        insideOutRecord.setType(0);
                     }
                     if (deviceIndexCode.equals("456")) {
                         insiderInfo.setIsOut(0);
+                        insideOutRecord.setType(1);
                     }
                     insiderInfoService.saveOrUpdate(insiderInfo);
                 }
@@ -146,19 +163,35 @@ public class RosterController {
 
             DependantInfo dependantInfo = dependantInfoService.getOne(new QueryWrapper<DependantInfo>().eq("index_code", personId));
             if (null != dependantInfo) {
+                insideOutRecord.setPersonId(dependantInfo.getId());
+                insideOutRecord.setName(dependantInfo.getName());
+                insideOutRecord.setIdCard(dependantInfo.getIdCard());
+                insideOutRecord.setImageUri(dependantInfo.getImageUri());
+                insideOutRecord.setPersonType(1);
                 // 如果人脸通过认证，则更新离营状态
                 if (eventType.equals(HikivisionEventTypeEnum.FACE_PASS.getCode())) {
                     // 固定闸机为出营
                     if (deviceIndexCode.equals("123")) {
                         insiderInfo.setIsOut(1);
+                        insideOutRecord.setType(0);
                     }
                     // 固定闸机为离营
                     if (deviceIndexCode.equals("456")) {
                         insiderInfo.setIsOut(0);
+                        insideOutRecord.setType(1);
                     }
                     insiderInfoService.saveOrUpdate(insiderInfo);
                 }
             }
+
+            // 3. 保存内部人员出入营记录
+            DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>()
+                    .eq("indexCode", deviceIndexCode));
+            insideOutRecord.setDeviceId(deviceInfo.getId());
+            insideOutRecord.setDeviceName(deviceInfo.getName());
+            insideOutRecord.setPositionInfo(deviceInfo.getPositionInfo());
+            insideOutRecord.setTime(DateTimeUtil.stringToLocalDateTime(DateTimeUtil.iso8601ToString(happenTime)));
+            insideOutRecordService.saveOrUpdate(insideOutRecord);
         }
         return Result.ok();
     }
