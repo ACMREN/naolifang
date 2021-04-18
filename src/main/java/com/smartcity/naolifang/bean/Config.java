@@ -70,8 +70,8 @@ public class Config {
     private String hikivisionPictureDownUrl;
     @Value("${hikivision.photoSearch}")
     private String hikivisionPhotoSearchUrl;
-    @Value("${hikivision.getResource}")
-    private String hikivisionGetResourceUrl;
+    @Value("${hikivision.getPersonList}")
+    private String hikivisionGetPersonListUrl;
     @Value("${hikivision.addPerson}")
     private String hikivisionAddPersonUrl;
     @Value("${hikivision.deletePerson}")
@@ -86,6 +86,8 @@ public class Config {
     private String hikivisionDownloadTaskUrl;
     @Value("${hikivision.checkTask}")
     private String hikivisionCheckTaskUrl;
+    @Value("{hikivision.checkTaskDetail}")
+    private String hikivisionTaskDetailUrl;
 
     @Value("${pollingInterval}")
     private String pollingInterval;

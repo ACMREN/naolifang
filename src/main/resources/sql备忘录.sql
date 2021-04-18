@@ -80,6 +80,7 @@ CREATE TABLE `dependant_info` (
     phone VARCHAR(20) DEFAULT NULL COMMENT '手机号码',
     address VARCHAR(200) DEFAULT NULL COMMENT '住址',
     image_uri VARCHAR(100) NOT NULL COMMENT '个人照片',
+    is_out TINYINT(2) DEFAULT 1 COMMENT '是否离营：0-否，1-是',
     is_delete TINYINT(2) DEFAULT 0 COMMENT '是否已经删除：0-否，1-是',
     create_time DATETIME NOT NULL COMMENT '创建时间',
     update_time DATETIME NOT NULL COMMENT '更新时间',
@@ -243,3 +244,33 @@ CREATE TABLE `camera_polling_info` (
     camera_id INT(10) NOT NULL COMMENT '摄像头id',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='摄像头轮询信息表';
+
+CREATE TABLE `door_permission_info` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    person_id INT(10) NOT NULL COMMENT '人员id',
+    person_index_code VARCHAR(50) NOT NULL COMMENT '人员唯一标识',
+    name VARCHAR(20) NOT NULL COMMENT '姓名',
+    id_card VARCHAR(20) NOT NULL COMMENT '身份证号',
+    image_uri VARCHAR(100) DEFAULT NULL COMMENT '个人照片',
+    person_type TINYINT(2) NOT NULL COMMENT '人员类型',
+    device_index_code VARCHAR(50) NOT NULL COMMENT '设备唯一标识',
+    device_name VARCHAR(20) NOT NULL COMMENT '设备名称',
+    position_info VARCHAR(200) NOT NULL COMMENT '位置信息',
+    status TINYINT(2) NOT NULL COMMENT '下发状态',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='门禁权限下发记录信息表';
+
+CREATE TABLE `inside_out_record` (
+    id INT(10) AUTO_INCREMENT COMMENT '自增id',
+    person_id INT(10) NOT NULL COMMENT '人员id',
+    name VARCHAR(20) NOT NULL COMMENT '姓名',
+    id_card VARCHAR(20) NOT NULL COMMENT '身份证号',
+    image_uri VARCHAR(100) DEFAULT NULL COMMENT '个人照片',
+    person_type TINYINT(2) NOT NULL COMMENT '人员类型',
+    device_id INT(10) NOT NULL COMMENT '设备id',
+    device_name VARCHAR(20) NOT NULL COMMENT '设备名称',
+    position_info VARCHAR(200) NOT NULL COMMENT '位置信息',
+    type TINYINT(2) NOT NULL COMMENT '出入类型：0-离营，1-回营',
+    time DATETIME NOT NULL COMMENT '出入时间',
+    PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='出入记录信息表';

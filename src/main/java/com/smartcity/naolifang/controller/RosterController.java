@@ -130,7 +130,7 @@ public class RosterController {
             String deviceIndexCode = item.getSrcIndex();
             String personId = dataJson.getString("ExtEventPersonNo");
 
-            InsiderInfo insiderInfo = insiderInfoService.getById(Integer.valueOf(personId));
+            InsiderInfo insiderInfo = insiderInfoService.getOne(new QueryWrapper<InsiderInfo>().eq("index_code", personId));
             if (null != insiderInfo) {
                 // 如果人脸通过认证，则更新离营状态
                 if (eventType.equals(HikivisionEventTypeEnum.FACE_PASS.getCode())) {
@@ -144,9 +144,26 @@ public class RosterController {
                 }
             }
 
+            DependantInfo dependantInfo = dependantInfoService.getOne(new QueryWrapper<DependantInfo>().eq("index_code", personId));
+            if (null != dependantInfo) {
+                // 如果人脸通过认证，则更新离营状态
+                if (eventType.equals(HikivisionEventTypeEnum.FACE_PASS.getCode())) {
+                    // 固定闸机为出营
+                    if (deviceIndexCode.equals("123")) {
+                        insiderInfo.setIsOut(1);
+                    }
+                    // 固定闸机为离营
+                    if (deviceIndexCode.equals("456")) {
+                        insiderInfo.setIsOut(0);
+                    }
+                    insiderInfoService.saveOrUpdate(insiderInfo);
+                }
+            }
         }
         return Result.ok();
     }
+
+
 
     @RequestMapping("/dependant/save")
     public Result saveDependant(@RequestBody DependantInfoVo dependantInfoVo) {

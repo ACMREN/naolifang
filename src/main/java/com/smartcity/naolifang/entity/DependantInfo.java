@@ -83,6 +83,11 @@ public class DependantInfo implements Serializable {
     private String imageUri;
 
     /**
+     * 是否离营：0-否，1-是
+     */
+    private Integer isOut;
+
+    /**
      * 是否已经删除：0-否，1-是
      */
     private Integer isDelete;

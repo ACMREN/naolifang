@@ -181,21 +181,38 @@ public class HttpUtil {
 
     public static void main(String[] args) throws IOException {
         Map<String, Object> paramMap = new HashMap<>();
-        List<String> indexCodes = new ArrayList<>();
+//        List<String> indexCodes = new ArrayList<>();
 //        indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
+//        indexCodes.add("6898cf8b8e66496e9a7d769baca1f881");
+//        indexCodes.add("f5edfb13d8324b9f8c365b85ca8311c2");
+//        indexCodes.add("0f1fc19516ea4482aea97be2f87cb78b");
+//        indexCodes.add("46b85baffbe147f185f6f8e606ae442f");
 //        paramMap.put("indexCodes", indexCodes);
-        paramMap.put("personId", "test123");
-        paramMap.put("personName", "测试人员123");
-        paramMap.put("certificateType", 111);
-        paramMap.put("certificateNo", "440682199510201364");
-        paramMap.put("gender", 1);
-        paramMap.put("orgIndexCode", "root000000");
-        paramMap.put("resourceType", "person");
+//        paramMap.put("personId", "test123");
+//        paramMap.put("personName", "测试人员123");
+//        paramMap.put("certificateType", 111);
+//        paramMap.put("certificateNo", "440682199510201364");
+//        paramMap.put("gender", 1);
+//        paramMap.put("orgIndexCode", "root000000");
+//        paramMap.put("resourceType", "person");
+//        paramMap.put("pageNo", 1);
+//        paramMap.put("pageSize", 20);
+        paramMap.put("resourceType", "door");
         paramMap.put("pageNo", 1);
         paramMap.put("pageSize", 20);
-        postToHikvisionPlatform("/api/resource/v2/person/advance/personList", paramMap);
+        postToHikvisionPlatform("/api/irds/v2/deviceResource/resources", paramMap);
 
-//        InetAddress ip = InetAddress.getByName("rhev-demo.xicp.net:10443");
-//        System.out.println("addr:" + ip.getHostAddress());
+//        byte[] data = downImageToByte("http://192.168.8.123:2020/image/avatar/1-348ae2aa-7c3a-48ba-8b03-3a05b6951d32.png");
+//        Base64.Encoder encoder = Base64.getEncoder();
+//        String base64Str = encoder.encodeToString(data);
+//
+//        String isoStartTime = DateTimeUtil.stringToIso8601("2021-04-01 15:00:00");
+//        String isoEndTime = DateTimeUtil.stringToIso8601("2021-04-02 15:00:00");
+//        paramMap.put("startTime", isoStartTime);
+//        paramMap.put("endTime", isoEndTime);
+//        paramMap.put("facePicBinaryData", base64Str);
+//        paramMap.put("minSimilarity", 80);
+//        String resultStr = HttpUtil.postToHikvisionPlatform("/api/frs/v1/application/captureSearch", paramMap);
+
     }
 }

@@ -20,7 +20,7 @@ public interface InsiderInfoService extends IService<InsiderInfo> {
      * 获取已经上传到海康平台的人员名单
      * @return
      */
-    List<Integer> getPersonFromHikivisionPlatform();
+    List<String> getPersonFromHikivisionPlatform();
 
     /**
      * 上传人员名单到海康平台
@@ -28,7 +28,7 @@ public interface InsiderInfoService extends IService<InsiderInfo> {
      * @param type
      * @return
      */
-    boolean addPersonToHikivisionPlatform(Integer id, Integer type);
+    String addPersonToHikivisionPlatform(Integer id, Integer type);
 
     String getRootOrg();
 
