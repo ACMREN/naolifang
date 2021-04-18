@@ -1,5 +1,6 @@
 package com.smartcity.naolifang.service;
 
+import com.smartcity.naolifang.entity.DoorPermissionInfo;
 import com.smartcity.naolifang.entity.InsiderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.smartcity.naolifang.entity.vo.Result;
@@ -32,6 +33,14 @@ public interface InsiderInfoService extends IService<InsiderInfo> {
 
     String getRootOrg();
 
+    /**
+     * 批量添加人员门禁权限到海康平台
+     * @param indexCodes
+     * @param deviceIndexCodes
+     * @param configType
+     * @return
+     */
     Result batchConfigPermissionToHikivisionPlatform(List<String> indexCodes, List<String> deviceIndexCodes, Integer configType);
 
+    void configPermissionFromHikivisionPlatform(DoorPermissionInfo doorPermissionInfo, String indexCode, String deviceIndexCode, Integer operationType);
 }

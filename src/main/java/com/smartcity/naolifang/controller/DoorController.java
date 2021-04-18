@@ -1,12 +1,18 @@
 package com.smartcity.naolifang.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.entity.DependantInfo;
+import com.smartcity.naolifang.entity.DoorPermissionInfo;
 import com.smartcity.naolifang.entity.InsiderInfo;
+import com.smartcity.naolifang.entity.searchCondition.IOManagerCondition;
+import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.DependantInfoService;
+import com.smartcity.naolifang.service.DoorPermissionInfoService;
 import com.smartcity.naolifang.service.InsiderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +31,9 @@ public class DoorController {
     @Autowired
     private DependantInfoService dependantInfoService;
 
+    @Autowired
+    private DoorPermissionInfoService doorPermissionInfoService;
+
     @RequestMapping("/addPermission")
     public Result addDoorPermission(List<Integer> insiderIds, List<Integer> dependantIds, List<String> deviceIndexCodes) {
         Map<String, Object> dataMap = new HashMap<>();
@@ -34,6 +43,45 @@ public class DoorController {
         this.addPersonToHikivisionPlatform(dataMap);
         // 3. 批量添加权限
         this.batchAddDoorPermission(dataMap, deviceIndexCodes);
+
+        return Result.ok();
+    }
+
+    @RequestMapping("/permissionRecord/list")
+    public Result listPermissionRecord(@RequestBody IOManagerCondition ioManagerCondition) {
+        Integer pageNo = ioManagerCondition.getPageNo();
+        Integer pageSize = ioManagerCondition.getPageSize();
+        if (null == pageNo || null == pageSize) {
+            return Result.fail(500, "获取下发记录信息失败，信息：传入的页码或数据条数为空");
+        }
+        Integer offset = (pageNo - 1) * pageSize;
+
+        String name = ioManagerCondition.getName();
+        String idCard = ioManagerCondition.getIdCard();
+        Integer personType = ioManagerCondition.getPersonType();
+        String deviceName = ioManagerCondition.getDeviceName();
+
+        List<DoorPermissionInfo> dataList = doorPermissionInfoService.list(new QueryWrapper<DoorPermissionInfo>()
+                .eq(null != personType, "person_type", personType)
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
+                .like(StringUtils.isNotBlank(deviceName), "device_name", deviceName)
+                .last("limit " + pageNo + ", " + offset));
+        Integer totalCount = doorPermissionInfoService.count(new QueryWrapper<DoorPermissionInfo>()
+                .eq(null != personType, "person_type", personType)
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
+                .like(StringUtils.isNotBlank(deviceName), "device_name", deviceName));
+
+        PageListVo pageListVo = new PageListVo(dataList, pageNo, pageSize, totalCount);
+        return Result.ok(pageListVo);
+    }
+
+    @RequestMapping("/permissionRecord/delete")
+    public Result deletePermissionRecord(@RequestBody IOManagerCondition ioManagerCondition) {
+        Integer id = ioManagerCondition.getId();
+
+        DoorPermissionInfo doorPermissionInfo = doorPermissionInfoService.getById(id);
 
         return Result.ok();
     }

@@ -88,6 +88,8 @@ public class Config {
     private String hikivisionCheckTaskUrl;
     @Value("{hikivision.checkTaskDetail}")
     private String hikivisionTaskDetailUrl;
+    @Value("${hikivision.simplePermissionConfig}")
+    private String hikivisionSimplePermissionConfigUrl;
 
     @Value("${pollingInterval}")
     private String pollingInterval;

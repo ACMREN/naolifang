@@ -222,6 +222,37 @@ public class InsiderInfoServiceImpl extends ServiceImpl<InsiderInfoMapper, Insid
         return result;
     }
 
+    @Override
+    public void configPermissionFromHikivisionPlatform(DoorPermissionInfo doorPermissionInfo, String indexCode, String deviceIndexCode, Integer operationType) {
+        Map<String, Object> paramMap = new HashMap<>();
+        // 1. 组装请求参数
+        paramMap.put("taskType", 5);
+        JSONObject resourceInfo = new JSONObject();
+        resourceInfo.put("resourceIndexCode", deviceIndexCode);
+        resourceInfo.put("resourceType", "door");
+        List<Integer> channelNos = new ArrayList<>();
+        channelNos.add(1);
+        resourceInfo.put("channelNos", channelNos);
+
+        JSONObject personInfo = new JSONObject();
+        personInfo.put("personId", indexCode);
+        personInfo.put("operatorType", operationType);
+
+        // 2. 请求个人门禁权限操作
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionSimplePermissionConfigUrl(), paramMap);
+        JSONObject resultJson = JSONObject.parseObject(resultStr);
+        Integer downloadResult = resultJson.getJSONObject("data").getJSONObject("resourceDownloadResult").getInteger("downloadResult");
+
+        // 3. 更新或删除对应的权限
+        if (operationType.intValue() == 0) {
+            doorPermissionInfo.setStatus(downloadResult);
+            doorPermissionInfoService.saveOrUpdate(doorPermissionInfo);
+        }
+        if (operationType.intValue() == 1) {
+            doorPermissionInfoService.removeById(doorPermissionInfo.getId());
+        }
+    }
+
     /**
      * 检查下载任务的完成情况
      * @param paramMap
