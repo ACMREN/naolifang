@@ -126,7 +126,7 @@ public class DoorController {
                 .like(StringUtils.isNotBlank(deviceName), "device_name", deviceName)
                 .gt(StringUtils.isNotBlank(startTime), "time", startTime)
                 .lt(StringUtils.isNotBlank(endTime), "time", endTime)
-                .last("limit " + pageNo + ", " + pageSize));
+                .last("limit " + pageNo + ", " + offset));
         Integer totalCount = insideOutRecordService.count(new QueryWrapper<InsideOutRecord>()
                 .eq(null != personType, "person_type", personType)
                 .eq(null != type, "type", type)
@@ -142,7 +142,9 @@ public class DoorController {
             resultList.add(data);
         }
 
-        return Result.ok(resultList);
+        PageListVo pageListVo = new PageListVo(resultList, pageNo, pageSize, totalCount);
+
+        return Result.ok(pageListVo);
     }
 
     /**
