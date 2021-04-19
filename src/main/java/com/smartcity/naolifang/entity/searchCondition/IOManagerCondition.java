@@ -14,6 +14,7 @@ public class IOManagerCondition {
     private String startTime;
     private String endTime;
     private String deviceName;
+    private Integer operationType; // 操作类型
     private List<Integer> insiderIds;
     private List<Integer> dependantIds;
     private List<String> deviceIndexCodes;

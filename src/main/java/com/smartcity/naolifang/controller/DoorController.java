@@ -87,11 +87,16 @@ public class DoorController {
         return Result.ok(pageListVo);
     }
 
-    @RequestMapping("/permissionRecord/delete")
-    public Result deletePermissionRecord(@RequestBody IOManagerCondition ioManagerCondition) {
+    @RequestMapping("/permissionRecord/config")
+    public Result configPermissionRecord(@RequestBody IOManagerCondition ioManagerCondition) {
         Integer id = ioManagerCondition.getId();
 
         DoorPermissionInfo doorPermissionInfo = doorPermissionInfoService.getById(id);
+        String indexCode = doorPermissionInfo.getPersonIndexCode();
+        String deviceIndexCode = doorPermissionInfo.getDeviceIndexCode();
+        Integer operationType = ioManagerCondition.getOperationType();
+
+        insiderInfoService.configPermissionFromHikivisionPlatform(doorPermissionInfo, indexCode, deviceIndexCode, operationType);
 
         return Result.ok();
     }
