@@ -17,6 +17,7 @@ public class VisitorInfoVo {
     private String leaveTime;
     private String originalPlace;
     private Integer status;
+    private String imageUri;
 
     public VisitorInfoVo() {
     }
@@ -35,5 +36,6 @@ public class VisitorInfoVo {
         }
         this.originalPlace = visitorInfo.getOriginalPlace();
         this.status = visitorInfo.getStatus();
+        this.imageUri = visitorInfo.getImageUri();
     }
 }

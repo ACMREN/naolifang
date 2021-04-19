@@ -109,6 +109,7 @@ public class VisitorInfo implements Serializable {
         this.visitStartTime = DateTimeUtil.stringToLocalDateTime(visitorInfoVo.getVisitStartTime());
         this.visitEndTime = DateTimeUtil.stringToLocalDateTime(visitorInfoVo.getVisitEndTime());
         this.status = VisitStatusEnum.NO_VISIT.getCode();
+        this.imageUri = visitorInfoVo.getImageUri();
     }
 
     public void updateVisitorInfo(VisitorInfoVo visitorInfoVo) {
