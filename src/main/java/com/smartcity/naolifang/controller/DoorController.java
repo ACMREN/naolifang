@@ -76,7 +76,7 @@ public class DoorController {
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
                 .like(StringUtils.isNotBlank(deviceName), "device_name", deviceName)
-                .last("limit " + pageNo + ", " + offset));
+                .last("limit " + offset + ", " + pageSize));
         Integer totalCount = doorPermissionInfoService.count(new QueryWrapper<DoorPermissionInfo>()
                 .eq(null != personType, "person_type", personType)
                 .like(StringUtils.isNotBlank(name), "name", name)
@@ -126,7 +126,7 @@ public class DoorController {
                 .like(StringUtils.isNotBlank(deviceName), "device_name", deviceName)
                 .gt(StringUtils.isNotBlank(startTime), "time", startTime)
                 .lt(StringUtils.isNotBlank(endTime), "time", endTime)
-                .last("limit " + pageNo + ", " + offset));
+                .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insideOutRecordService.count(new QueryWrapper<InsideOutRecord>()
                 .eq(null != personType, "person_type", personType)
                 .eq(null != type, "type", type)
