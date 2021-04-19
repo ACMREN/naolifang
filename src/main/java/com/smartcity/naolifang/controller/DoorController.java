@@ -4,12 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.smartcity.naolifang.entity.DependantInfo;
 import com.smartcity.naolifang.entity.DoorPermissionInfo;
+import com.smartcity.naolifang.entity.InsideOutRecord;
 import com.smartcity.naolifang.entity.InsiderInfo;
 import com.smartcity.naolifang.entity.searchCondition.IOManagerCondition;
+import com.smartcity.naolifang.entity.vo.InsideOutRecordVo;
 import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.service.DependantInfoService;
 import com.smartcity.naolifang.service.DoorPermissionInfoService;
+import com.smartcity.naolifang.service.InsideOutRecordService;
 import com.smartcity.naolifang.service.InsiderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,9 +37,16 @@ public class DoorController {
     @Autowired
     private DoorPermissionInfoService doorPermissionInfoService;
 
+    @Autowired
+    private InsideOutRecordService insideOutRecordService;
+
     @RequestMapping("/addPermission")
-    public Result addDoorPermission(List<Integer> insiderIds, List<Integer> dependantIds, List<String> deviceIndexCodes) {
+    public Result addDoorPermission(@RequestBody IOManagerCondition ioManagerCondition) {
         Map<String, Object> dataMap = new HashMap<>();
+        List<Integer> insiderIds = ioManagerCondition.getInsiderIds();
+        List<Integer> dependantIds = ioManagerCondition.getDependantIds();
+        List<String> deviceIndexCodes = ioManagerCondition.getDeviceIndexCodes();
+
         // 1. 对已经添加到海康平台和还没添加到海康平台的人员进行分类
         this.diffPerson(dataMap, insiderIds, dependantIds);
         // 2. 添加还没在海康平台的人员添加到海康平台
@@ -84,6 +94,50 @@ public class DoorController {
         DoorPermissionInfo doorPermissionInfo = doorPermissionInfoService.getById(id);
 
         return Result.ok();
+    }
+
+    @RequestMapping("/insideOutRecord/list")
+    public Result listInsideOutRecord(@RequestBody IOManagerCondition ioManagerCondition) {
+        Integer pageNo = ioManagerCondition.getPageNo();
+        Integer pageSize = ioManagerCondition.getPageSize();
+        if (null == pageNo || null == pageSize) {
+            return Result.fail(500, "获取下发记录信息失败，信息：传入的页码或数据条数为空");
+        }
+        Integer offset = (pageNo - 1) * pageSize;
+
+        String name = ioManagerCondition.getName();
+        String idCard = ioManagerCondition.getIdCard();
+        Integer personType = ioManagerCondition.getPersonType();
+        String deviceName = ioManagerCondition.getDeviceName();
+        Integer type = ioManagerCondition.getType();
+        String startTime = ioManagerCondition.getStartTime();
+        String endTime = ioManagerCondition.getEndTime();
+
+        List<InsideOutRecord> dataList = insideOutRecordService.list(new QueryWrapper<InsideOutRecord>()
+                .eq(null != personType, "person_type", personType)
+                .eq(null != type, "type", type)
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
+                .like(StringUtils.isNotBlank(deviceName), "device_name", deviceName)
+                .gt(StringUtils.isNotBlank(startTime), "time", startTime)
+                .lt(StringUtils.isNotBlank(endTime), "time", endTime)
+                .last("limit " + pageNo + ", " + pageSize));
+        Integer totalCount = insideOutRecordService.count(new QueryWrapper<InsideOutRecord>()
+                .eq(null != personType, "person_type", personType)
+                .eq(null != type, "type", type)
+                .like(StringUtils.isNotBlank(name), "name", name)
+                .like(StringUtils.isNotBlank(idCard), "id_card", idCard)
+                .like(StringUtils.isNotBlank(deviceName), "device_name", deviceName)
+                .gt(StringUtils.isNotBlank(startTime), "time", startTime)
+                .lt(StringUtils.isNotBlank(endTime), "time", endTime));
+
+        List<InsideOutRecordVo> resultList = new ArrayList<>();
+        for (InsideOutRecord item : dataList) {
+            InsideOutRecordVo data = new InsideOutRecordVo(item);
+            resultList.add(data);
+        }
+
+        return Result.ok(resultList);
     }
 
     /**
