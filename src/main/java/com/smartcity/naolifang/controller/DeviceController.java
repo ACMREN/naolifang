@@ -26,10 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/iotPlatform")
@@ -219,5 +216,25 @@ public class DeviceController {
         }
 
         return Result.ok(failList);
+    }
+
+    @RequestMapping("/simulate")
+    public Result simulateDevice() {
+        List<DeviceInfo> deviceInfos = new ArrayList<>();
+        for (int i = 0; i <= 100; i++) {
+            DeviceInfo deviceInfo = new DeviceInfo();
+            deviceInfo.setName("模拟门禁名称" + i);
+            deviceInfo.setType(DeviceTypeEnum.DOOR.getCode());
+            deviceInfo.setIndexCode(UUID.randomUUID().toString());
+            deviceInfo.setIp("192.168.1.1");
+            deviceInfo.setPositionInfo("模拟设备位置" + i);
+            deviceInfo.setMaintainPerson("张三");
+            deviceInfo.setStatus(StatusEnum.ONLINE.getCode());
+            deviceInfo.setConnectTime(LocalDateTime.now());
+            deviceInfos.add(deviceInfo);
+        }
+        deviceInfoService.saveOrUpdateBatch(deviceInfos);
+
+        return Result.ok();
     }
 }

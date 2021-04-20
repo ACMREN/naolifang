@@ -27,9 +27,7 @@ public class CheckDeviceStatusJob {
     @Scheduled(cron = "0 0/1 * * * ?")
     public void checkDeviceStatusJob() {
         logger.info("=========开始更新设备状态==========");
-        List<DeviceInfo> deviceInfos = deviceInfoService.list(new QueryWrapper<DeviceInfo>()
-                .eq("status", StatusEnum.OFFLINE)
-                .or().eq("status", StatusEnum.INACTIVE));
+        List<DeviceInfo> deviceInfos = deviceInfoService.list();
 
         List<String> cameraIndexCodes = deviceInfos.stream()
                 .filter(item -> item.getType().equals(DeviceTypeEnum.CAMERA.getCode()))
