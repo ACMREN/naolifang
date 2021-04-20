@@ -203,8 +203,20 @@ public class SceneController {
                 .eq("status", VisitStatusEnum.NO_VISIT.getCode()));
         // 内部人员总数
         Integer totalInsider = insiderInfoService.count();
+        // 内部人员在营人数
+        Integer inInsider = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
+                .eq("is_out", 0));
+        // 内部人员离营人数
+        Integer outInsider = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
+                .eq("is_out", 1));
         // 登记家属总数
         Integer totalDependant = dependantInfoService.count();
+        // 家属人员在营人数
+        Integer inDependant = dependantInfoService.count(new QueryWrapper<DependantInfo>()
+                .eq("is_out", 0));
+        // 家属人员离营人数
+        Integer outDependant = dependantInfoService.count(new QueryWrapper<DependantInfo>()
+                .eq("is_out", 1));
         // 在访人数
         Integer totalVisiting = visitorInfoService.count(new QueryWrapper<VisitorInfo>()
                 .eq("status", VisitStatusEnum.SIGN_IN)
@@ -221,6 +233,8 @@ public class SceneController {
         // 请假人数
         Integer totalVacation = vacationInfoService.count(new QueryWrapper<VacationInfo>()
                 .eq("cancel_vacation_status", 0));
+        // 在营总人数
+        Integer totalCount = inInsider + inDependant + totalVisiting + totalTimeout;
         // 体温检测人数
         List<VisitorInfo> todayVisitor = visitorInfoService.list(new QueryWrapper<VisitorInfo>());
         List<Integer> todayVisitorId = todayVisitor.stream().map(VisitorInfo::getId).collect(Collectors.toList());
@@ -237,6 +251,8 @@ public class SceneController {
         }
 
         JSONObject resultJson = new JSONObject();
+        resultJson.put("inInsider", inInsider);
+        resultJson.put("outInsider", outInsider);
         resultJson.put("totalVisitor", totalVisitor);
         resultJson.put("totalInsider", totalInsider);
         resultJson.put("totalDependant", totalDependant);
@@ -247,6 +263,7 @@ public class SceneController {
         resultJson.put("totalVacation", totalVacation);
         resultJson.put("checkTemperature", checkTemperature);
         resultJson.put("fever", fever);
+        resultJson.put("totalCount", totalCount);
 
         return Result.ok(resultJson);
     }
@@ -260,7 +277,7 @@ public class SceneController {
         // 正常设备
         Integer normal = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
-                .eq("status", StatusEnum.OFFLINE.getCode()));
+                .eq("status", StatusEnum.ONLINE.getCode()));
         // 告警设备
         Integer alarm = deviceInfoService.count(new QueryWrapper<DeviceInfo>()
                 .eq("is_delete", 0)
