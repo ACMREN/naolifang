@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
@@ -43,7 +44,12 @@ public class DeviceController {
     @Autowired
     private Config config;
 
-    @RequestMapping("/hikivision/subscribe/event")
+    /**
+     * 订阅海康事件消息
+     * @param deviceCondition
+     * @return
+     */
+    @RequestMapping("/hikivision/subscribeEvent/subscribe")
     public Result subscribeEvent(@RequestBody DeviceCondition deviceCondition) {
         Map<String, Object> paramMap = new HashMap<>();
         List<Integer> eventTypes = deviceCondition.getEventTypes();
@@ -51,6 +57,52 @@ public class DeviceController {
         String localAddress = SystemUtil.getLocalAddress();
         String callBackUrl = localAddress.concat(":2020").concat(callBackApi);
 
+        paramMap.put("eventTypes", eventTypes);
+        paramMap.put("eventDest", callBackUrl);
+
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionSubscribeEventUrl(), paramMap);
+        JSONObject resultJson = JSONObject.parseObject(resultStr);
+        String code = resultJson.getString("code");
+        if (!code.equals("0")) {
+            String msg = resultJson.getString("msg");
+            return Result.fail(500, code + ":" + msg);
+        }
+        return Result.ok();
+    }
+
+    /**
+     * 查看订阅的事件
+     * @return
+     */
+    @RequestMapping("/hikivision/subscribeEvent/check")
+    public Result checkSubscribe() {
+        Map<String, Object> paramMap = new HashMap<>();
+
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionCheckSubscribeEventUrl(), paramMap);
+        JSONObject resultJson = JSONObject.parseObject(resultStr);
+
+        return Result.ok(resultJson);
+    }
+
+    /**
+     * 取消订阅事件
+     * @param deviceCondition
+     * @return
+     */
+    @RequestMapping("/hikivision/subscribeEvent/unsubscribe")
+    public Result unsubscribeEvent(@RequestBody DeviceCondition deviceCondition) {
+        Map<String, Object> paramMap = new HashMap<>();
+        List<Integer> eventTypes = deviceCondition.getEventTypes();
+
+        paramMap.put("eventTypes", eventTypes);
+
+        String resultStr = HttpUtil.postToHikvisionPlatform(config.getHikivisionUnsunscribeEventUrl(), paramMap);
+        JSONObject resultJson = JSONObject.parseObject(resultStr);
+        String code = resultJson.getString("code");
+        if (!code.equals("0")) {
+            String msg = resultJson.getString("msg");
+            return Result.fail(500, code + ":" + msg);
+        }
         return Result.ok();
     }
 

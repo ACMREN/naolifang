@@ -62,7 +62,8 @@ public class MessageController {
         List<MessagePollingInfo> dataList = messagePollingInfoService.list(new QueryWrapper<MessagePollingInfo>()
                 .eq("is_delete", 0)
                 .last("limit " + offset + ", " + pageSize));
-        Integer totalCount = messagePollingInfoService.count();
+        Integer totalCount = messagePollingInfoService.count(new QueryWrapper<MessagePollingInfo>()
+                .eq("is_delete", 0));
 
         List<MessagePollingInfoVo> resultList = new ArrayList<>();
         for (MessagePollingInfo item : dataList) {

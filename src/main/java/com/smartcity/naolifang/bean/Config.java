@@ -90,6 +90,12 @@ public class Config {
     private String hikivisionTaskDetailUrl;
     @Value("${hikivision.simplePermissionConfig}")
     private String hikivisionSimplePermissionConfigUrl;
+    @Value("${hikivision.subscribeEvent}")
+    private String hikivisionSubscribeEventUrl;
+    @Value("${hikivision.checkSubscribeEvent}")
+    private String hikivisionCheckSubscribeEventUrl;
+    @Value("${hikivision.unsubscribeEvent}")
+    private String hikivisionUnsunscribeEventUrl;
 
     @Value("${pollingInterval}")
     private String pollingInterval;
