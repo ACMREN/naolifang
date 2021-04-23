@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
 import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.HttpUtil;
+import com.smartcity.naolifang.common.util.SystemUtil;
 import com.smartcity.naolifang.entity.CameraPollingInfo;
 import com.smartcity.naolifang.entity.DeviceInfo;
 import com.smartcity.naolifang.entity.enumEntity.DeviceTypeEnum;
@@ -41,6 +42,17 @@ public class DeviceController {
 
     @Autowired
     private Config config;
+
+    @RequestMapping("/hikivision/subscribe/event")
+    public Result subscribeEvent(@RequestBody DeviceCondition deviceCondition) {
+        Map<String, Object> paramMap = new HashMap<>();
+        List<Integer> eventTypes = deviceCondition.getEventTypes();
+        String callBackApi = deviceCondition.getCallBackApi();
+        String localAddress = SystemUtil.getLocalAddress();
+        String callBackUrl = localAddress.concat(":2020").concat(callBackApi);
+
+        return Result.ok();
+    }
 
     @RequestMapping("/hikivision/config/")
     public Result getHikivisionConfig() {

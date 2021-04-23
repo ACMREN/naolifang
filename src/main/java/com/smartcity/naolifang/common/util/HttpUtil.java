@@ -181,12 +181,14 @@ public class HttpUtil {
 
     public static void main(String[] args) throws IOException {
         Map<String, Object> paramMap = new HashMap<>();
+        // 获取资源的在线情况
 //        List<String> indexCodes = new ArrayList<>();
 //        indexCodes.add("c13b45b0d2fc436cb9592145986e047f");
 //        indexCodes.add("6898cf8b8e66496e9a7d769baca1f881");
 //        indexCodes.add("f5edfb13d8324b9f8c365b85ca8311c2");
 //        indexCodes.add("0f1fc19516ea4482aea97be2f87cb78b");
 //        indexCodes.add("46b85baffbe147f185f6f8e606ae442f");
+        // 插入内部人员到海康平台
 //        paramMap.put("indexCodes", indexCodes);
 //        paramMap.put("personId", "test123");
 //        paramMap.put("personName", "测试人员123");
@@ -197,10 +199,16 @@ public class HttpUtil {
 //        paramMap.put("resourceType", "person");
 //        paramMap.put("pageNo", 1);
 //        paramMap.put("pageSize", 20);
-        paramMap.put("resourceType", "door");
-        paramMap.put("pageNo", 1);
-        paramMap.put("pageSize", 20);
-        postToHikvisionPlatform("/api/irds/v2/deviceResource/resources", paramMap);
+        // 获取资源列表
+//        paramMap.put("resourceType", "acsDevice");
+//        paramMap.put("pageNo", 1);
+//        paramMap.put("pageSize", 20);
+        // 订阅事件消息
+        List<Integer> eventTypes = new ArrayList<>();
+        eventTypes.add(1392513025);
+        paramMap.put("eventTypes", eventTypes);
+        paramMap.put("eventDest", "http://192.168.8.123:2020/visitor/external/sign");
+        postToHikvisionPlatform("/api/eventService/v1/eventSubscriptionView", paramMap);
 
 //        byte[] data = downImageToByte("http://192.168.8.123:2020/image/avatar/1-348ae2aa-7c3a-48ba-8b03-3a05b6951d32.png");
 //        Base64.Encoder encoder = Base64.getEncoder();

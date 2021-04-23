@@ -304,13 +304,14 @@ public class WarningController {
 
     @RequestMapping("/testPush")
     public Result testPush() {
-        String rtspUrl = "rtsp://admin:a12345678@203.88.202.226:554/h264/ch1/main/av_stream";
-        String token = UUID.randomUUID().toString();
-        PushThread.PushRunnable runnable = new PushThread.PushRunnable(rtspUrl, token);
-        PushThread.PushRunnable.es.execute(runnable);
-
-        String rtmpUrl = "rtmp://localhost:1935/live/" + token;
-        return Result.ok(rtmpUrl);
+//        String rtspUrl = "rtsp://admin:a12345678@203.88.202.226:554/h264/ch1/main/av_stream";
+//        String token = UUID.randomUUID().toString();
+//        PushThread.PushRunnable runnable = new PushThread.PushRunnable(rtspUrl, token);
+//        PushThread.PushRunnable.es.execute(runnable);
+//
+//        String rtmpUrl = "rtmp://localhost:1935/live/" + token;
+//        return Result.ok(rtmpUrl);
+        return Result.ok();
     }
 
     /**

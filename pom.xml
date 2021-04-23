@@ -107,12 +107,6 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.66</version>
         </dependency>
-        <!--    引入javacv    -->
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacv-platform</artifactId>
-            <version>1.5.4</version>
-        </dependency>
 
         <!--    引入mybatisplus    -->
         <dependency>

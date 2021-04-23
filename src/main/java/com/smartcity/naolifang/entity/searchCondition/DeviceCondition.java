@@ -19,6 +19,9 @@ public class DeviceCondition {
     private Integer controlType;
     private Integer changeStatus;
 
+    private List<Integer> eventTypes = new ArrayList<>();
+    private String callBackApi;
+
     private Integer pageNo;
     private Integer pageSize;
 }

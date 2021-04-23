@@ -26,15 +26,15 @@ public class PushThread {
 
         @Override
         public void run() {
-            nowThread = Thread.currentThread();
-
-            try {
-                FlvPusher pusher = new FlvPusher().from(rtspUrl).to(token);
-                pusher.go();
-            } catch (Exception e) {
-                this.setInterrupted();
-                e.printStackTrace();
-            }
+//            nowThread = Thread.currentThread();
+//
+//            try {
+//                FlvPusher pusher = new FlvPusher().from(rtspUrl).to(token);
+//                pusher.go();
+//            } catch (Exception e) {
+//                this.setInterrupted();
+//                e.printStackTrace();
+//            }
         }
     }
 }
