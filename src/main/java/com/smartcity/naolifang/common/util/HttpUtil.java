@@ -197,7 +197,7 @@ public class HttpUtil {
 //        paramMap.put("resourceType", "person");
 //        paramMap.put("pageNo", 1);
 //        paramMap.put("pageSize", 20);
-        paramMap.put("resourceType", "camera");
+        paramMap.put("resourceType", "door");
         paramMap.put("pageNo", 1);
         paramMap.put("pageSize", 20);
         postToHikvisionPlatform("/api/irds/v2/deviceResource/resources", paramMap);
