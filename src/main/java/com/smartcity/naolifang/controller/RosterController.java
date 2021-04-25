@@ -98,6 +98,7 @@ public class RosterController {
                 .like(StringUtils.isNotBlank(phone), "phone", phone)
                 .like(StringUtils.isNotBlank(department), "department", department)
                 .like(StringUtils.isNotBlank(rankNum), "rank_num", rankNum)
+                .orderByDesc("id")
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = insiderInfoService.count(new QueryWrapper<InsiderInfo>()
                 .eq("is_account", 0)
@@ -234,6 +235,7 @@ public class RosterController {
                 .like(StringUtils.isNotBlank(name), "name", name)
                 .like(StringUtils.isNotBlank(relation), "relation", relation)
                 .like(StringUtils.isNotBlank(institution), "institution", institution)
+                .orderByDesc("id")
                 .last("limit " + offset + ", " + pageSize));
         Integer totalCount = dependantInfoService.count(new QueryWrapper<DependantInfo>()
                 .eq(StringUtils.isNotBlank(gender), "gender", genderInt)

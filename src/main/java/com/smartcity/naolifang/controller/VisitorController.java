@@ -56,11 +56,7 @@ public class VisitorController {
     public Result saveVisitorInfo(@RequestBody VisitorInfoVo visitorInfoVo) {
         Integer id = visitorInfoVo.getId();
         VisitorInfo visitorInfo;
-        if (null == id) {
-            visitorInfo = new VisitorInfo(visitorInfoVo);
-        } else {
-            visitorInfo = visitorInfoService.getById(id);
-        }
+        visitorInfo = new VisitorInfo(visitorInfoVo);
         // 如果是新增预约，调用海康的预约接口
         if (null == id) {
             String visitStartTime = DateTimeUtil.stringToIso8601(visitorInfoVo.getVisitStartTime());
