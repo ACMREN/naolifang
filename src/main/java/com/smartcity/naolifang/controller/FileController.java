@@ -104,7 +104,7 @@ public class FileController {
             docPath = config.getPdfDocPath() + newFileName;
             mappingPath = config.getPdfMappingPath() + newFileName;
         } else if (type.equals("image")) {
-            docPath = config.getImageDocPath();
+            docPath = config.getImageDocPath() + newFileName;
             mappingPath = config.getImageMappingPath() + newFileName;
         } else {
             return Result.fail(500, "上传附件失败，信息：不支持的附件类型");
