@@ -79,7 +79,9 @@ public class EmergencySolutionInfo implements Serializable {
         for (Integer item : attachmentIdList) {
             sb.append(item).append(",");
         }
-        sb.deleteCharAt(sb.length() - 1);
+        if (sb.length() != 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
         this.attachmentIds = sb.toString();
     }
 }
