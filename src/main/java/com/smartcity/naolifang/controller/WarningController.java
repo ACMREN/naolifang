@@ -190,8 +190,10 @@ public class WarningController {
         // 1. 根据条件找出告警记录
         Integer searchDeviceId = null;
         if (StringUtils.isNotBlank(indexCode)) {
-            DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>().eq("index_code", indexCode));
-            searchDeviceId = deviceInfo.getId();
+            DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>().like("index_code", indexCode));
+            if (null != deviceInfo) {
+                searchDeviceId = deviceInfo.getId();
+            }
         }
         List<AlarmEventInfo> dataList = alarmEventInfoService.list(new QueryWrapper<AlarmEventInfo>()
                 .eq("alarm_type", alarmType)
