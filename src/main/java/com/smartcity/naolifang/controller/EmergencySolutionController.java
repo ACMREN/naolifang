@@ -78,15 +78,17 @@ public class EmergencySolutionController {
 
             // 获取应急预案中附件的详细信息
             String attachmentIds = item.getAttachmentIds();
-            List<Integer> attachmentIdList = new ArrayList<>();
-            String[] attachmentIdArr = attachmentIds.split(",");
-            for (String id : attachmentIdArr) {
-                attachmentIdList.add(Integer.valueOf(id));
-            }
-            if (!CollectionUtils.isEmpty(attachmentIdList)) {
-                List<AttachmentInfo> attachmentInfos = attachmentInfoService.list(new QueryWrapper<AttachmentInfo>()
-                        .in("id", attachmentIdList));
-                data.setAttachmentInfos(attachmentInfos);
+            if (StringUtils.isNotBlank(attachmentIds)) {
+                List<Integer> attachmentIdList = new ArrayList<>();
+                String[] attachmentIdArr = attachmentIds.split(",");
+                for (String id : attachmentIdArr) {
+                    attachmentIdList.add(Integer.valueOf(id));
+                }
+                if (!CollectionUtils.isEmpty(attachmentIdList)) {
+                    List<AttachmentInfo> attachmentInfos = attachmentInfoService.list(new QueryWrapper<AttachmentInfo>()
+                            .in("id", attachmentIdList));
+                    data.setAttachmentInfos(attachmentInfos);
+                }
             }
 
             resultList.add(data);
