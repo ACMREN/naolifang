@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -128,11 +129,10 @@ public class FileController {
     }
 
     @RequestMapping("/test")
-    public Result testApi(JSONObject paramJson) {
-        Map<String, Object> paramMap = JSONObject.parseObject(paramJson.toJSONString(), HashMap.class);
-        String url = (String) paramMap.get("url");
-        String result = HttpUtil.postToHikvisionPlatform(url, paramMap);
+    public Result testApi(HttpServletRequest request) {
+        String remoteAddr = request.getRemoteHost();
+        System.out.println(remoteAddr);
 
-        return Result.ok(result);
+        return Result.ok(remoteAddr);
     }
 }

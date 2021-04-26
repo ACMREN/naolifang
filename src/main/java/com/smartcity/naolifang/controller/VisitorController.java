@@ -7,9 +7,7 @@ import com.smartcity.naolifang.bean.Config;
 import com.smartcity.naolifang.common.util.DateTimeUtil;
 import com.smartcity.naolifang.common.util.HttpUtil;
 import com.smartcity.naolifang.common.util.SystemUtil;
-import com.smartcity.naolifang.entity.FaceInfo;
-import com.smartcity.naolifang.entity.SignInfo;
-import com.smartcity.naolifang.entity.VisitorInfo;
+import com.smartcity.naolifang.entity.*;
 import com.smartcity.naolifang.entity.enumEntity.HikivisionEventTypeEnum;
 import com.smartcity.naolifang.entity.enumEntity.VisitStatusEnum;
 import com.smartcity.naolifang.entity.external.EventInfo;
@@ -19,9 +17,7 @@ import com.smartcity.naolifang.entity.vo.PageListVo;
 import com.smartcity.naolifang.entity.vo.Result;
 import com.smartcity.naolifang.entity.vo.SignInfoVo;
 import com.smartcity.naolifang.entity.vo.VisitorInfoVo;
-import com.smartcity.naolifang.service.FaceInfoService;
-import com.smartcity.naolifang.service.SignInfoService;
-import com.smartcity.naolifang.service.VisitorInfoService;
+import com.smartcity.naolifang.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +44,12 @@ public class VisitorController {
 
     @Autowired
     private FaceInfoService faceInfoService;
+
+    @Autowired
+    private DeviceInfoService deviceInfoService;
+
+    @Autowired
+    private InsideOutRecordService insideOutRecordService;
 
     @Autowired
     private Config config;
@@ -210,9 +212,12 @@ public class VisitorController {
         for (EventInfo item : eventInfos) {
             Integer eventType = item.getEventType();
             JSONObject dataJson = item.getData();
+            String deviceIndexCode = item.getSrcIndex();
+            String happenTime = item.getHappenTime();
             String visitorId = dataJson.getString("ExtEventCardNo");
             String endTime = dataJson.getString("endTime");
             String photoUri = dataJson.getString("ExtEventPictureURL");
+            InsideOutRecord insideOutRecord = new InsideOutRecord();
 
             // 如果包含有图片资源的话，则保存到人脸图库
             String photoUrl = faceInfoService.saveFaceInfo(photoUri);
@@ -231,6 +236,20 @@ public class VisitorController {
                     visitorInfoService.saveOrUpdate(visitorInfo);
                 }
             }
+
+            // 3. 保存访客出入营记录
+            DeviceInfo deviceInfo = deviceInfoService.getOne(new QueryWrapper<DeviceInfo>()
+                    .eq("indexCode", deviceIndexCode));
+            insideOutRecord.setPersonId(-1);
+            insideOutRecord.setName(visitorInfo.getName());
+            insideOutRecord.setIdCard(visitorInfo.getIdCard());
+            insideOutRecord.setImageUri(visitorInfo.getImageUri());
+            insideOutRecord.setPersonType(2);
+            insideOutRecord.setDeviceId(deviceInfo.getId());
+            insideOutRecord.setDeviceName(deviceInfo.getName());
+            insideOutRecord.setPositionInfo(deviceInfo.getPositionInfo());
+            insideOutRecord.setTime(DateTimeUtil.stringToLocalDateTime(DateTimeUtil.iso8601ToString(happenTime)));
+            insideOutRecordService.saveOrUpdate(insideOutRecord);
         }
         return Result.ok();
     }
