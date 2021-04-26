@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class DeviceCondition {
     private List<Integer> ids = new ArrayList<>();
-    private String index;
+    private String indexCode;
     private Integer region;
     private Integer status;
     private String type;

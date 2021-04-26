@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -117,14 +118,11 @@ public class SceneController {
 
     @RequestMapping("/onCall")
     public Result onCall() {
+        String nowTime = DateTimeUtil.localDateTimeToString(LocalDateTime.now());
         List<DutyInfo> dutyList = dutyInfoService.list(new QueryWrapper<DutyInfo>()
                 .eq("is_delete", 0)
-                .ge("start_time", todayStartTime)
-                .le("start_time", todayEndTime)
-                .or(wrapper -> wrapper
-                        .eq("is_delete", 0)
-                        .ge("end_time", todayStartTime)
-                        .le("end_time", todayEndTime))
+                .le("start_time", nowTime)
+                .ge("end_time", nowTime)
                 .orderByDesc("id"));
         List<DutyInfoVo> resultList = new ArrayList<>();
         for (DutyInfo item : dutyList) {

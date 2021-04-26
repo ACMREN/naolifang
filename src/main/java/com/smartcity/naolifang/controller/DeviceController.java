@@ -153,7 +153,7 @@ public class DeviceController {
         }
         Integer typeInt = 0;
         Integer offset = (pageNo - 1) * pageSize;
-        String indexCode = deviceCondition.getIndex();
+        String indexCode = deviceCondition.getIndexCode();
         Integer region = deviceCondition.getRegion();
         Integer status = deviceCondition.getStatus();
         String type = deviceCondition.getType();
